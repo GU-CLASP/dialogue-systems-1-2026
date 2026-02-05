@@ -55,7 +55,7 @@
    ```sh
    echo 'export const KEY = "paste your KEY 1 here";' >> azure.ts
    ```
-   Don't add this file to version control. ".gitignore" file does it for you. Check where that file is located using `cd` and `ls -la` commands and see which files are not added to version control:
+   Don't add this file to version control. ".gitignore" file does it for you. Check where that file is located using `cd` and `ls -la` commands (hint: =cd ..=) and see which files are not added to version control:
    ```sh
    cat .gitignore
    ```
