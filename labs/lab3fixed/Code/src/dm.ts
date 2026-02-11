@@ -41,12 +41,12 @@ const grammar: { [index: string]: GrammarEntry } = {
   wednesday: { day: "Wednesday" },
   thursday: { day: "Thursday" },
   friday: { day: "Friday" },
-  saturday: { day: "Saturday" },
-  sunday: { day: "Sunday" },
+  // saturday: { day: "Saturday" },
+  // sunday: { day: "Sunday" },
   
-  "07": { time: "07:00" },
-  "08": { time: "08:00" },
-  "09": { time: "09:00" },
+  "7": { time: "07:00" },
+  "8": { time: "08:00" },
+  "9": { time: "09:00" },
   "10": { time: "10:00" },
   "11": { time: "11:00" },
   "12": { time: "12:00" },
@@ -54,17 +54,29 @@ const grammar: { [index: string]: GrammarEntry } = {
   "14": { time: "14:00" },
   "15": { time: "15:00" },
   "16": { time: "16:00" },
-  "17": { time: "17:00" },
-  "18": { time: "18:00" },
-  "19": { time: "19:00" },
-  "20": { time: "20:00" },
-  "21": { time: "21:00" },
-  "22": { time: "22:00" },
-  "23": { time: "23:00" },
+  // "17": { time: "17:00" },
+  // "18": { time: "18:00" },
+  // "19": { time: "19:00" },
+  // "20": { time: "20:00" },
+  // "21": { time: "21:00" },
+  // "22": { time: "22:00" },
+  // "23": { time: "23:00" },
 
   yes: { confirm: true },
   no: { confirm: false },
 };
+
+const people = Object.values(grammar).map(g => g.person).filter(Boolean) as string[];
+const peopleString = people.join(", ");
+
+const days = Object.values(grammar).map(g => g.day).filter(Boolean) as string[];
+const daysString = days.join(", ");
+
+const times = Object.values(grammar).map(g => g.time).filter(Boolean) as string[];
+const timesNumbers = times.map(t => parseInt(t.replace(":", ""),10)/100);
+const minTime = Math.min(...timesNumbers);
+const maxTime = Math.max(...timesNumbers);
+
 
 // function isInGrammar(utterance: string) 
 // {
@@ -242,7 +254,7 @@ const dmMachine = setup
                 {
                 Prompt: 
                   {
-                    entry: { type: "spst.speak", params: { utterance: `Who are you meeting with?` } },
+                    entry: { type: "spst.speak", params: { utterance: `Who are you meeting with? Available options are ${peopleString}` } },
                     on: { SPEAK_COMPLETE: "Ask" },
                   },
 
@@ -292,7 +304,7 @@ const dmMachine = setup
                 {
                 Prompt: 
                   {
-                    entry: { type: "spst.speak", params: { utterance: `On which day is your meeting?` } },
+                    entry: { type: "spst.speak", params: { utterance: `On which day is your meeting? Available options are ${daysString}` } },
                     on: { SPEAK_COMPLETE: "Ask" },
                   },
 
@@ -396,7 +408,7 @@ const dmMachine = setup
                 {
                 Prompt: 
                   {
-                    entry: { type: "spst.speak", params: { utterance: `What time is your meeting?` } },
+                    entry: { type: "spst.speak", params: { utterance: `What time is your meeting? You can book between ${minTime} and ${maxTime}` } },
                     on: { SPEAK_COMPLETE: "Ask" },
                   },
                 Ask: 
@@ -460,9 +472,7 @@ const dmMachine = setup
                     entry: { type: "spst.speak", 
                       params: ({ context }) => 
                       ({
-                        utterance: `Do you want me to create and appointment with ${context.person} on ${context.day} 
-                        ${context.allDay ? "for the whole day" : `at ${context.time}`}.
-                        . `,
+                        utterance: `Do you want me to create and appointment with ${context.person} on ${context.day} ${context.allDay ? "for the whole day" : `at ${context.time}`}. `,
                       }),
                     },
                     on: { SPEAK_COMPLETE: "Ask" },
