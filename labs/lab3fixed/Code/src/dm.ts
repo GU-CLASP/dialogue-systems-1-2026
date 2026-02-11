@@ -536,7 +536,7 @@ const dmMachine = setup
             Hist: 
             {
             type: "history",
-            history: "deep",
+            history: "shallow",
             },
             
           
@@ -566,8 +566,7 @@ const dmMachine = setup
                 type: "spst.speak",
                 params: ({ context }: {context: DMContext}) => 
                   ({
-                        utterance: `You just said: ${context.lastResult![0].utterance}. And it 
-                        is not an option.`,
+                        utterance: `You just said: ${context.lastResult![0].utterance}. And it is not an option.`,
                   }),
               },
 
