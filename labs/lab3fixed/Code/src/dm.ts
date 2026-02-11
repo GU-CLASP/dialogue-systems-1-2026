@@ -5,7 +5,6 @@ import { createBrowserInspector } from "@statelyai/inspect";
 import { KEY } from "./azure";
 import type { DMContext, DMEvents } from "./types";
 
-/* ---------------- Inspector ---------------- */
 const inspector = createBrowserInspector();
 
 /* ---------------- Azure settings ---------------- */
@@ -23,7 +22,7 @@ const settings: Settings = {
   ttsDefaultVoice: "en-US-DavisNeural",
 };
 
-/* ---------------- Grammar ---------------- */
+/* ---------------- Grammars ---------------- */
 interface GrammarEntry {
   person?: string;
   day?: string;
@@ -51,7 +50,7 @@ const grammar: { [index: string]: GrammarEntry } = {
   sunday: { day: "Sunday" },
 
   // times
-  "9":  { time: "09:00" },
+  "9": { time: "09:00" },
   "10": { time: "10:00" },
   "11": { time: "11:00" },
   "12": { time: "12:00" },
@@ -74,7 +73,6 @@ const yesNoGrammar: { [index: string]: boolean } = {
   "of course": true,
   sure: true,
   absolutely: true,
-  definitely: true,
   "for sure": true,
   "why not": true,
   "sounds good": true,
@@ -91,22 +89,25 @@ const yesNoGrammar: { [index: string]: boolean } = {
   "not really": false,
   "i don't think so": false,
   "absolutely not": false,
-  "definitely not": false,
 };
 
 /* ---------------- Helper functions ---------------- */
 function getGreeting(utterance: string) {
   const text = utterance.toLowerCase();
-
   const greetings = [
     "hi",
     "hello",
     "hey",
-    "good morning",
-    "good afternoon",
   ];
-
   return greetings.find(g => text.includes(g));
+}
+
+function getPerson(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).person;
+}
+
+function getDay(utterance: string) {
+  return grammar[utterance.toLowerCase()]?.day;
 }
 
 function getYesNo(utterance: string): boolean | null {
@@ -114,29 +115,15 @@ function getYesNo(utterance: string): boolean | null {
   return key in yesNoGrammar ? yesNoGrammar[key] : null;
 }
 
-function getDay(utterance: string) {
-  return grammar[utterance.toLowerCase()]?.day;
-}
-
 function getTime(utterance: string) {
   return grammar[utterance.toLowerCase()]?.time;
-}
-
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
 }
 
 
 /* ---------------- Dialogue Manager ---------------- */
 const dmMachine = setup({
   types: {
-    context: {} as DMContext & {
-      person?: string; // what the context looks like
-      day?: string;
-      time?: string;
-      wholeDay?: boolean;
-      confirm?: boolean;
-    },
+    context: {} as DMContext,
     events: {} as DMEvents, // what events are allowed
   },
 
@@ -158,7 +145,7 @@ const dmMachine = setup({
   // machine metadata
   id: "DM",
   initial: "Prepare",
-  deferEvents: true, 
+  deferEvents: true,
 
   // memory of the dialogue context
   context: ({ spawn }) => ({
@@ -170,12 +157,14 @@ const dmMachine = setup({
     time: undefined,
     wholeDay: undefined,
     confirm: undefined,
+    retryCount: 0,
   }),
 
   states: {
     /* -------- PREPARE -------- */
     Prepare: {
-      entry: ({ context }) => context.spstRef.send({ type: "PREPARE" }),
+      entry: ({ context }) =>
+        context.spstRef.send({ type: "PREPARE" }),
       on: { ASRTTS_READY: "WaitToStart" },
     },
 
@@ -188,56 +177,65 @@ const dmMachine = setup({
         time: undefined,
         wholeDay: undefined,
         confirm: undefined,
+        retryCount: 0,
       }),
-      on: { 
-        CLICK: "ListenHi",
-      },
-    },
-
-    ListenHi: {
-      entry: { type: "spst.listen" },
       on: {
-        RECOGNISED: {
-          guard: ({ event }) => 
-            !!getGreeting(event.value[0].utterance), 
-          actions: assign(({ event }) => ({ 
-            lastResult: event.value, 
-          })), 
-        },
-        LISTEN_COMPLETE: [
-          {
-            target: "Introduction",
-            guard: ({context}) => !!context.lastResult,
-          },
-          {
-            target: "SayHi",
-          }
-        ],
+        CLICK: "Greeting",
       },
     },
 
-    SayHi: {
-      entry: { 
-        type: "spst.speak", 
-        params: { utterance: "Hi!" } 
+    Greeting: {
+      initial: "ListenHi",
+      states: {
+        ListenHi: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              guard: ({ event }) =>
+                !!getGreeting(event.value[0].utterance),
+              actions: assign(({ event }) => ({
+                lastResult: event.value,
+              })),
+            },
+            LISTEN_COMPLETE: [
+              {
+                target: "#introduction",
+                guard: ({ context }) => !!context.lastResult,
+              },
+              {
+                target: "SayHi",
+              },
+            ],
+          },
+        },
+        SayHi: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: "Hi!" }
+          },
+          on: { SPEAK_COMPLETE: "ListenHi" }
+        },
       },
-      on: { SPEAK_COMPLETE: "ListenHi" }
     },
+
 
     Introduction: {
-      entry: { 
-        type: "spst.speak", 
-        params: { utterance: "Let's create an appointment!" } 
+      id: "introduction",
+      entry: {
+        type: "spst.speak",
+        params: { utterance: "Let's create an appointment!" }
       },
       on: { SPEAK_COMPLETE: "AskPerson" }
     },
 
     /* -------- PERSON -------- */
     AskPerson: {
-      entry: { 
-        type: "spst.speak", 
-        params: { utterance: "Who are you meeting with?" } 
-      },
+      entry: [
+        assign({ retryCount: 0 }),
+        {
+          type: "spst.speak",
+          params: { utterance: "Who are you meeting with?" }
+        }],
       on: { SPEAK_COMPLETE: "ListenPerson" }
     },
 
@@ -253,22 +251,42 @@ const dmMachine = setup({
         LISTEN_COMPLETE: [
           {
             target: "AskDay",
-            guard: ({context}) => !!context.person,
+            guard: ({ context }) => !!context.person,
           },
           {
-            target: "AskPerson",
+            guard: ({ context }) => (context.retryCount ?? 0) < 2,
+            actions: assign({
+              retryCount: ({ context }) => (context.retryCount ?? 0) + 1
+            }),
+            target: "RepromptPerson"
+          },
+          {
+            target: "Fallback"
           }
+
         ],
       },
     },
 
 
-    /* -------- DAY -------- */
-    AskDay: {
+    RepromptPerson: {
       entry: {
         type: "spst.speak",
-        params: { utterance: "On which day is your meeting?" },
+        params: { utterance: "Sorry, I didn’t catch that. Who are you meeting?" }
       },
+      on: { SPEAK_COMPLETE: "ListenPerson" }
+    },
+
+
+
+    /* -------- DAY -------- */
+    AskDay: {
+      entry: [
+        assign({ retryCount: 0 }),
+        {
+          type: "spst.speak",
+          params: { utterance: "On which day is your meeting?" },
+        }],
       on: { SPEAK_COMPLETE: "ListenDay" },
     },
 
@@ -284,22 +302,40 @@ const dmMachine = setup({
         LISTEN_COMPLETE: [
           {
             target: "AskWholeDay",
-            guard: ({context}) => !!context.day,
+            guard: ({ context }) => !!context.day,
           },
           {
-            target: "AskDay",
+            guard: ({ context }) => (context.retryCount ?? 0) < 2,
+            actions: assign({
+              retryCount: ({ context }) => (context.retryCount ?? 0) + 1
+            }),
+            target: "RepromptDay",
+          },
+          {
+            target: "Fallback",
           }
         ],
       },
     },
 
+    RepromptDay: {
+      entry: {
+        type: "spst.speak",
+        params: { utterance: "I didn't hear that. What day you said?" }
+      },
+      on: { SPEAK_COMPLETE: "ListenDay" }
+    },
+
+
 
     /* -------- WHOLE DAY -------- */
     AskWholeDay: {
-      entry: {
-        type: "spst.speak",
-        params: { utterance: "Will it take the whole day?" },
-      },
+      entry: [
+        assign({ retryCount: 0 }),
+        {
+          type: "spst.speak",
+          params: { utterance: "Will it take the whole day?" },
+        }],
       on: { SPEAK_COMPLETE: "ListenWholeDay" },
     },
 
@@ -312,39 +348,57 @@ const dmMachine = setup({
             actions: assign(({ event }) => ({
               lastResult: event.value,
               wholeDay: true,
-          })),
+            })),
           },
           {
             guard: ({ event }) => getYesNo(event.value[0].utterance) === false,
             actions: assign(({ event }) => ({
               lastResult: event.value,
               wholeDay: false,
-          })),
+            })),
           },
         ],
         LISTEN_COMPLETE: [
           {
             target: "Confirm",
-            guard: ({context}) => context.wholeDay === true,
+            guard: ({ context }) => context.wholeDay === true,
           },
           {
             target: "AskTime",
-            guard: ({context}) => context.wholeDay === false,
+            guard: ({ context }) => context.wholeDay === false,
           },
           {
-            target: "AskWholeDay",
+            guard: ({ context }) => (context.retryCount ?? 0) < 2,
+            actions: assign({
+              retryCount: ({ context }) => (context.retryCount ?? 0) + 1
+            }),
+            target: "RepromptWholeDay",
+          },
+          {
+            target: "Fallback",
           }
         ],
       },
     },
 
+    RepromptWholeDay: {
+      entry: {
+        type: "spst.speak",
+        params: { utterance: "Sorry, I didn’t hear you. Will it take the whole day?" }
+      },
+      on: { SPEAK_COMPLETE: "ListenWholeDay" }
+    },
+
+
 
     /* -------- TIME -------- */
     AskTime: {
-      entry: {
-        type: "spst.speak",
-        params: { utterance: "What time is your meeting?" },
-      },
+      entry: [
+        assign({ retryCount: 0 }),
+        {
+          type: "spst.speak",
+          params: { utterance: "What time is your meeting?" },
+        }],
       on: { SPEAK_COMPLETE: "ListenTime" },
     },
 
@@ -359,74 +413,47 @@ const dmMachine = setup({
         },
         LISTEN_COMPLETE: [
           {
-            target: "ConfirmWithTime",
-            guard: ({context}) => !!context.time,
+            target: "Confirm",
+            guard: ({ context }) => !!context.time,
           },
           {
-            target: "AskTime",
+            guard: ({ context }) => (context.retryCount ?? 0) < 2,
+            actions: assign({
+              retryCount: ({ context }) => (context.retryCount ?? 0) + 1
+            }),
+            target: "RepromptTime",
+          },
+          {
+            target: "Fallback",
           }
         ],
       },
+    },
+
+    RepromptTime: {
+      entry: {
+        type: "spst.speak",
+        params: { utterance: "I didn't here the time. What time is your meeting?" }
+      },
+      on: { SPEAK_COMPLETE: "ListenTime" }
     },
 
 
     /* -------- CONFIRMs -------- */
-    ConfirmWithTime: {
-      entry: {
-        type:"spst.speak",
-        params: ({ context }) => ({
-          utterance: `Do you want me to create an appointment with ${context.person} on ${context.day} at ${context.time}?`,
-        }),
-      },
-      on:  { SPEAK_COMPLETE: "ListenConfirmWithTime" },
-    },
-
-    ListenConfirmWithTime: {
-      entry: { type: "spst.listen" },
-      on: {
-        RECOGNISED: [
-          {
-            guard: ({ event }) => getYesNo(event.value[0].utterance) === true,
-            actions: assign(({ event }) => ({
-              lastResult: event.value,
-              confirm: true,
-          })),
-          },
-          {
-            guard: ({ event }) => getYesNo(event.value[0].utterance) === false,
-            actions: assign(({ event }) => ({
-              lastResult: event.value,
-              confirm: false,
-          })),
-          },
-        ],
-        LISTEN_COMPLETE: [
-          {
-            target: "Done",
-            guard: ({context}) => context.confirm === true,
-          },
-          {
-            target: "AskPerson",
-            guard: ({context}) => context.confirm === false,
-          },
-          {
-            target: "ConfirmWithTime",
-          }
-        ],
-      },
-    },
-
-
     Confirm: {
-      entry: {
-        type:"spst.speak",
-        params: ({ context }) => ({
-          utterance: `Do you want me to create an appointment with ${context.person} on ${context.day} for the whole day?`,
-        }),
-      },
-      on:  { SPEAK_COMPLETE: "ListenConfirm" },
-    },
+      entry: [
+        assign({ retryCount: 0 }),
+        {
+          type: "spst.speak",
+          params: ({ context }) => ({
+            utterance: context.wholeDay
+              ? `Do you want me to create an appointment with ${context.person} on ${context.day} for the whole day?`
+              : `Do you want me to create an appointment with ${context.person} on ${context.day} at ${context.time}?`
+          }),
 
+        }],
+      on: { SPEAK_COMPLETE: "ListenConfirm" },
+    },
 
     ListenConfirm: {
       entry: { type: "spst.listen" },
@@ -437,32 +464,58 @@ const dmMachine = setup({
             actions: assign(({ event }) => ({
               lastResult: event.value,
               confirm: true,
-          })),
+            })),
           },
           {
             guard: ({ event }) => getYesNo(event.value[0].utterance) === false,
             actions: assign(({ event }) => ({
               lastResult: event.value,
               confirm: false,
-          })),
+            })),
           },
         ],
         LISTEN_COMPLETE: [
           {
             target: "Done",
-            guard: ({context}) => context.confirm === true,
+            guard: ({ context }) => context.confirm === true,
           },
           {
             target: "AskPerson",
-            guard: ({context}) => context.confirm === false,
+            guard: ({ context }) => context.confirm === false,
           },
           {
-            target: "ConfirmWithTime",
+            guard: ({ context }) => (context.retryCount ?? 0) < 2,
+            actions: assign({
+              retryCount: ({ context }) => (context.retryCount ?? 0) + 1
+            }),
+            target: "RepromptConfirm",
+          },
+          {
+            target: "Fallback",
           }
         ],
       },
     },
 
+    RepromptConfirm: {
+      entry: {
+        type: "spst.speak",
+        params: { utterance: "Sorry, I didn't here you. Do you want to create the appointment?" }
+      },
+      on: { SPEAK_COMPLETE: "ListenConfirm" }
+    },
+
+    Fallback: {
+      entry: {
+        type: "spst.speak",
+        params: {
+          utterance: "I'm having trouble understanding. Let's start over."
+        }
+      },
+      on: {
+        SPEAK_COMPLETE: "WaitToStart"
+      }
+    },
 
     /* -------- DONE -------- */
     Done: {
@@ -472,6 +525,7 @@ const dmMachine = setup({
       },
       on: { CLICK: "WaitToStart" },
     },
+
   },
 });
 

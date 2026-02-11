@@ -11,6 +11,7 @@ export interface DMContext {
   time?: string;
   wholeDay?: boolean;
   confirm?: boolean;
+  retryCount?: number;
 }
 
 export type DMEvents = SpeechStateExternalEvent | { type: "CLICK" } | { type: "DONE" };
