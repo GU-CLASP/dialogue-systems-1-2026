@@ -118,7 +118,6 @@ function getTime(utterance: string) {
   return grammar[utterance.toLowerCase()]?.time;
 }
 
-
 /* ---------------- Dialogue Manager ---------------- */
 const dmMachine = setup({
   types: {
@@ -217,7 +216,6 @@ const dmMachine = setup({
       },
     },
 
-
     Introduction: {
       id: "introduction",
       entry: {
@@ -287,7 +285,6 @@ const dmMachine = setup({
       }
     },
 
-
     /* -------- DAY -------- */
     Day: {
       initial: "AskDay",
@@ -346,7 +343,6 @@ const dmMachine = setup({
 
       }
     },
-
 
     /* -------- WHOLE DAY -------- */
     WholeDay: {
@@ -425,8 +421,6 @@ const dmMachine = setup({
 
       }
     },
-
-
 
     /* -------- TIME -------- */
     Time: {
@@ -586,7 +580,6 @@ const dmMachine = setup({
 
   },
 });
-
 
 /* ---------------- Actor ---------------- */
 const dmActor = createActor(dmMachine, {
