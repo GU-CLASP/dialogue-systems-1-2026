@@ -35,6 +35,8 @@ const grammar: { [index: string]: GrammarEntry } = {
   bora: { person: "Bora Kara" },
   tal: { person: "Talha Bedir" },
   tom: { person: "Tom Södahl Bladsjö" },
+  will: { person: "Will Wilson" },
+  anna: { person: "Anna Andersson" },
   
   monday: { day: "Monday" },
   tuesday: { day: "Tuesday" },
@@ -63,7 +65,13 @@ const grammar: { [index: string]: GrammarEntry } = {
   // "23": { time: "23:00" },
 
   yes: { confirm: true },
+  jess: { confirm: true },
+  "of course": { confirm: true },
+  yeah: { confirm: true },
+  absolutely: { confirm: true },
   no: { confirm: false },
+  "no way": { confirm: false },
+  "absolutely not": { confirm: false },
 };
 
 const people = Object.values(grammar).map(g => g.person).filter(Boolean) as string[];
