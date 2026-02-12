@@ -13,4 +13,9 @@ export interface DMContext {
   appt: AppointmentState
 }
 
+export type SlotInput = {
+  prompt: string;
+  slot?: keyof AppointmentState;
+};
+
 export type DMEvents = SpeechStateExternalEvent | { type: "CLICK" } | { type: "DONE" };

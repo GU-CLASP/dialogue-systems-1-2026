@@ -1,9 +1,9 @@
-import { assign, createActor, setup } from "xstate";
-import type { Settings } from "speechstate";
+import { assign, createActor, setup, sendTo, sendParent } from "xstate";
+import type { Settings, Hypothesis } from "speechstate";
 import { speechstate } from "speechstate";
 import { createBrowserInspector } from "@statelyai/inspect";
 import { KEY } from "./azure";
-import type { DMContext, DMEvents } from "./types";
+import type { DMContext, DMEvents, SlotInput } from "./types";
 
 const inspector = createBrowserInspector();
 
@@ -74,6 +74,64 @@ function isRejection(utterance: string) {
   return (grammar[utterance.toLowerCase()] || {}).confirmation == "no";
 }
 
+const slotFlow = setup({
+  types: {
+    input: {} as SlotInput,
+    output: {} as Hypothesis[] | null,
+  },
+}).createMachine({
+  id: "slotFlow",
+
+  context: ({ input }) => ({
+    prompt: input.prompt,
+    heard: null as Hypothesis[] | null,
+  }),
+
+  initial: "Prompt",
+
+  states: {
+    Prompt: {
+      entry: ({ context, self }) =>
+        self._parent!.send({
+          type: "SPEAK",
+          value: { utterance: context.prompt },
+        }),
+      on: { SPEAK_COMPLETE: "Ask" },
+    },
+
+    Ask: {
+      entry: ({ self }) =>
+        self._parent!.send({ type: "LISTEN" }),
+
+      on: {
+        RECOGNISED: {
+          target: "Done",
+          actions: assign({
+            heard: ({ event }) => event.value
+          }),
+        },
+
+        ASR_NOINPUT: "NoInput",
+      },
+    },
+
+    NoInput: {
+      entry: ({ self }) =>
+        self._parent!.send({
+          type: "SPEAK",
+          value: { utterance: "I can't hear you." },
+        }),
+      on: { SPEAK_COMPLETE: "Ask" },
+    },
+
+    Done: {
+      type: "final",
+      output: ({ context }) => context.heard,
+    },
+  },
+});
+
+
 const dmMachine = setup({
   types: {
     context: {} as DMContext,
@@ -91,6 +149,9 @@ const dmMachine = setup({
       context.spstRef.send({
         type: "LISTEN",
       }),
+  },
+  actors: {
+    slotFlow,
   },
 }).createMachine({
   context: ({ spawn }) => ({
@@ -146,13 +207,16 @@ const dmMachine = setup({
         },
       },
     },
-    StartPrompt: {entry: {type: "spst.speak", params: {utterance: "Let's creae an appointment"}}},
+    StartPrompt: {
+        entry: {type: "spst.speak", params: {utterance: "Let's create an appointment"}},
+        on: {SPEAK_COMPLETE: "WhoPrompt"},
+      },
     WhoPrompt: {
       initial: "Prompt",
       on: {
         LISTEN_COMPLETE: [
           {
-            target: "StartPrompt",
+            target: "DayPrompt",
             guard: ({ context }) => !!context.lastResult,
           },
           { target: ".NoInput" },
@@ -174,16 +238,13 @@ const dmMachine = setup({
           entry: { type: "spst.listen" },
           on: {
             RECOGNISED: {
-              actions: assign(({ context, event }) => {
-                const text = event.value?.[0]?.utterance ?? "";
-                return { 
-                  lastResult: event.value,
-                  appt: {
-                    ...context.appt,
-                    name: text,
-                  },
-                };
-              }),
+              actions: assign(({ context, event }) => ({
+                lastResult: event.value,
+                appt: {
+                  ...context.appt,
+                  name: event.value?.[0]?.utterance ?? "",
+                },
+              })),
             },
             ASR_NOINPUT: {
               actions: assign({ lastResult: null }),
@@ -192,17 +253,58 @@ const dmMachine = setup({
         },
       },
     },
-    CheckGrammar: {
-      entry: {
-        type: "spst.speak",
-        params: ({ context }) => ({
-          utterance: `You just said: ${context.lastResult![0].utterance}. And it ${
-            isInGrammar(context.lastResult![0].utterance) ? "is" : "is not"
-          } in the grammar.`,
-        }),
+    DayPrompt: {
+      initial: "Prompt",
+      on: {
+        LISTEN_COMPLETE: [
+          {
+            target: "ConfirmDayName",
+            guard: ({ context }) => !!context.lastResult,
+          },
+          { target: ".NoInput" },
+        ],
       },
-      on: { SPEAK_COMPLETE: "Done" },
+      states: {
+        Prompt: {
+          entry: { type: "spst.speak", params: { utterance: `On which day is your meeting` } },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `I can't hear you!` },
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        Ask: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              actions: assign(({ context, event }) => ({
+                lastResult: event.value,
+                appt: {
+                  ...context.appt,
+                  day: event.value?.[0]?.utterance ?? "",
+                },
+              })),
+            },
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null }),
+            },
+          },
+        },
+      },
     },
+    ConfirmDayName: {
+      entry: {
+        type: "spst.speak", 
+        params: ({context}) => ({
+          utterance: `Do you want me to create am appointment with ${context.appt.name} on ${context.appt.day} the whole day?`
+        })
+      },
+      on: {SPEAK_COMPLETE: "Done"},
+    },
+
     Done: {
       on: {
         CLICK: "Greeting",
