@@ -8,13 +8,15 @@ const inspector = createBrowserInspector();
 
 const azureCredentials = {
   endpoint:
-    "https://northeurope.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+    // "https://northeurope.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+        "https://norwayeast.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
 
 const settings: Settings = {
   azureCredentials: azureCredentials,
-  azureRegion: "northeurope",
+  // azureRegion: "northeurope",
+  azureRegion: "norwayeast",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
