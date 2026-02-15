@@ -25,30 +25,32 @@ interface GrammarEntry {
   day?: string;
   time?: string;
 }
+
 const grammar: { [index: string]: GrammarEntry } = {
+  // Vlad
   vlad: { person: "Vladislav Maraev" },
   vladislav: { person: "Vladislav Maraev" },
   maraev: { person: "Vladislav Maraev" },
-
+  // Bora 
   bora: { person: "Bora Kara" },
   kara: { person: "Bora Kara" },
-
+  // Tal
   tal: { person: "Talha Bedir" },
   talha: { person: "Talha Bedir" },
   bedir: { person: "Talha Bedir" },
-
+  // Tom
   tom: { person: "Tom Södahl Bladsjö" },
-
+  // Me
   andreas: { person: "Andreas Bartsiokas" },
   andrew: { person: "Andreas Bartsiokas" },
   bartsiokas: { person: "Andreas Bartsiokas" },
-
+  // DAYS
   monday: { day: "Monday" },
   tuesday: { day: "Tuesday" },
   wednesday: { day: "Wednesday" },
   thursday: { day: "Thursday" },
   friday: { day: "Friday" },
-
+  // TIME
   "08": { time: "08:00" },
   "09": { time: "09:00" },
   "10": { time: "10:00" },
@@ -62,6 +64,7 @@ const grammar: { [index: string]: GrammarEntry } = {
   "18": { time: "18:00" },
 };
 
+// NOT USED
 // function isInGrammar(utterance: string): boolean {
 //   return utterance.toLowerCase() in grammar;
 // }
@@ -84,7 +87,7 @@ function isYes(utterance: string): boolean {
 }
 
 function isNo(utterance: string): boolean {
-  const noWords = ["no", "nope", "nah"];
+  const noWords = ["no", "nope", "nah", "nej"];
   return noWords.includes(utterance.toLowerCase().trim());
 }
 
@@ -130,12 +133,13 @@ const dmMachine = setup({
       },
       on: { SPEAK_COMPLETE: "CollectInfo" }
     },
-
+    // General state for collecting information
     CollectInfo: {
       initial: "Who",
       history: true,
       
       states: {
+        // getting the person
         Who: {
           initial: "Prompt",
           on: {
@@ -166,12 +170,11 @@ const dmMachine = setup({
             },
           },
         },
-
+        // checks if in vocabulary and if is person
         CheckPerson: {
           always: [
             {
               target: "WhenDay",
-              // CHECK: Does this utterance have a .person field?
               guard: ({ context }) => {
                 const utterance = context.lastResult![0].utterance;
                 return getPerson(utterance) !== undefined;
@@ -183,7 +186,7 @@ const dmMachine = setup({
             { target: "ErrorPerson" }
           ],
         },
-
+        // Returns to start if invalid utterance
         ErrorPerson: {
           entry: {
             type: "spst.speak",
@@ -193,7 +196,7 @@ const dmMachine = setup({
           },
           on: { SPEAK_COMPLETE: "Who" }
         },
-
+        // gets day
         WhenDay: {
           initial: "Prompt",
           on: {
@@ -224,12 +227,11 @@ const dmMachine = setup({
             },
           },
         },
-
+        // checks if day in vocab and if is day
         CheckDay: {
           always: [
             {
               target: "AllDay",
-              // CHECK: Does this utterance have a .day field?
               guard: ({ context }) => {
                 const utterance = context.lastResult![0].utterance;
                 return getDay(utterance) !== undefined;
@@ -241,7 +243,7 @@ const dmMachine = setup({
             { target: "ErrorDay" }
           ],
         },
-
+        // restarts if utterance is invalid
         ErrorDay: {
           entry: {
             type: "spst.speak",
@@ -251,7 +253,7 @@ const dmMachine = setup({
           },
           on: { SPEAK_COMPLETE: "WhenDay" }
         },
-
+        // is the appointment for the whole day?
         AllDay: {
           initial: "Prompt",
           on: {
@@ -282,7 +284,7 @@ const dmMachine = setup({
             },
           },
         },
-
+        // yes or no
         CheckAllDay: {
           always: [
             {
@@ -298,7 +300,7 @@ const dmMachine = setup({
             { target: "ErrorAllDay" }
           ],
         },
-
+        // back in the beginning of the state if utterance is invalid
         ErrorAllDay: {
           entry: {
             type: "spst.speak",
@@ -306,7 +308,7 @@ const dmMachine = setup({
           },
           on: { SPEAK_COMPLETE: "AllDay" }
         },
-
+        // asks for time slot if answered negatively in the previous state
         WhenTime: {
           initial: "Prompt",
           on: {
@@ -337,12 +339,11 @@ const dmMachine = setup({
             },
           },
         },
-
+        // is it a valid time?
         CheckTime: {
           always: [
             {
               target: "#DM.Confirm",
-              // CHECK: Does this utterance have a .time field?
               guard: ({ context }) => {
                 const utterance = context.lastResult![0].utterance;
                 return getTime(utterance) !== undefined;
@@ -354,7 +355,7 @@ const dmMachine = setup({
             { target: "ErrorTime" }
           ],
         },
-
+        // If not restart the asking time state
         ErrorTime: {
           entry: {
             type: "spst.speak",
@@ -366,7 +367,7 @@ const dmMachine = setup({
         },
       },
     },
-
+    // general confirm state
     Confirm: {
       initial: "Prompt",
       on: {
@@ -404,7 +405,7 @@ const dmMachine = setup({
         },
       },
     },
-
+    // should the 'example' appointment be created?
     CheckConfirmation: {
       always: [
         {
@@ -434,7 +435,7 @@ const dmMachine = setup({
       },
       on: { SPEAK_COMPLETE: "Done" }
     },
-
+    // back in the beginning
     Done: {
       on: { CLICK: "PromptStart" },
     }
