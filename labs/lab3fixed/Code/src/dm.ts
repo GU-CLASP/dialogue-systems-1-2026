@@ -53,25 +53,28 @@ const grammar: { [index: string]: GrammarEntry } = {
   "no": {confirmation: "no"},
 };
 
+// adding timestamps
 for (let h = 0; h <= 12; h++) {
   const key = String(h)
   grammar[key] = { time: `${key.padStart(2, "0")}:00` };
 }
 
+console.log(grammar);
+
 function isInGrammar(utterance: string) {
   return utterance.toLowerCase() in grammar;
 }
 
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
+function getName(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).person ?? undefined;
 }
 
-function isConfirmation(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).confirmation == "yes";
+function getDay(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).day ?? undefined;
 }
 
-function isRejection(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).confirmation == "no";
+function getTime(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).time ?? undefined;
 }
 
 const dmMachine = setup({
@@ -91,7 +94,22 @@ const dmMachine = setup({
       context.spstRef.send({
         type: "LISTEN",
       }),
+    "resetVars" : assign(() => ({
+            lastResult: null,
+            appt: {
+              name: undefined,
+              day: undefined,
+              time: undefined,
+            },
+      })),
   },
+  guards:{
+    isYes: ({context}) => (grammar[context.lastResult ? context.lastResult?.[0]?.utterance.toLowerCase() : ""] || {}).confirmation == "yes",
+    isNo: ({context}) => (grammar[context.lastResult ? context.lastResult?.[0]?.utterance.toLowerCase() : ""] || {}).confirmation == "no",
+    nameCorrect: ({context}) => !!context.appt?.name,
+    dayCorrect: ({context}) => !!context.appt?.day,
+    timeCorrect: ({context}) => !!context.appt?.time,
+  }
 }).createMachine({
   context: ({ spawn }) => ({
     spstRef: spawn(speechstate, { input: settings }),
@@ -147,9 +165,23 @@ const dmMachine = setup({
       },
     },
     StartPrompt: {
-        entry: {type: "spst.speak", params: {utterance: "Let's create an appointment"}},
+        entry: {type: "spst.speak", params: {utterance: "Let's create an appointment!"}},
         on: {SPEAK_COMPLETE: "WhoPrompt"},
-      },
+    },
+    ReStartPrompt: {
+      entry: [
+        { type: "resetVars" },
+        {
+          type: "spst.speak",
+          params: {
+            utterance: "Let's start again and create a new appointment!"
+          }
+        }
+      ],
+      on: {
+        SPEAK_COMPLETE: "WhoPrompt"
+      }
+    },
     WhoPrompt: {
       initial: "Prompt",
       on: {
@@ -157,19 +189,28 @@ const dmMachine = setup({
           // 1st we try to go to day prompt if the name is correct
           {
             target: "DayPrompt",
-            guard: ({ context }) => !!getPerson(`${(context.appt || {}).name}`),
+            guard: ({ context }) => !!context.appt?.name,
           },
           // then, if name is not correct, we go to DayPrompt anways
           {
-            target: "DayPrompt",
+            target: ".WrongName",
             guard: ({ context }) => !!context.lastResult,
           },
+          // if no lastResult, go to error handling
           { target: ".NoInput" },
         ],
       },
       states: {
         Prompt: {
           entry: { type: "spst.speak", params: { utterance: `Who are you meeting with?` } },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        WrongName: {
+          entry: { 
+            type: "spst.speak", params: ({context}) => ({
+              utterance: `You said ${context.lastResult?.[0]?.utterance ?? "nothing"}, which doesn't contain a name I know. Please give me another name.`
+          })
+        },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {
@@ -187,7 +228,7 @@ const dmMachine = setup({
                 lastResult: event.value,
                 appt: {
                   ...context.appt,
-                  name: event.value?.[0]?.utterance ?? "",
+                  name: getName(event.value?.[0]?.utterance ?? ""),
                 },
               })),
             },
@@ -203,7 +244,11 @@ const dmMachine = setup({
       on: {
         LISTEN_COMPLETE: [
           {
-            target: "ConfirmDayName",
+            target: "IsWholeDay",
+            guard: ({ context }) => !!context.appt?.day,
+          },
+          {
+            target: ".WrongDay",
             guard: ({ context }) => !!context.lastResult,
           },
           { target: ".NoInput" },
@@ -211,7 +256,14 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `On which day is your meeting` } },
+          entry: { type: "spst.speak", params: { utterance: `On which day is your meeting?` } },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        WrongDay: {
+          entry: { 
+            type: "spst.speak", params: ({context}) => ({
+              utterance: `You said ${context.lastResult?.[0]?.utterance ?? "nothing"}, which isn't a day of the week. Please give me another day.`
+          })},
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {
@@ -229,7 +281,7 @@ const dmMachine = setup({
                 lastResult: event.value,
                 appt: {
                   ...context.appt,
-                  day: event.value?.[0]?.utterance ?? "",
+                  day: getDay(event.value?.[0]?.utterance ?? ""),
                 },
               })),
             },
@@ -244,14 +296,53 @@ const dmMachine = setup({
       initial: "Prompt",
       on: {
         LISTEN_COMPLETE: [
-          // 1st we try to go to day prompt if the name is correct
+          // 1st we try to go to ConfirmDayName if user says yes
           {
             target: "ConfirmDayName",
-            guard: ({ context }) => isConfirmation((context.lastResult | Hypothesis[]).utterance),
+            guard: "isYes",
           },
-          // then, if name is not correct, we go to DayPrompt anways
+          // If they say no we try to go to TimePrompt
           {
             target: "TimePrompt",
+            guard: "isNo",
+          },
+          // If no speech is picked up we go to NoInput
+          { target: ".NoInput" },
+        ],
+      },
+      states: {
+        Prompt: {
+          entry: { type: "spst.speak", params: { utterance: `Will it take the whole day?` } },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `I can't hear you!` },
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        Ask: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              actions: assign(({ event }) => ({
+                lastResult: event.value,
+              })),
+            },
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null }),
+            },
+          },
+        },
+      },
+    },
+    TimePrompt: {
+      initial: "Prompt",
+      on: {
+        LISTEN_COMPLETE: [
+          {
+            target: "ConfirmDayTimeName",
             guard: ({ context }) => !!context.lastResult,
           },
           { target: ".NoInput" },
@@ -259,7 +350,7 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Who are you meeting with?` } },
+          entry: { type: "spst.speak", params: { utterance: `What time is your meeting?` } },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {
@@ -277,7 +368,7 @@ const dmMachine = setup({
                 lastResult: event.value,
                 appt: {
                   ...context.appt,
-                  name: event.value?.[0]?.utterance ?? "",
+                  time: event.value?.[0]?.utterance ?? "",
                 },
               })),
             },
@@ -289,15 +380,100 @@ const dmMachine = setup({
       },
     },
     ConfirmDayName: {
-      entry: {
-        type: "spst.speak", 
-        params: ({context}) => ({
-          utterance: `Do you want me to create am appointment with ${context.appt.name} on ${context.appt.day} the whole day?`
-        })
+      initial: "Prompt",
+      on: {
+        LISTEN_COMPLETE: [
+          // If the user says yes, we are done
+          {
+            target: "Done",
+            guard: "isYes",
+          },
+          // If they say no we start again
+          {
+            target: "ReStartPrompt",
+            guard: "isNo",
+          },
+          // If no speech is picked up we go to NoInput
+          { target: ".NoInput" },
+        ],
       },
-      on: {SPEAK_COMPLETE: "Done"},
+      states: {
+        Prompt: {
+          entry: { type: "spst.speak", params: ({context}) => ({
+          utterance: `Do you want me to create am appointment with ${context.appt.name} on ${context.appt.day} the whole day?`
+        })},
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `I can't hear you!` },
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        Ask: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              actions: assign(({ event }) => ({
+                lastResult: event.value,
+              })),
+            },
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null }),
+            },
+          },
+        },
+      },
     },
-
+    ConfirmDayTimeName : 
+    {
+      initial: "Prompt",
+      on: {
+        LISTEN_COMPLETE: [
+          // If the user says yes, we are done
+          {
+            target: "Done",
+            guard: "isYes",
+          },
+          // If they say no we start again
+          {
+            target: "ReStartPrompt",
+            guard: "isNo",
+          },
+          // If no speech is picked up we go to NoInput
+          { target: ".NoInput" },
+        ],
+      },
+      states: {
+        Prompt: {
+          entry: { type: "spst.speak", params: ({context}) => ({
+          utterance: `Do you want me to create am appointment with ${context.appt.name} on ${context.appt.day} at ${context.appt.time}?`
+        })},
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `I can't hear you!` },
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        Ask: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              actions: assign(({ event }) => ({
+                lastResult: event.value,
+              })),
+            },
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null }),
+            },
+          },
+        },
+      },
+    },
     Done: {
       on: {
         CLICK: "Greeting",
