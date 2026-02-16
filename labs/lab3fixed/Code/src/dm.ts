@@ -37,6 +37,7 @@ const grammar: { [index: string]: GrammarEntry } = {
   tal: { person: "Talha Bedir" },
   tom: { person: "Tom Södahl Bladsjö" },
   eugene: { person: "Eugene Wong" },
+  john: { person: "John Doe" },
 
   monday: { day: "Monday" },
   tuesday: { day: "Tuesday" },
@@ -69,6 +70,32 @@ const grammar: { [index: string]: GrammarEntry } = {
   "21": { time: "21:00" },
   "22": { time: "22:00" },
   "23": { time: "23:00" },
+  "24": { time: "00:00" },
+
+  "1:00 AM": { time: "01:00" },
+  "2:00 AM": { time: "02:00" },
+  "3:00 AM": { time: "03:00" },
+  "4:00 AM": { time: "04:00" },
+  "5:00 AM": { time: "05:00" },
+  "6:00 AM": { time: "06:00" },
+  "7:00 AM": { time: "07:00" },
+  "8:00 AM": { time: "08:00" },
+  "9:00 AM": { time: "09:00" },
+  "10:00 AM": { time: "10:00" },
+  "11:00 AM": { time: "11:00" },
+  "12:00 PM": { time: "12:00" },
+  "1:00 PM": { time: "13:00" },
+  "2:00 PM": { time: "14:00" },
+  "3:00 PM": { time: "15:00" },
+  "4:00 PM": { time: "16:00" },
+  "5:00 PM": { time: "17:00" },
+  "6:00 PM": { time: "18:00" },
+  "7:00 PM": { time: "19:00" },
+  "8:00 PM": { time: "20:00" },
+  "9:00 PM": { time: "21:00" },
+  "10:00 PM": { time: "22:00" },
+  "11:00 PM": { time: "23:00" },
+  "12:00 AM": { time: "00:00" },
 
   yes: { value: true },
   yeah: { value: true },
@@ -101,10 +128,49 @@ const grammar: { [index: string]: GrammarEntry } = {
 function isInGrammar(utterance: string) {
   return utterance.toLowerCase() in grammar;
 }
+const hasMatch = (utterance: string) =>
+  Object.keys(grammar).some((key) => utterance.includes(key.toLowerCase()));
 
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
+const getMatch = (utterance: string) =>
+  Object.keys(grammar).find((key) => utterance.includes(key.toLowerCase()));
+
+const capitalized = (word: string) =>
+  word.charAt(0).toUpperCase() + word.slice(1);
+
+const getPerson = (context: DMContext): string =>
+  context.metadata?.person || getMatch(context.lastUtterance ?? "");
+
+const getDay = (context: DMContext): keyof typeof DayOfWeek =>
+  context.metadata?.day ||
+  capitalized(getMatch(context.lastUtterance ?? "") ?? "");
+
+// @ts-expect-error
+enum DayOfWeek {
+  Monday = 1,
+  Tuesday = 2,
+  Wednesday = 3,
+  Thursday = 4,
+  Friday = 5,
+  Saturday = 6,
+  Sunday = 0,
 }
+
+const getDate = (day: keyof typeof DayOfWeek) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const currentDay = today.getDay();
+
+  const getDayRelative = (targetDay: number) => {
+    const result = new Date(today);
+    const diff = (targetDay + 7 - currentDay) % 7;
+    result.setDate(today.getDate() + diff);
+    return result;
+  };
+
+  return getDayRelative(
+    DayOfWeek[capitalized(day) as keyof typeof DayOfWeek],
+  ).toLocaleDateString();
+};
 
 const dmMachine = setup({
   types: {
@@ -113,17 +179,25 @@ const dmMachine = setup({
   },
   guards: {
     isAppointment: ({ context }) => {
-      const text = context.lastResult?.[0].utterance.toLowerCase() || "";
+      const utterance = context.lastUtterance || "";
       return (
-        text.includes("appointment") || context.metadata?.type === "appointment"
+        utterance.includes("appointment") ||
+        context.metadata?.type === "appointment"
       );
     },
-    hasIdentifiedPerson: ({ context }) => !!context.metadata?.person,
-    hasIdentifiedDay: ({ context }) => !!context.metadata?.day,
+
+    hasIdentifiedPerson: ({ context }) =>
+      !!context.metadata?.person || hasMatch(context.lastUtterance ?? ""),
+
+    hasIdentifiedDay: ({ context }) =>
+      !!context.metadata?.day || hasMatch(context.lastUtterance ?? ""),
+
     hasIdentifiedWholeDay: ({ context }) =>
       context.metadata?.value !== undefined,
+
     isWholeDay: ({ context }) => context.appointmentDetails?.wholeDay === true,
-    hasIdentifiedTime: ({ context }) => !!context.metadata?.time,
+    hasIdentifiedTime: ({ context }) =>
+      !!context.metadata?.time || hasMatch(context.lastUtterance ?? ""),
     hasConfirmed: ({ context }) => context.metadata?.value === true,
     hasDenied: ({ context }) => context.metadata?.value === false,
   },
@@ -147,6 +221,7 @@ const dmMachine = setup({
       const utterance = recognisedEvent.value[0].utterance.toLowerCase();
       return {
         lastResult: recognisedEvent.value,
+        lastUtterance: utterance,
         metadata: grammar[utterance] || {},
         appointmentDetails: context.appointmentDetails,
       };
@@ -212,11 +287,14 @@ const dmMachine = setup({
               },
               {
                 target: "PromptDay",
-                guard: ({ context }) => !context.appointmentDetails?.day,
+                guard: ({ context }) =>
+                  !context.appointmentDetails?.day ||
+                  !context.appointmentDetails?.date,
               },
               {
                 target: "PromptWholeDay",
-                guard: ({ context }) => !context.appointmentDetails?.wholeDay,
+                guard: ({ context }) =>
+                  context.appointmentDetails?.wholeDay === undefined,
               },
               {
                 target: "PromptTime",
@@ -224,19 +302,34 @@ const dmMachine = setup({
                   context.appointmentDetails?.wholeDay === false &&
                   !context.appointmentDetails?.time,
               },
+              {
+                target: "PromptCreateAppointmentWholeDay",
+                guard: ({ context }) =>
+                  context.appointmentDetails?.wholeDay === true,
+              },
+              {
+                target: "PromptCreateAppointmentWithTime",
+                guard: ({ context }) =>
+                  context.appointmentDetails?.wholeDay === false &&
+                  !!context.appointmentDetails?.time,
+              },
               { target: "Prompt" },
             ],
           },
         },
         PromptPerson: {
-          entry: {
-            type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: context.lastResult
-                ? "I didn't catch the name. Who are you meeting with?"
-                : "Who are you meeting with?",
-            }),
-          },
+          entry: [
+            {
+              type: "spst.speak",
+              params: ({ context }) => ({
+                utterance: context.lastResult
+                  ? "I didn't catch the name. Who are you meeting with?"
+                  : "Who are you meeting with?",
+              }),
+            },
+            "spst.clearData",
+            assign({ appointmentDetails: {} }),
+          ],
           on: { SPEAK_COMPLETE: "AskPerson" },
         },
         AskPerson: {
@@ -253,13 +346,13 @@ const dmMachine = setup({
             assign(({ context }) => ({
               appointmentDetails: {
                 ...context.appointmentDetails,
-                person: context.metadata?.person,
+                person: getPerson(context),
               },
             })),
             {
               type: "spst.speak",
               params: ({ context }) => ({
-                utterance: `You are meeting with ${context.metadata?.person}`,
+                utterance: `You are meeting with ${context.appointmentDetails?.person}`,
               }),
             },
             "spst.clearData",
@@ -291,13 +384,14 @@ const dmMachine = setup({
             assign(({ context }) => ({
               appointmentDetails: {
                 ...context.appointmentDetails,
-                day: context.metadata?.day,
+                day: getDay(context),
+                date: getDate(getDay(context)),
               },
             })),
             {
               type: "spst.speak",
               params: ({ context }) => ({
-                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.metadata?.day}`,
+                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} ${context.appointmentDetails?.date}`,
               }),
             },
             "spst.clearData",
@@ -335,7 +429,7 @@ const dmMachine = setup({
             {
               type: "spst.speak",
               params: ({ context }) => ({
-                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} and ${context.appointmentDetails?.wholeDay ? "it will take the whole day" : "it will not take the whole day"}`,
+                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} ${context.appointmentDetails?.date} and ${context.appointmentDetails?.wholeDay ? "it will take the whole day" : "it will not take the whole day"}`,
               }),
             },
             "spst.clearData",
@@ -381,7 +475,7 @@ const dmMachine = setup({
             {
               type: "spst.speak",
               params: ({ context }) => ({
-                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} at ${context.appointmentDetails?.time}`,
+                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} ${context.appointmentDetails?.date} at ${context.appointmentDetails?.time}`,
               }),
             },
             "spst.clearData",
@@ -394,7 +488,7 @@ const dmMachine = setup({
           entry: {
             type: "spst.speak",
             params: ({ context }) => ({
-              utterance: `Do you want me to create an appointment with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} at ${context.appointmentDetails?.time}?`,
+              utterance: `Do you want me to create an appointment with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} ${context.appointmentDetails?.date} at ${context.appointmentDetails?.time}?`,
             }),
           },
           on: { SPEAK_COMPLETE: "Confirmation" },
@@ -403,7 +497,7 @@ const dmMachine = setup({
           entry: {
             type: "spst.speak",
             params: ({ context }) => ({
-              utterance: `Do you want me to create an appointment with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} for the whole day?`,
+              utterance: `Do you want me to create an appointment with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} ${context.appointmentDetails?.date} for the whole day?`,
             }),
           },
           on: { SPEAK_COMPLETE: "Confirmation" },
@@ -413,7 +507,7 @@ const dmMachine = setup({
           on: {
             LISTEN_COMPLETE: [
               { target: "Done", guard: "hasConfirmed" },
-              { target: "Prompt", guard: "hasDenied" },
+              { target: "PromptPerson", guard: "hasDenied" },
               {
                 target: "PromptCreateAppointmentWholeDay",
                 guard: "isWholeDay",
@@ -450,7 +544,10 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello world!` } },
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `Hello! How can I help you today?` },
+          },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {

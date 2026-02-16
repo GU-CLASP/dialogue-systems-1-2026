@@ -4,6 +4,7 @@ import type { ActorRef } from "xstate";
 export interface DMContext {
   spstRef: ActorRef<any, any>;
   lastResult: Hypothesis[] | null;
+  lastUtterance?: string | null;
   metadata?: Record<string, any> | null;
   appointmentDetails?: Record<string, any> | null;
 }
