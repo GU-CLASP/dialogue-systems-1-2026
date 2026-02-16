@@ -1,0 +1,43 @@
+Reference performance: REFERENCE (YouTube link + timestamp or title)
+B-VG: Yes (multi-voice + prosody + emphasis + refined pauses)
+
+SSML:
+
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis"
+       xmlns:mstts="http://www.w3.org/2001/mstts" xml:lang="en-US">
+
+  <voice name="en-US-GuyNeural">
+    <prosody rate="-8%" pitch="-1st">
+      <p>
+        <s><emphasis level="moderate">The Tyger.</emphasis></s>
+        <break time="500ms"/>
+      </p>
+    </prosody>
+  </voice>
+
+  <voice name="en-US-JennyNeural">
+    <prosody rate="-12%" pitch="+1st">
+      <p>
+        <s>Tyger Tyger, <emphasis level="strong">burning bright</emphasis>,</s>
+        <break time="300ms"/>
+        <s>In the forests of the night;</s>
+        <break time="300ms"/>
+        <s>What immortal hand or eye,</s>
+        <break time="280ms"/>
+        <s>Could frame thy fearful symmetry?</s>
+        <break time="650ms"/>
+        <s>In what distant deeps or skies,</s>
+        <break time="300ms"/>
+        <s>Burnt the fire of thine eyes?</s>
+        <break time="300ms"/>
+        <s>On what wings dare he aspire?</s>
+        <break time="300ms"/>
+        <s>What the hand, dare seize the fire?</s>
+      </p>
+    </prosody>
+  </voice>
+
+</speak>
+
+
+
