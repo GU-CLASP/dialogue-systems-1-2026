@@ -4,18 +4,19 @@ import { speechstate } from "speechstate";
 import { createBrowserInspector } from "@statelyai/inspect";
 import { KEY } from "./azure";
 import type { DMContext, DMEvents } from "./types";
+import type { Hypothesis } from "speechstate";
 
 const inspector = createBrowserInspector();
 
 const azureCredentials = {
   endpoint:
-    "https://YOUR_REGION.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+    "https://swedencentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
 
 const settings: Settings = {
   azureCredentials: azureCredentials,
-  azureRegion: "YOUR_REGION",
+  azureRegion: "swedencentral",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
@@ -26,6 +27,8 @@ interface GrammarEntry {
   person?: string;
   day?: string;
   time?: string;
+  value?: boolean;
+  type?: string;
 }
 
 const grammar: { [index: string]: GrammarEntry } = {
@@ -33,10 +36,40 @@ const grammar: { [index: string]: GrammarEntry } = {
   bora: { person: "Bora Kara" },
   tal: { person: "Talha Bedir" },
   tom: { person: "Tom Södahl Bladsjö" },
+  eugene: { person: "Eugene Wong" },
   monday: { day: "Monday" },
   tuesday: { day: "Tuesday" },
+  wednesday: { day: "Wednesday" },
+  thursday: { day: "Thursday" },
+  friday: { day: "Friday" },
+  saturday: { day: "Saturday" },
+  sunday: { day: "Sunday" },
+  "1": { time: "01:00" },
+  "2": { time: "02:00" },
+  "3": { time: "03:00" },
+  "4": { time: "04:00" },
+  "5": { time: "05:00" },
+  "6": { time: "06:00" },
+  "7": { time: "07:00" },
+  "8": { time: "08:00" },
+  "9": { time: "09:00" },
   "10": { time: "10:00" },
   "11": { time: "11:00" },
+  "12": { time: "12:00" },
+  "13": { time: "13:00" },
+  "14": { time: "14:00" },
+  "15": { time: "15:00" },
+  "16": { time: "16:00" },
+  "17": { time: "17:00" },
+  "18": { time: "18:00" },
+  "19": { time: "19:00" },
+  "20": { time: "20:00" },
+  "21": { time: "21:00" },
+  "22": { time: "22:00" },
+  "23": { time: "23:00" },
+  yes: { value: true },
+  no: { value: false },
+  appointment: { type: "appointment" },
 };
 
 function isInGrammar(utterance: string) {
@@ -52,6 +85,22 @@ const dmMachine = setup({
     context: {} as DMContext,
     events: {} as DMEvents,
   },
+  guards: {
+    isAppointment: ({ context }) => {
+      const text = context.lastResult?.[0].utterance.toLowerCase() || "";
+      return (
+        text.includes("appointment") || context.metadata?.type === "appointment"
+      );
+    },
+    hasIdentifiedPerson: ({ context }) => !!context.metadata?.person,
+    hasIdentifiedDay: ({ context }) => !!context.metadata?.day,
+    hasIdentifiedWholeDay: ({ context }) =>
+      context.metadata?.value !== undefined,
+    isWholeDay: ({ context }) => context.appointmentDetails?.wholeDay === true,
+    hasIdentifiedTime: ({ context }) => !!context.metadata?.time,
+    hasConfirmed: ({ context }) => context.metadata?.value === true,
+    hasDenied: ({ context }) => context.metadata?.value === false,
+  },
   actions: {
     "spst.speak": ({ context }, params: { utterance: string }) =>
       context.spstRef.send({
@@ -64,11 +113,29 @@ const dmMachine = setup({
       context.spstRef.send({
         type: "LISTEN",
       }),
+    "spst.recognised": assign(({ event, context }) => {
+      const recognisedEvent = event as {
+        type: "RECOGNISED";
+        value: Hypothesis[];
+      };
+      const utterance = recognisedEvent.value[0].utterance.toLowerCase();
+      return {
+        lastResult: recognisedEvent.value,
+        metadata: grammar[utterance] || {},
+        appointmentDetails: context.appointmentDetails,
+      };
+    }),
+    "spst.clearData": assign({
+      lastResult: null,
+      metadata: null,
+    }),
   },
 }).createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QBECyA6ACgJzABwENcBiAQQGUAlAFWvIH1KBRU5ATQG0AGAXUVDwB7WAEsALiMEA7fiAAeiAExcu6AJwAWAKyKtARi0B2ABwHjxgGwAaEAE9EerhvRaLai1qMBmbV58Bffxs0dAB1AnFqQXIxIjFiAGEAGQBJBIBpbj4kECFRCWlZBQQdG3sERT01LxcLDQ9zPzUtDUDgjFI8IREpMQBbMF7iZgSAeQBxADkU8iZkLNk88UkZHOKvQxb0RTUDLXdXLy0uQzKlLxV1L0ULQ3dFLz1tNpAQzu7egaGKSnpJ0ZSk0wAFVqAscksCqtQMUDE50MZDIYLodjsY-GcKno9DVFMY1Pikfc9IoXm8uoIev1BvFUuRqExJvQxqhMEkmAzwQJhMtCmsHMdnIjkVxUVx0V5MYplMZavUvOYLKKNMYyR0KVSvmIsNhBH08PFyJgWOlmaNWezObxFjyoUVEFo-IZttVReZ0ftFFLRaptAYjo7Kic1eh3pTPjT0JNBCkpHgAK6G42kU0stkcphc3K2lb2hAaEw1DRcCxeNyGDRqEvWOxKSpqdCOQwGCzGG7XTwhsOayPR2MJpMms0WjMcPTZbn5XP8-OF9DF0vlyvV72XCw3FSmDdeAldjUR3pRmNxxPEI1DtOWzOKCfZqd8mGIAvo+clstqCtViw18pVY4IlQVUDNRpS4UkgledUPmpQ8+xPQcU2HdNOS8W9IWnR9ZxfBd30-FdawqH1530R0uBAvF9j3aCtR1PUDUwMBsFgaQz2TVNzWQzNrQhHMH3kB1jlUZRrk2O5DC4HxMTuRQXBuNsWjUD9kQsKjwxg7VSFgABrBimJYukGSZS9R24ydeWhfj8xLZ1FKVYwSM8VtMUcNsXGaa46ncDQHnA9pQ33dTQ203TmKkYgDMZJCrzHNDeIs4oFxs9xxQc1xjExXYZOqZo2zxfEjlVCDyWoyMQukFIIBpEQADMREgViLw46LTLvcy82fIs3yXL8fwccUZP2QNPLqHzVJ7Q8cDosRkAIWwGsQ4yrVi+94qfKs9G2PRzA-G4P2c8SGw-Stqg3ZtDBUoqoLUmjNK0ma5oioympM5a2pnRL1GS+y9jS5yWg2x5NCeAkLCeaUxoPDTtPu8KZkMqLR3HG0Vva6zPrs1KnIIraLnQBUkR3HZK1bQwIcC+6Kqq2r6vPBbnqW5G3swjrX0XI6er+jQAaqLnK0sMGLr87tIdo-UxFCAALQQABswBh2n2JHBmeJR971s27bDF205sd0Da9bI6zkT0b8yZu7TJZluXZth+lIsWrjXrtGc9GbZxFG0EwSVBzREUxddnBVZRPAU7yubNyNbst2WYcehHOSRlWmcs12nm2T2tx9lUdd-DYNu-BUy2bFskQjw9o+t2xKd6Gq6ogebFc4rN0L44ofJqFp21uElvI2TEVSE7FBUcLgSUsMvtQrinKpr6n64V+PM0Tszncw9uXG8xdmw9h4c8QOpnSLj30ROUHKMu-ySom3UxeoEQBgbxfm7ivMdmbdBvyJMsuelXqEAL7YjokTnQeCiLQE8gpaTvg-OODtn6q0wj4O46BR4m36h+H2e9-6VgRLccUO5sTYk0BA260CwC23hnA5erVV6WTfvnW4dxv4khuP7HE848QUU8APPwECyHVwkHPR+cCWot1WlZW46MUo-SxuUTyuCtYqguOdAwagIGTTFgkXABAxBgGFupUI4gJZkOEfTR2jNaEJTnDhbq+E5E4MsIok+KjOwX30TRDRBotFgB0XogKWop42wXiIp2GE6EfgYV-OoLC-4D02nCLmKgx5PAgQkaQtVsB9B0SsCh9szHwOTsUR0GwXQondEcECmJ9gNhlN5HYookT4lSekkQmTsn6ThnkpWS9QmtwdE6UpbpGien9jgiSBDKwVk4RA5A0hyHBPyaIl+M4tZShPh-EC+glS3CDK0C+4xcBgAkFIKAuSnrdIKZYhwJJVBuBJDiO4mUNAaClFUCwKC6gNAlM0PZfkDlgCOT0U5sD8nULEXmbEygNn3I2IpHuLyCI72dNoLmjp9AFi1oVP5hzjnAs6ecpuN4LFhNhPiPGOVrJVGUOWV5pgPn1C0I0HcLQQz-MBSc0WBpTEXKWQgyy4lbkiTAsuUejKpR4neYXUsPgjCg2ePsnFQKjz9lPAsnlvTxECo-kKj2VZRXpURVtDaJYGVMp+ayxVHLbrDCYGMKYMw5iXJJYgTKeN0QgTwZsTKrz1y4PrGBTQFwNgWoBbiyBZAqB-ABECUETq+kIF2M4Rl51NhGFHrsPQ3pJHJo0MokCSkQwJAlmAAAxlpA5BA+hZOwNypuvLCn7y9Ii8wqh9DGE3DiIwJJwEX1mVIchyQ0iZHrVchABhnDMvbd3ECJY9qIpaM6SwbhEnXF0OBCCUhBCVXgDkNAxL40AFo-5HpDDgfARAwD7vEd5TEdLV1VmeeJPWihSYX3CJEaIsRsBiCvXmBUraVSu3soiYpWDHDOGRCo9cmhNAnB7ULfxNJf0u20O84UKJSxogxARd8H8uYzqMM2Hc7h1E3wNMhzC+hpSNldlwiS5FVz63FLcQ40HzoQLggOCjlltA3A4c2bh4kNgGvKJUcS2w6jonbfZbhvzIKX2uqVMjYgyoWXBTOLtG1HAmzqBJbtnhb0gUbPmnyZElSVhIcFRioVuPrEsDUD05SRJNt-BJd5518QtERBUts6jrPlRnoIuutmnyVk6hcRSZYu26GcuMvGOgfBtgOCdUjU17ohZKCwmjmLPD0elM5dtqgXIfhKy+jYr6ENXyhndWaGWFSlgRAVJlL6XMOBMEm0GjgfDMddjM2aAja6QAy886or4IvVA8NvLQzlKwyVPoyl92hTDmFS2LQJ5QV7Osy9R7EOXjiE1a2O-Qxriz2TImg8UehLNaXWxlgwjgUEyeMM8ghm5nIdkaxWP0-oyxeAgetgbc8MtBllGWVs0qRILqqZsbYB2-DndWwaMhwPjayW0KPR4z2VCSgIgHRsygcKaDuL5txiHDykPvpepOo7rhku+lzJ4FYkSHfXO89cTg3xE4JL5eT7jIz8MC4NiAdXnsyTbHp12mx8RqH9muHexwcS5rEojsQ3jfF896IYsQxjKfDZey4TYSoHjs7xP7Pj7PCcFm5yrtXuiNfiyljHWr1Ots3ALHjR9IF7kE2mwRVD6hJO6CcMiTKf3SdVfQGkqQGSsm0PU5RrLu26MHaqZoWHHh6hmdsld8PinDx9qp5t+NmnGyj2-MWR4ugDMESMFoAPZgyL5tBhV+TbLcV3a5uSxllKZ00uxgSISdQVSli9Q8kN7KoCcp-S74vJwDfVDRMHypiL2yNnfCSL3w1x9hs44mDLxxnRGAX+KJfh3KhGAREB9wpgCyg230q26GX1aOkcFWRRu8EWidXziO5OxKhb4viLVLXLWwErWrQ728gRC1n-00G-GPilGLHdhOFzTfhbSxXkwLxRzFwJAVDbB8GlBNjWRMEbEsHTR3HazD0CCAA */
   context: ({ spawn }) => ({
     spstRef: spawn(speechstate, { input: settings }),
     lastResult: null,
+    appointmentDetails: {},
   }),
   id: "DM",
   initial: "Prepare",
@@ -80,10 +147,274 @@ const dmMachine = setup({
     WaitToStart: {
       on: { CLICK: "Greeting" },
     },
+    Appointment: {
+      initial: "Prompt",
+      on: {
+        RECOGNISED: {
+          actions: "spst.recognised",
+        },
+        ASR_NOINPUT: {
+          target: ".NoInput",
+          actions: "spst.clearData",
+        },
+        LISTEN_COMPLETE: ".NoInput",
+      },
+      states: {
+        Prompt: {
+          entry: [
+            {
+              type: "spst.speak",
+              params: {
+                utterance: "Let's create an appointment.",
+              },
+            },
+            "spst.clearData",
+            assign({ appointmentDetails: {} }),
+          ],
+          on: { SPEAK_COMPLETE: "PromptPerson" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `I can't hear you!` },
+          },
+          on: {
+            SPEAK_COMPLETE: [
+              {
+                target: "PromptPerson",
+                guard: ({ context }) => !context.appointmentDetails?.person,
+              },
+              {
+                target: "PromptDay",
+                guard: ({ context }) => !context.appointmentDetails?.day,
+              },
+              {
+                target: "PromptWholeDay",
+                guard: ({ context }) => !context.appointmentDetails?.wholeDay,
+              },
+              {
+                target: "PromptTime",
+                guard: ({ context }) =>
+                  context.appointmentDetails?.wholeDay === false &&
+                  !context.appointmentDetails?.time,
+              },
+              { target: "Prompt" },
+            ],
+          },
+        },
+        PromptPerson: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: context.lastResult
+                ? "I didn't catch the name. Who are you meeting with?"
+                : "Who are you meeting with?",
+            }),
+          },
+          on: { SPEAK_COMPLETE: "AskPerson" },
+        },
+        AskPerson: {
+          entry: "spst.listen",
+          on: {
+            LISTEN_COMPLETE: [
+              { target: "PersonIdentified", guard: "hasIdentifiedPerson" },
+              { target: "PromptPerson" },
+            ],
+          },
+        },
+        PersonIdentified: {
+          entry: [
+            assign(({ context }) => ({
+              appointmentDetails: {
+                ...context.appointmentDetails,
+                person: context.metadata?.person,
+              },
+            })),
+            {
+              type: "spst.speak",
+              params: ({ context }) => ({
+                utterance: `You are meeting with ${context.metadata?.person}`,
+              }),
+            },
+            "spst.clearData",
+          ],
+          on: { SPEAK_COMPLETE: "PromptDay" },
+        },
+        PromptDay: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: context.lastResult
+                ? "I didn't catch the day. On which day is your meeting?"
+                : "On which day is your meeting?",
+            }),
+          },
+          on: { SPEAK_COMPLETE: "AskDay" },
+        },
+        AskDay: {
+          entry: "spst.listen",
+          on: {
+            LISTEN_COMPLETE: [
+              { target: "DayIdentified", guard: "hasIdentifiedDay" },
+              { target: "PromptDay" },
+            ],
+          },
+        },
+        DayIdentified: {
+          entry: [
+            assign(({ context }) => ({
+              appointmentDetails: {
+                ...context.appointmentDetails,
+                day: context.metadata?.day,
+              },
+            })),
+            {
+              type: "spst.speak",
+              params: ({ context }) => ({
+                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.metadata?.day}`,
+              }),
+            },
+            "spst.clearData",
+          ],
+          on: { SPEAK_COMPLETE: "PromptWholeDay" },
+        },
+        PromptWholeDay: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: context.lastResult
+                ? "I didn't catch your answer. Will it take the whole day?"
+                : "Will it take the whole day?",
+            }),
+          },
+          on: { SPEAK_COMPLETE: "AskWholeDay" },
+        },
+        AskWholeDay: {
+          entry: "spst.listen",
+          on: {
+            LISTEN_COMPLETE: [
+              { target: "WholeDayIdentified", guard: "hasIdentifiedWholeDay" },
+              { target: "PromptWholeDay" },
+            ],
+          },
+        },
+        WholeDayIdentified: {
+          entry: [
+            assign(({ context }) => ({
+              appointmentDetails: {
+                ...context.appointmentDetails,
+                wholeDay: context.metadata?.value,
+              },
+            })),
+            {
+              type: "spst.speak",
+              params: ({ context }) => ({
+                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} and ${context.appointmentDetails?.wholeDay ? "it will take the whole day" : "it will not take the whole day"}`,
+              }),
+            },
+            "spst.clearData",
+          ],
+          on: {
+            SPEAK_COMPLETE: [
+              {
+                target: "PromptCreateAppointmentWholeDay",
+                guard: "isWholeDay",
+              },
+              { target: "PromptTime" },
+            ],
+          },
+        },
+        PromptTime: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: context.lastResult
+                ? "I didn't catch the time. What time is your meeting?"
+                : "What time is your meeting?",
+            }),
+          },
+          on: { SPEAK_COMPLETE: "AskTime" },
+        },
+        AskTime: {
+          entry: "spst.listen",
+          on: {
+            LISTEN_COMPLETE: [
+              { target: "TimeIdentified", guard: "hasIdentifiedTime" },
+              { target: "PromptTime" },
+            ],
+          },
+        },
+        TimeIdentified: {
+          entry: [
+            assign(({ context }) => ({
+              appointmentDetails: {
+                ...context.appointmentDetails,
+                time: context.metadata?.time,
+              },
+            })),
+            {
+              type: "spst.speak",
+              params: ({ context }) => ({
+                utterance: `You are meeting with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} at ${context.appointmentDetails?.time}`,
+              }),
+            },
+            "spst.clearData",
+          ],
+          on: {
+            SPEAK_COMPLETE: "PromptCreateAppointmentWithTime",
+          },
+        },
+        PromptCreateAppointmentWithTime: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: `Do you want me to create an appointment with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} at ${context.appointmentDetails?.time}?`,
+            }),
+          },
+          on: { SPEAK_COMPLETE: "Confirmation" },
+        },
+        PromptCreateAppointmentWholeDay: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: `Do you want me to create an appointment with ${context.appointmentDetails?.person} on ${context.appointmentDetails?.day} for the whole day?`,
+            }),
+          },
+          on: { SPEAK_COMPLETE: "Confirmation" },
+        },
+        Confirmation: {
+          entry: ["spst.listen", "spst.clearData"],
+          on: {
+            LISTEN_COMPLETE: [
+              { target: "Done", guard: "hasConfirmed" },
+              { target: "Prompt", guard: "hasDenied" },
+              {
+                target: "PromptCreateAppointmentWholeDay",
+                guard: "isWholeDay",
+              },
+              { target: "PromptCreateAppointmentWithTime" },
+            ],
+          },
+        },
+        Done: {
+          entry: {
+            type: "spst.speak",
+            params: {
+              utterance: "Your appointment has been created!",
+            },
+          },
+          on: { SPEAK_COMPLETE: "#DM.Done" },
+        },
+      },
+    },
     Greeting: {
       initial: "Prompt",
       on: {
         LISTEN_COMPLETE: [
+          {
+            target: "Appointment",
+            guard: "isAppointment",
+          },
           {
             target: "CheckGrammar",
             guard: ({ context }) => !!context.lastResult,
@@ -107,12 +438,10 @@ const dmMachine = setup({
           entry: { type: "spst.listen" },
           on: {
             RECOGNISED: {
-              actions: assign(({ event }) => {
-                return { lastResult: event.value };
-              }),
+              actions: "spst.recognised",
             },
             ASR_NOINPUT: {
-              actions: assign({ lastResult: null }),
+              actions: "spst.clearData",
             },
           },
         },
