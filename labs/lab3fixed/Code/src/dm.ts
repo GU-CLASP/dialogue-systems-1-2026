@@ -59,17 +59,22 @@ for (let h = 0; h <= 12; h++) {
   grammar[key] = { time: `${key.padStart(2, "0")}:00` };
 }
 
+
 console.log(grammar);
 
 function getName(utterance: string) {
+  utterance = utterance.match(/((?<=(meeting |meet |with ))[A-Z][a-zA-z]+|^[A-Z][a-zA-z]+$)/)?.[0] ?? ""
   return (grammar[utterance.toLowerCase()] || {}).person ?? undefined;
 }
 
 function getDay(utterance: string) {
+  utterance = utterance.match(/Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday/)?.[0] ?? ""
+  console.log(`day: ${utterance}`)
   return (grammar[utterance.toLowerCase()] || {}).day ?? undefined;
 }
 
 function getTime(utterance: string) {
+  utterance = utterance.match(/[0-9]{1,2}/)?.[0] ?? ""
   return (grammar[utterance.toLowerCase()] || {}).time ?? undefined;
 }
 
