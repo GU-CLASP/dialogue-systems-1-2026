@@ -21,9 +21,8 @@ package-lock.json
 *.local
 
 # Editor directories and files
-../../../../.idea/
-../../lab3/Code/package-lock.json
-../../lab3/Code/yarn.lock
+.idea/
+yarn.lock
 .vscode/*
 !.vscode/extensions.json
 .idea
