@@ -19,32 +19,9 @@ const settings: Settings = {
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
+  speechRecognitionEndpointId: "9d99579c-a534-43ac-96d1-0d179cfb6a61",
 };
 
-interface GrammarEntry {
-  person?: string;
-  day?: string;
-  time?: string;
-}
-
-const grammar: { [index: string]: GrammarEntry } = {
-  vlad: { person: "Vladislav Maraev" },
-  bora: { person: "Bora Kara" },
-  tal: { person: "Talha Bedir" },
-  tom: { person: "Tom Södahl Bladsjö" },
-  monday: { day: "Monday" },
-  tuesday: { day: "Tuesday" },
-  "10": { time: "10:00" },
-  "11": { time: "11:00" },
-};
-
-function isInGrammar(utterance: string) {
-  return utterance.toLowerCase() in grammar;
-}
-
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
-}
 
 const dmMachine = setup({
   types: {
@@ -84,7 +61,7 @@ const dmMachine = setup({
       on: {
         LISTEN_COMPLETE: [
           {
-            target: "CheckGrammar",
+            target: "Confirm",
             guard: ({ context }) => !!context.lastResult,
           },
           { target: ".NoInput" },
@@ -92,7 +69,7 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello world!` } },
+          entry: { type: "spst.speak", params: { utterance: `Say the word!` } },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {
@@ -119,13 +96,11 @@ const dmMachine = setup({
         },
       },
     },
-    CheckGrammar: {
+    Confirm: {
       entry: {
         type: "spst.speak",
         params: ({ context }) => ({
-          utterance: `You just said: ${context.lastResult![0].utterance}. And it ${
-            isInGrammar(context.lastResult![0].utterance) ? "is" : "is not"
-          } in the grammar.`,
+          utterance: `You just said: ${context.lastResult![0].utterance}.`,
         }),
       },
       on: { SPEAK_COMPLETE: "Done" },
