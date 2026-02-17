@@ -31,16 +31,6 @@ interface GrammarEntry {
   meetingTime?: string;
 }
 
-const weekdayGrammar: { [index: string]: GrammarEntry } = {
-  monday: { day: "Monday" },
-  tuesday: { day: "Tuesday" },
-  wednesday: { day: "Wednesday" },
-  thursday: { day: "Thursday" },
-  friday: { day: "Friday" },
-  saturday: { day: "Saturday" },
-  sunday: { day: "Sunday" },
-};
-
 const grammar: { [index: string]: GrammarEntry } = {
   vlad: { person: "Vladislav Maraev" },
   bora: { person: "Bora Kara" },

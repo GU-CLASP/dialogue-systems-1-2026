@@ -1,4 +1,5 @@
 # Logs
+src/azure.ts
 logs
 *.log
 npm-debug.log*
@@ -20,7 +21,7 @@ package-lock.json
 *.local
 
 # Editor directories and files
-../../../.idea/*
+../../../../.idea/
 ../../lab3/Code/package-lock.json
 ../../lab3/Code/yarn.lock
 .vscode/*
