@@ -1,12 +1,13 @@
 
-#+TITLE: Lab IV. Natural language understanding
+# Lab IV. Natural language understanding
+================
 |:warning:|
 *Before you proceed*: update speechstate to the latest version!
 #+begin_src sh
   yarn up speechstate
 #+end_src
 
-* Introduction & Preparation
+## Introduction & Preparation
 In this lab, we are going to build on what you have already built on lab3 (or rather lab3fixed!) except this machine will be smarter. We will achieve this with Natural Language Understanding (NLU) module of NLU.
 Remember that in the Lab 3, our machine expected very specific utterances. And we had to write EVERY word we would use in our Grammar object which was tedious. But real language have tens of thousands of words and it is unreasonable to construct a grammar that large!
 With NLU, we will be able add two more objects instead of Grammars: Intents and Entities. They are arrays that Azure will expect and those arrays will guide our machine to understand a given utterance with the confidence scores.
@@ -61,14 +62,14 @@ After we completed our Intent and Entity additions as an NLU Object,
 Now NLUObject (which contains our Intent and Entity types) are inside our DMContext. So when we export our DMContext
 
 
-* Task 1: Integrate a statistical NLU in your dialogue system
+## Task 1: Integrate a statistical NLU in your dialogue system
 In Lab 2 (basic dialogue management), you used a simplistic mapping
 (called =grammar= in the code) from user utterances to entities. In the
 first task of this lab, you will replace this grammar with a
 statistical NLU trained and deployed using Conversational Language
 Understanding (CLU) in Azure.
 
-** 1) Create a NLU project in Azure
+### 1) Create a NLU project in Azure
   Go to https://language.cognitive.azure.com/ and ensure that you are
   signed in with your Azure account.  Choose "Create new ->
   Conversational language understanding". As part of this, you may
@@ -79,7 +80,7 @@ Understanding (CLU) in Azure.
 
   As project name, you can e.g. enter: =appointment=.
 
-** 2) Add intents 
+### 2) Add intents 
   In the "Schema definition" menu of your project you will find the
   option to create Intents and Entities. Intents are a result of
   automatic classification of sentences (or expressions) performed by
@@ -106,7 +107,7 @@ navigation menu and select "Train a new model". As model name, you can
 choose =appointment=. (When you re-train the model later on, select
 "Overwrite an existing model".)
 
-** 3) Deploy the model
+### 3) Deploy the model
   In order to use your trained model in your dialogue system, you
   first need to deploy it. Choose "Deploying a model" in the
   navigation menu and then "Add deployment". Again, as deployment name
@@ -116,7 +117,7 @@ choose =appointment=. (When you re-train the model later on, select
   the model and clicking on "Get prediction URL". You will need it in 
   step 4.3 below.
 
-** 4) Integrate the model
+### 4) Integrate the model
 
 
 1. As we have said, you can copy stuff from Lab 3.
@@ -163,7 +164,7 @@ choose =appointment=. (When you re-train the model later on, select
 Finally, you need to rewire the logic in your code to support 2 aforementioned intents. 
 
 
-** 5) Adding entities
+### 5) Adding entities
 Entities are specific names (named entities) such as locations,
 people, organizations... and other concepts such as emotions,
 opinions... and are used to extract meaningful information from
@@ -200,7 +201,7 @@ entities. For "who is X" path, in response to user's query you will
 need to provide some basic information about the person (i.e. a
 celebrity).
 
-* Submit:
+## Submit:
 Export your NLU project by choosing “Projects” in the navigation menu
 to the left, then select your project and click Export. (You might
 need to unblock a pop-up window.) Save the exported content as a JSON
