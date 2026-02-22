@@ -20,6 +20,7 @@ const settings: Settings = {
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
+  speechRecognitionEndpointId: "459f4d2a-49c1-457e-84fd-465b7dc62042",
 };
 
 interface GrammarEntry {
@@ -93,7 +94,7 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello world!` } },
+          entry: { type: "spst.speak", params: { utterance: `Testing for Azure Custom Speech` } },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {

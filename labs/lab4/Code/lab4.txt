@@ -1,0 +1,23 @@
+Youtube link  https://youtu.be/O4XFCxNY96k?si=gChM4navzz9vpT_Y
+
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"f1b99834-fbfc-4d32-846d-c4dbd3050c19","Name":"Microsoft Server Speech Text to Speech Voice (en-GB, OllieMultilingualNeural)","ShortName":"en-GB-OllieMultilingualNeural","Locale":"en-GB","VoiceType":"StandardVoice"}]}-->
+<!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+<!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"en-GB":{"AutoApplyCustomLexiconFiles":[{}]},"en-US":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-GB"><voice name="en-GB-OllieMultilingualNeural">
+<prosody rate="medium" pitch="low">The road not taken,</prosody><break time="600ms" />
+<prosody rate="medium" pitch="low"> by Robert Frost</prosody><break time="2700ms" />
+<prosody rate="-6.00%" pitch="low" volume="loud">Two roads diverged </prosody><break time="50ms" />
+<prosody rate="-6.00%" pitch="low">in a yellow wood,</prosody><break time="600ms" />
+<mstts:express-as style="sad"><emphasis level="strong"><prosody rate="-6.00%" pitch="low">And sorry, I</prosody></emphasis>
+</mstts:express-as><break time="200ms" /><prosody rate="-4.00%" pitch="low">could not travel both</prosody><break time="700ms" />
+<prosody rate="-12.00%" pitch="low">And be one traveler, </prosody><break time="100ms" /><prosody rate="-20.00%" pitch="low">long </prosody><prosody rate="-12.00%" pitch="low">I stood</prosody><break time="600ms" />
+<prosody rate="-6.00%" pitch="low">And looked down</prosody><break time="50ms" /><prosody rate="-6.00%" pitch="low"> one as far as I could</prosody><break time="700ms" />
+<prosody rate="-6.00%" pitch="low">To where it bent in the undergrowth;</prosody><break time="1150ms" />
+<prosody pitch="low">Then took the other,</prosody><break time="200ms" /><prosody pitch="low"> as just as fair,</prosody><break time="850ms" />
+<prosody rate="-6.00%" pitch="low">And having perhaps the better claim,</prosody><break time="600ms" />
+<prosody rate="-6.00%" pitch="low">Because it was grassy </prosody><break time="300ms" /><prosody rate="-6.00%" pitch="low">and wanted wear;</prosody><break time="2000ms" />
+<mstts:express-as style="sad"><prosody rate="-6.00%" pitch="low">I shall be telling this with a sigh</prosody></mstts:express-as><break time="750ms" />
+<prosody rate="-6.00%" pitch="low">Somewhere ages and ages hence:</prosody><break time="600ms" />
+<prosody rate="-6.00%" pitch="low">Two roads</prosody><break time="100ms" /><prosody rate="-6.00%" pitch="low"> diverged in a wood, and I—</prosody><break time="650ms" />
+<emphasis level="strong"><prosody rate="-6.00%" pitch="low">I took the one less traveled by,</prosody></emphasis><break time="600ms" />
+<prosody rate="-30.00%" pitch="low"> And that has made all the difference.</prosody><break time="600ms" /></voice></speak>
