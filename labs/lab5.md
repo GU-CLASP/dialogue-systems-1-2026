@@ -86,6 +86,8 @@ Understanding (CLU) in Azure.
   to include some arbitrary digits or numbers in it
   (e.g. *language_resource_57372*).
 
+  You need to check that the region for your language resource is available in [this list](https://learn.microsoft.com/en-us/azure/ai-services/language-service/concepts/regional-support#conversational-language-understanding-and-orchestration-workflow). You need to see ticks on both columns.
+
   As project name, you can e.g. enter: *appointment*.
 
 ### 2) Add intents 
