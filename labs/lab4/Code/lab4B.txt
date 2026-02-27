@@ -1,0 +1,22 @@
+<!-- Original Performance from the movie "22 Jump Street": https://www.youtube.com/watch?v=fN8-lwPZ5jY -->
+
+ <!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"7347fe2e-fbad-40c7-a5b3-3008de49ed14","Name":"en-US-Brian:DragonHDLatestNeural","ShortName":"en-US-Brian:DragonHDLatestNeural","Locale":"en-US","VoiceType":"StandardVoice"}]}-->
+ <!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+ <!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"en-US":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+ <speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US"><voice name="en-US-Brian:DragonHDLatestNeural">
+  Slam,<break strength="x-weak" /> Poetry <break strength="medium" />
+ <mstts:express-as style="shouting" styledegree="1"> <prosody volume="+80.00%" rate="2" pitch="+80%">Yelling! </prosody><break strength="strong" /> </mstts:express-as> <mstts:express-as style="whispering" styledegree="2"><prosody pitch="-6st"> Angry!</prosody></mstts:express-as>
+ <mstts:express-as style="newscast" styledegree="2"> <prosody pitch="-1st" contour="(0%,+0Hz) (50%,+0Hz) (100%,+0Hz)"> wave <break time="5ms" /> <phoneme alphabet="ipa" ph="ˈɪŋ">ing</phoneme><break time="5ms" /> my <break time="5ms" /> hands <break time="5ms" /> a <break time="5ms" /> lot </prosody> </mstts:express-as><break time="1000ms" />
+ Specific <break time="5ms" /> point <break time="5ms" /> of <break time="5ms" /> view <break time="5ms" /> on <break time="5ms" /> Things
+ <break time="1000ms" />
+ <phoneme alphabet="ipa" ph="ˈsɪn.θi.ə">Cynthia!</phoneme> <break time="1000ms" />
+ <phoneme alphabet="ipa" ph="ˈsɪn">sin</phoneme><break time="70ms" /><phoneme alphabet="ipa" ph="ˈθi">thi</phoneme><break time="50ms" />uh <break time="1000ms" />
+ Jesus died for our! <break time="10ms" /> <phoneme alphabet="ipa" ph="ˈsɪn">sin</phoneme><break time="70ms" /><phoneme alphabet="ipa" ph="ˈθi">thi</phoneme><break time="50ms" />uh <break time="1000ms" />
+ <mstts:express-as style="sad" styledegree="2"> Jesus cried ... </mstts:express-as><break time="100ms" />
+ <mstts:express-as style="depressed" styledegree="2"> <prosody volume="-20.00%" rate="0.7"> runaway bride </prosody></mstts:express-as><break time="1000ms" />
+ <mstts:express-as style="shouting" styledegree="1"> <prosody volume="+30.00%" rate="1" pitch="+30%">Julia Roberts! </prosody><break strength="strong" /></mstts:express-as>
+ Julia <break time="100ms" /> <mstts:express-as style="shouting" styledegree="1"> <prosody volume="+50.00%" rate="1" pitch="+30%">Rob! </prosody><break strength="medium" /></mstts:express-as> <mstts:express-as style="depressed" styledegree="2"> hurts ... </mstts:express-as><break time="100ms" />
+ <mstts:express-as style="shouting" styledegree="1"> <prosody volume="+30.00%" rate="1" pitch="+30%">Cynthia! </prosody><break strength="strong" /></mstts:express-as>
+ <prosody rate="3" pitch="+30%">ba-boop-beep-boo-ba-bap-ba </prosody>
+
+ </voice></speak>
