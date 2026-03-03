@@ -1,0 +1,9 @@
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"2fd0c0e4-8885-49d0-80b8-5ca9929e8716","Name":"Microsoft Server Speech Text to Speech Voice (en-AU, CarlyNeural)","ShortName":"en-AU-CarlyNeural","Locale":"en-AU","VoiceType":"StandardVoice"}]}-->
+<!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+<!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"de-DE":{"AutoApplyCustomLexiconFiles":[{}]},"it-IT":{"AutoApplyCustomLexiconFiles":[{}]},"en-AU":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0"
+xml:lang="en-AU"><voice name="en-AU-CarlyNeural">
+<prosody volume="soft">Twinkle,  twinkle little star....</prosody><break time="800ms" />
+How i wonder what you are!<break time="900ms" />
+Up above the world so high,<break time="700ms" />
+Like a<break time="300ms" /><prosody rate="50%" pitch="+4st" volume="loud"> diamond</prosody><break time="300ms " /> in the sky.<break time="1000ms" /></voice></speak>
