@@ -1,0 +1,19 @@
+I could not find a perfomance of that poem that I liked. I attempted to B-VG part.
+
+
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"6f827a00-479b-49de-b703-29fa73c0561e","Name":"Microsoft Server Speech Text to Speech Voice (en-US, CoraMultilingualNeural)","ShortName":"en-US-CoraMultilingualNeural","Locale":"en-US","VoiceType":"StandardVoice"}]}-->
+<!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+<!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"de-DE":{"AutoApplyCustomLexiconFiles":[{}]},"en-US":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US"><mstts:backgroundaudio src="https://st0rage73812846.blob.core.windows.net/1container/schubert_as_dur_moment_musicaux_120909_128kbps.wav" volume="-20dB" fadein="2000ms" fadeout="3000ms" />
+<voice name="en-US-CoraMultilingualNeural"><mstts:express-as style="calm">
+Ich ging im Walde so für mich <prosody rate="-5.00%" pitch="-20.00%"> hin, </prosody>
+<prosody rate="-10.00%"> Und </prosody>nichts zu suchen, <emphasis level="strong">Das</emphasis><prosody volume="soft"> war mein Sinn.  
+Im Schatten sah ich Ein Blümchen stehn,</prosody>
+Wie <emphasis level="strong">Sterne </emphasis><prosody rate="-5.00%" pitch="-10.00%"> leuchtend, </prosody><break time="200ms" /><prosody rate="-10.00%">Wie Äuglein schön. </prosody>
+<prosody rate="+3.00%">Ich wollt es brechen, Da sagt' es fein: </prosody>
+<prosody volume="-27.00%" pitch="+4.00%">Soll ich zum Welken Gebrochen sein?</prosody>
+Ich grubs mit allen Den Würzlein aus,
+Zum Garten trug ichs <prosody pitch="+3.00%">am hübschen Haus.</prosody>
+Und pflanzt es <emphasis level="strong">wieder </emphasis><prosody rate="-5.00%" pitch="-20.00%">Am stillen Ort;</prosody>
+Nun zweigt es <prosody pitch="-3.00%">immer</prosody>
+Und blüht <break time="80ms" /><prosody rate="-5.00%" pitch="-5.00%">so fort</prosody><prosody rate="-5.00%" pitch="-10.00%">.</prosody></mstts:express-as></voice></speak>
