@@ -2,168 +2,107 @@ import {assign, createActor, log, setup} from "xstate";
 import type { Settings } from "speechstate";
 import { speechstate } from "speechstate";
 import { createBrowserInspector } from "@statelyai/inspect";
-import { KEY } from "./azure";
+import { KEY, NLU_KEY } from "./azure";
 import type { DMContext, DMEvents } from "./types";
 
 const inspector = createBrowserInspector();
 
 const azureCredentials = {
   endpoint:
-      "https://swedencentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+      "https://switzerlandnorth.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
 
+
+const azureLanguageCredentials = {
+  endpoint: "https://appointment-gus2026-lang.cognitiveservices.azure.com/language/:analyze-conversations?api-version=2024-11-15-preview" /** your Azure CLU prediction URL */,
+  key: NLU_KEY /** reference to your Azure CLU key */,
+  deploymentName: "appointment-lab5" /** your Azure CLU deployment */,
+  projectName: "appointment-gus2026-CLU" /** your Azure CLU project name */,
+};
+
 const settings: Settings = {
+  azureLanguageCredentials: azureLanguageCredentials /** global activation of NLU */,
   azureCredentials: azureCredentials,
-  azureRegion: "swedencentral",
+  azureRegion: "switzerlandnorth",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
 };
 
-interface GrammarEntry {
-  person?: string;
-  day?: string;
-  time?: string;
-  affirmation?: boolean;
-  wholeDay?: boolean;
-  meetingTime?: string;
+
+function getEntity(entities: any, category: string) {
+  /*
+  This function extracts and returns the specified entity from the NLU.
+   */
+  return entities.find((e: any) => e.category === category)?.text;
 }
 
-const grammar: { [index: string]: GrammarEntry } = {
-  vlad: { person: "Vladislav Maraev" },
-  bora: { person: "Bora Kara" },
-  tal: { person: "Talha Bedir" },
-  tom: { person: "Tom Södahl Bladsjö" },
-  anna: { person: "Anna Banana" },
-  steve: { person: "Steve Carell" },
-  monday: { day: "Monday" },
-  tuesday: { day: "Tuesday" },
-  wednesday: { day: "Wednesday" },
-  thursday: { day: "Thursday" },
-  friday: { day: "Friday" },
-  saturday: { day: "Saturday" },
-  sunday: { day: "Sunday" },
-  yes: { affirmation: true},
-  yep: { affirmation: true},
-  yeah: { affirmation: true},
-  right: { affirmation: true},
-  correct: { affirmation: true},
-  no: { affirmation: false},
-  nope: { affirmation: false},
-  nah: { affirmation: false},
-  wrong: { affirmation: false},
-  incorrect: { affirmation: false},
-};
-
-function isInGrammar(utterance: string) {
-  return utterance.toLowerCase() in grammar;
+function parseDateFromTimex(timex: string) {
+  const datePart = timex.split("T")[0];
+  const [, month, day] = datePart.split("-");
+  const date = new Date(2026, parseInt(month)-1, parseInt(day));
+  return date.toLocaleDateString("en-US", {month: "long", day: "numeric"}); // day only month and day
 }
 
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
-}
-
-function getDay(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).day;
-}
-
-function getAffirmation(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).affirmation;
-}
-
-function getTime(utterance: string) {
-  /* VG part - extending the getTime function to make it more flexible.
-  The getTime function is able to handle times in the following formats:
-      - 9:30
-      - 1523
-      - 5 o'clock
-      - 2
-      - 14
-      - 5:35 pm
-
-   Note: it also works if someone says "half past x" or "quarter past x" because
-   speechstate already parses those utterances into the correct time format.
-
-   Area for improvement: a problem with the current solution is that if someone says "half past three"
-   the interprets it as 03:30. However, most likely the person meant 15:30...
-   It is a little tricky to implement logic for when someone is speaking in 24h format if they didn't say AM/PM and
-   you don't have more context.
-  */
-
-  // return null if there is no input
-  if (!utterance) return null;
-  // clean the input: make it lowercase, remove the word "o'clock" if it is present, remove whitespaces
-  const utterance_clean = utterance.toLowerCase().replace(/o\s?clock/, "o'clock").replace(/\s+/g, "").trim();
-
-  // handle utterance with semicolon. Eg. 13:45
-  const semicolonMatch = utterance_clean.match(/^(\d{1,2}):(\d{2})$/);
-
-  if (semicolonMatch) {
-    let hour = parseInt(semicolonMatch[1], 10);
-    const minutes = parseInt(semicolonMatch[2], 10);
-
-    // make sure hour and minutes are valid numbers
-    if (hour > 23 || minutes > 59) return null;
-
-    return `${hour.toString().padStart(2,"0")}: ${minutes.toString().padStart(2,"0")}`;
-  }
-
-  // handle all-digit utterance. Eg 1345
-  if (/^\d{3,4}$/.test(utterance_clean)) {
-    let hour: number;
-    let minutes: number;
-
-    if (utterance_clean.length === 3) {
-      // time is in format: 930 or 245
-      hour = parseInt(utterance_clean.slice(0, 1), 10);
-      minutes = parseInt(utterance_clean.slice(1), 10);
-    } else {
-      // time is in format: 1130 or 2245
-      hour = parseInt(utterance_clean.slice(0, 2), 10);
-      minutes = parseInt(utterance_clean.slice(2), 10);
-    }
-
-    // check that hours and minutes are within the appropriate ranges
-    if ( hour <= 23 && minutes <= 59) {
-      const formatted = `${hour.toString().padStart(2,"0")}: ${minutes.toString().padStart(2,"0")}`;
-
-      return formatted;
-    }
+function parseTimeFromTimex(timex: string) {
+  if (!timex.includes("T")) {
     return null;
   }
+  const timePart = timex.split("T")[1];
+  const [hours, minutes] = timePart.split(":").map(Number);
+  const date = new Date(2026, 0, 1, hours, minutes);
+  return date.toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"});
+}
 
-  // handles if the utterance was just a single number. For example, 14 or 2
-  if (/^\d{1,2}$/.test(utterance_clean)) {
-    let hour = parseInt(utterance_clean, 10);
-
-    if (hour <= 23) {
-      return `${hour.toString().padStart(2, "0")}:00`;
+function getDateEntity(entities: any[]) {
+  /*
+  This function extracts and returns the section of the entity related to date.
+  If the utterance mentions a weekday word such as Monday, then the function will return that. Otherwise it will
+  return the month and day mentioned.
+   */
+  const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  const pureDate = entities.find((e:any) => e.extraInformation?.some((info: any) => info.value === "datetime.date"));
+  if (pureDate) {
+    // check if a weekday word was used in the utterance
+    const lowerText = pureDate.text.toLowerCase();
+    const weekday = weekdays.find(day => lowerText.includes(day));
+    if (weekday) {
+      return weekday
     }
-    return null;
   }
 
-  // handle if the utterance uses AM or PM
-  const ampmMatch = utterance_clean.match(/^(\d{1,2}):(\d{2})(am|pm)$/i);
-  if (ampmMatch) {
-    let hour = parseInt(ampmMatch[1], 10);
-    let minutes = parseInt(ampmMatch[2], 10);
-    const meridiem = ampmMatch[3];
-
-    // check that hours and minutes are within the appropriate ranges
-    if ( hour > 23 || minutes > 59) return null;
-
-    if (hour === 12) {
-      hour = meridiem === "am" ? 0 : 12;
-    } else if (meridiem === "pm") {
-      hour += 12;
+  const dateTime = entities.find((e:any) => e.extraInformation?.some((info: any) => info.value === "datetime.dateandtime"));
+  if (dateTime) {
+    // check if a weekday word was used in the utterance
+    const lowerText = dateTime.text.toLowerCase();
+    const weekday = weekdays.find(day => lowerText.includes(day));
+    if (weekday) {
+      return weekday
     }
-
-    return `${hour.toString().padStart(2,"0")}: ${minutes.toString().padStart(2,"0")}`;
+    return parseDateFromTimex(dateTime.resolutions?.[0]?.timex);
   }
 
-  return (grammar[utterance.toLowerCase()] || {}).time;
+  return null;
+}
+
+function getTimeEntity(entities: any[]) {
+  /*
+  This function extracts and returns the section of the entity related to time.
+   */
+  // return entities.find((e:any) => e.extraInformation?.some((info: any) => info.value === "datetime.time"))?.text ?? null;
+  const pureTime = entities.find((e:any) => e.extraInformation?.some((info: any) => info.value === "datetime.time"));
+  if (pureTime) {
+    return pureTime;
+  }
+
+  const dateTime = entities.find((e:any) => e.extraInformation?.some((info: any) => info.value === "datetime.dateandtime"));
+  if (dateTime) {
+    return parseTimeFromTimex(dateTime.resolutions?.[0]?.timex);
+  }
+
+  return null;
 }
 
 
@@ -182,10 +121,17 @@ const dmMachine = setup({
       });
       console.log("Utterance: ", params.utterance);
     },
-    "spst.listen": ({ context }) =>
-        context.spstRef.send({
-          type: "LISTEN",
-        }),
+    "spst.listen": ({ context }) => {
+      context.spstRef.send({
+        type: "LISTEN",
+      });
+    },
+    "spst.listen.nlu": ({ context }) => {
+      context.spstRef.send({
+        type: "LISTEN",
+        value: {nlu: true},
+      });
+    },
   },
 }).createMachine({
   context: ({ spawn }) => ({
@@ -193,7 +139,6 @@ const dmMachine = setup({
     lastResult: null,
     person: null,
     day: null,
-    time: null,
     wholeDay: null,
     affirmation: null,
     meetingTime: null,
@@ -213,8 +158,14 @@ const dmMachine = setup({
       initial: "Prompt",
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Let's create an appointment` } },
-          on: { SPEAK_COMPLETE: "ConfirmProvider" },
+          entry: { type: "spst.speak", params: { utterance: `Hello!` } },
+          on: { SPEAK_COMPLETE: "AskAction" },
+        },
+        AskAction: {
+          entry: [
+            { type: "spst.speak", params: { utterance: `What can I help you with?` } }
+          ],
+          on: { SPEAK_COMPLETE: "ActionResponse" },
         },
         ConfirmProvider: {
           entry: [
@@ -239,25 +190,83 @@ const dmMachine = setup({
           entry: { type: "spst.speak", params: { utterance: `What time is your meeting?` } },
           on: { SPEAK_COMPLETE: "MeetingTimeResponse" },
         },
-        // NoInput: {
-        //   entry: {
-        //     type: "spst.speak",
-        //     params: { utterance: `I can't hear you!` },
-        //   },
-        //   on: { SPEAK_COMPLETE: "Ask" },
-        // },
+        ActionResponse: {
+          entry: [
+            { type: "spst.listen.nlu" },
+            ({ context, event}) => {
+              console.log("Entering NLU Action Response state", {context, event});
+            },
+          ],
+          on: {
+            RECOGNISED: [{
+              // handle CreateMeeting intent
+              guard: ({event}) => {
+                console.log("Full event: ", JSON.stringify(event, null, 2));
+                const action = event.nluValue.topIntent;
+                return action === "CreateMeeting";
+              },
+              actions: [
+                assign(({ event }) => {
+                  const nluValue = (event as any).nluValue;
+                  const entities = nluValue.entities;
+                  const extractedTime = getTimeEntity(entities) ?? null;
+                  return {
+                    lastResult: event.value,
+                    person: getEntity( entities, "Person"),
+                    day: getDateEntity( entities),
+                    meetingTime: extractedTime,
+                    wholeDay: extractedTime ? false : null, // if a specific time is given, automatically set wholeDay to false
+                  };
+                }),
+              ],
+              target: "WaitForSpeechIdleAfterAction"
+            },
+              {
+                // handle WhoIsX intent
+                guard: ({ event}) => (event as any).nluValue?.topIntent === "WhoIsX",
+                actions: assign(({ event}) => {
+                  const entities = (event as any).nluValue?.entities ?? [];
+                  const extractedPerson = getEntity(entities, "Person") ?? null;
+                  return {
+                    lastResult: event.value,
+                    person: extractedPerson,
+                  };
+                }) ,
+                target: "WaitForWhoIsX"
+              },
+              {
+                // utterance was not in grammar
+                actions: assign({ lastResult: null }),
+                target: "WaitForActionReprompt"
+              }
+            ],
+            // no response given
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null }),
+              target: "WaitForActionReprompt"
+            },
+          },
+        },
         ProviderResponse: {
-          entry: { type: "spst.listen" },
+          entry: [
+              { type: "spst.listen.nlu" },
+            ({ context, event}) => {
+            console.log("Entering Provider state", {context, event});
+            },
+          ],
           on: {
             RECOGNISED: [{
               // check if the response is a valid person
-              guard: ({event}) => { return getPerson(event.value[0].utterance) !== undefined},
+              guard: ({event}) => {
+                const entities = ( event as any).nluValue?.entities ?? [];
+                return getEntity(entities, "Person") != null;
+              },
               actions: [
                 assign(({ event }) => {
-                  const utterance = event.value[0].utterance;
+                  const entities = ( event as any).nluValue?.entities ?? [];
                   return {
                     lastResult: event.value,
-                    person: getPerson(utterance)
+                    person: getEntity(entities, "Person") ?? null,
                   };
                 }),
               ],
@@ -276,15 +285,6 @@ const dmMachine = setup({
             },
           },
         },
-        // note: commented out the below states, they don't work. Tried to dynamically reference the previous state when needing to reprompt.
-        // Reprompt: {
-        //   entry: { type: "spst.speak", params: { utterance: `Sorry, I didn't understand that. Could you repeat please?` } },
-        //   on: { SPEAK_COMPLETE: "PreviousQuestion"}
-        // },
-        // // add a history node to go back to the previous question when an utterance is unclear/missing
-        // PreviousQuestion: {
-        //   type: "history", history: "shallow"
-        // }
         WaitForProviderReprompt: {
           on: {
             LISTEN_COMPLETE: "ProviderReprompt"
@@ -294,32 +294,98 @@ const dmMachine = setup({
           entry: { type: "spst.speak", params: { utterance: "Sorry, I didn't understand that. Who are you meeting with?"} },
           on: { SPEAK_COMPLETE: "ProviderResponse"}
         },
-        WaitForSpeechIdleAfterProvider: {
+        WaitForActionReprompt: {
           on: {
-            LISTEN_COMPLETE: "ConfirmWeekday"
+            LISTEN_COMPLETE: "ActionReprompt"
           }
         },
+        ActionReprompt: {
+          entry: { type: "spst.speak", params: { utterance: "Sorry, I didn't understand that. What can I help you with?"} },
+          on: { SPEAK_COMPLETE: "ActionResponse"}
+        },
+        WaitForSpeechIdleAfterProvider: {
+          on: {
+            LISTEN_COMPLETE: "CheckSlots"
+          }
+        },
+        WaitForSpeechIdleAfterAction: {
+          on: {
+            LISTEN_COMPLETE: "CheckSlots"
+          }
+        },
+        WaitForWhoIsX: {
+          on: {
+            LISTEN_COMPLETE: "WhoIsX"
+          }
+        },
+        WhoIsX: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context}) => ({
+              utterance: context.person ? `${context.person} is a person who you can schedule a meeting with.` : `I don't know who that is, sorry.`
+            })
+          },
+          on: { SPEAK_COMPLETE: "AskAction"}
+        },
+        CheckSlots: {
+          always: [
+              // person is missing -> ask for person
+            {
+              guard: ({ context }) => !context.person,
+              target: "ConfirmProvider"
+            },
+            // day is missing -> ask for day
+            {
+              guard: ({ context }) => !context.day,
+              target: "ConfirmWeekday"
+            },
+            // wholeDay is mising -> ask if it will take the whole day
+            {
+              guard: ({ context }) => context.wholeDay === null,
+              target: "ConfirmDuration"
+            },
+            // wholeDay is false, and meeting time is missing -> ask what time the meeting is
+            {
+              guard: ({ context }) => context.wholeDay === false && !context.meetingTime,
+              target: "ConfirmMeetingTime"
+            },
+            // all slots filled -> check which final confirmation to go to
+            {
+              target: "CheckFinalConfirmation"
+            },
+          ]
+        },
+        CheckFinalConfirmation: {
+          always: [
+            // whole day is true
+            {
+              guard: ({ context }) => context.wholeDay === true,
+              target: "FinalConfirmationWholeDay"
+            },
+            // specific time slot given
+            {
+              target: "FinalConfirmationMeetingTime"
+            },
+          ]
+        },
         MeetingTimeResponse: {
-          entry: { type: "spst.listen" },
+          entry: { type: "spst.listen.nlu" },
           on: {
             RECOGNISED: [{
               guard: ({ event }) => {
-                const utterance = event.value[0].utterance;
-                const parsed = getTime(utterance);
-                return parsed != null;
-                //getTime(event.value[0].utterance) !== null
+                const entities = (event as any).nluValue?.entities ?? [];
+                return getTimeEntity(entities) != null;
               },
               actions: [
                 assign(({ event }) => {
-                  const utterance = event.value[0].utterance;
-                  console.log("Assigning meeting time: ", utterance);
+                  const entities = (event as any).nluValue?.entities ?? [];
                   return {
                     lastResult: event.value,
-                    meetingTime: getTime(utterance)
+                    meetingTime: getTimeEntity(entities) ?? null,
                   };
                 }),
               ],
-              target: "WaitForFinalConfirmationMeetingTime"
+              target: "WaitForSpeechIdleAfterMeetingTime"
             },
               {
                 // response not recognized
@@ -331,6 +397,11 @@ const dmMachine = setup({
             },
           },
         },
+        WaitForSpeechIdleAfterMeetingTime: {
+          on: {
+            LISTEN_COMPLETE: "CheckSlots"
+          }
+        },
         WaitForTimeReprompt: {
           on: {
             LISTEN_COMPLETE: "TimeReprompt"
@@ -341,17 +412,22 @@ const dmMachine = setup({
           on: { SPEAK_COMPLETE: "MeetingTimeResponse"}
         },
         WeekdayResponse: {
-          entry: { type: "spst.listen" },
+          entry: { type: "spst.listen.nlu" },
           on: {
             RECOGNISED: [{
               // check if the response is a valid day
-              guard: ({event}) => { return getDay(event.value[0].utterance.toLowerCase()) !== undefined;},
+              guard: ({event}) => {
+                const entities = ( event as any).nluValue?.entities ?? [];
+                console.log("WeekdayResponse event: ", JSON.stringify(event, null, 2));
+                return getDateEntity(entities) != null;
+                },
               actions: [
                 assign(({ event }) => {
-                  const utterance = event.value[0].utterance;
+                  const entities = ( event as any).nluValue?.entities ?? [];
+                  console.log("*** date entity: ", getDateEntity(entities));
                   return {
                     lastResult: event.value,
-                    day: getDay(utterance)
+                    day: getDateEntity(entities),
                   };
                 }),
               ],
@@ -382,35 +458,33 @@ const dmMachine = setup({
         },
         WaitForSpeechIdleAfterWeekday: {
           on: {
-            LISTEN_COMPLETE: "ConfirmDuration"
+            LISTEN_COMPLETE: "CheckSlots"
           }
         },
         DurationResponse: {
-          entry: { type: "spst.listen" },
+          entry: { type: "spst.listen.nlu" },
           on: {
             RECOGNISED: [{
               // check if the person responded yes
-              guard: ({event}) => getAffirmation(event.value[0].utterance) === true,
+              guard: ({event}) => ( event as any).nluValue?.topIntent === "Agree",
               actions: [
                 assign(({ event }) => {
-                  const utterance = event.value[0].utterance;
                   return {
                     lastResult: event.value,
-                    wholeDay: getAffirmation(utterance)
+                    wholeDay: true
                   };
                 }),
               ],
-              target: "WaitForFinalConfirmationWholeDay"
+              target: "WaitForSpeechIdleAfterDuration"
             },
               {
                 // check if the person responded no
-                guard: ({event}) => getAffirmation(event.value[0].utterance) === false,
+                guard: ({event}) => ( event as any).nluValue?.topIntent === "Disagree",
                 actions: [
                   assign(({ event }) => {
-                    const utterance = event.value[0].utterance;
                     return {
                       lastResult: event.value,
-                      wholeDay: getAffirmation(utterance)
+                      wholeDay: false
                     };
                   }),
                 ],
@@ -429,6 +503,11 @@ const dmMachine = setup({
             },
           },
         },
+        WaitForSpeechIdleAfterDuration: {
+          on: {
+            LISTEN_COMPLETE: "CheckSlots"
+          }
+        },
         WaitForDurationReprompt: {
           on: {
             LISTEN_COMPLETE: "DurationReprompt"
@@ -437,16 +516,6 @@ const dmMachine = setup({
         DurationReprompt: {
           entry: { type: "spst.speak", params: { utterance: "Sorry, I didn't understand that. Will it take the whole day?"} },
           on: { SPEAK_COMPLETE: "DurationResponse"}
-        },
-        WaitForFinalConfirmationWholeDay: {
-          on: {
-            LISTEN_COMPLETE: "FinalConfirmationWholeDay"
-          }
-        },
-        WaitForFinalConfirmationMeetingTime: {
-          on: {
-            LISTEN_COMPLETE: "FinalConfirmationMeetingTime"
-          }
         },
         FinalConfirmationWholeDay: {
           entry: {
@@ -467,24 +536,24 @@ const dmMachine = setup({
           on: { SPEAK_COMPLETE: "FinalConfirmResponse" },
         },
         FinalConfirmResponse: {
-          entry: { type: "spst.listen"},
+          entry: { type: "spst.listen.nlu"},
           on: {
             RECOGNISED: [
               {
                 // answers yes
-                guard: ({ event }) => getAffirmation(event.value[0].utterance) === true,
+                guard: ({ event }) => ( event as any).nluValue?.topIntent === "Agree",
                 actions: assign(({event}) => ({
                   lastResult: event.value,
-                  affirmation: getAffirmation(event.value[0].utterance)
+                  affirmation: true
                 })),
                 target: "WaitForGoodbye"
               },
               {
                 // answers no
-                guard: ({ event }) => getAffirmation(event.value[0].utterance) === false,
+                guard: ({ event }) => ( event as any).nluValue?.topIntent === "Disagree",
                 actions: assign(({event}) => ({
                   lastResult: event.value,
-                  affirmation: getAffirmation(event.value[0].utterance)
+                  affirmation: false
                 })),
                 target: "WaitForSpeechIdleRetry"
               },
@@ -513,7 +582,7 @@ const dmMachine = setup({
         WaitForSpeechIdleRetry: {
           on: {
             // go back to step 2 (asking who they are meeting with)
-            LISTEN_COMPLETE: "ConfirmProvider"
+            LISTEN_COMPLETE: "AskAction"
           }
         },
         WaitForGoodbye: {
@@ -530,31 +599,7 @@ const dmMachine = setup({
           entry: { type: "spst.speak", params: { utterance: `Your appointment has been created!` } },
           on: { SPEAK_COMPLETE: { target: "#DM.Done"} },
         },
-        // Ask: {
-        //   entry: { type: "spst.listen" },
-        //   on: {
-        //     RECOGNISED: {
-        //       actions: assign(({ event }) => {
-        //         return { lastResult: event.value };
-        //       }),
-        //     },
-        //     ASR_NOINPUT: {
-        //       actions: assign({ lastResult: null }),
-        //     },
-        //   },
-        // },
       },
-    },
-    CheckGrammar: {
-      entry: {
-        type: "spst.speak",
-        params: ({ context }) => ({
-          utterance: `You just said: ${context.lastResult![0].utterance}. And it ${
-              isInGrammar(context.lastResult![0].utterance) ? "is" : "is not"
-          } in the grammar.`,
-        }),
-      },
-      on: { SPEAK_COMPLETE: "Done" },
     },
     Done: {
       on: {
