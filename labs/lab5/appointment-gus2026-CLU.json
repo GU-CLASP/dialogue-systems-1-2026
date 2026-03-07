@@ -1,0 +1,749 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "appointment-gus2026-CLU",
+        "multilingual": false,
+        "description": "lab 5",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "CreateMeeting"
+            },
+            {
+                "category": "WhoIsX"
+            },
+            {
+                "category": "Agree"
+            },
+            {
+                "category": "Disagree"
+            }
+        ],
+        "entities": [
+            {
+                "category": "meeting",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "time",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "DateTime"
+                    }
+                ]
+            },
+            {
+                "category": "date",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "DateTime"
+                    }
+                ]
+            },
+            {
+                "category": "Person",
+                "compositionSetting": "combineComponents"
+            }
+        ],
+        "utterances": [
+            {
+                "text": "I have a meeting on October 2nd",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "date",
+                        "offset": 20,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Tuesday I want to meet with Steve Carrell at 16:45",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "date",
+                        "offset": 3,
+                        "length": 7
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 31,
+                        "length": 13
+                    },
+                    {
+                        "category": "time",
+                        "offset": 48,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet with Michael Jordan on Wednsday at 7:45",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 10,
+                        "length": 9
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 20,
+                        "length": 14
+                    },
+                    {
+                        "category": "date",
+                        "offset": 38,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 50,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to set up a time with Michael Jordan on Friday for the whole day",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 10,
+                        "length": 13
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 29,
+                        "length": 14
+                    },
+                    {
+                        "category": "date",
+                        "offset": 47,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 58,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to see Robert De Niro on Thursday at noon",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 13
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 14,
+                        "length": 14
+                    },
+                    {
+                        "category": "date",
+                        "offset": 32,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 44,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please schedule an appointment on August 15th at quarter to ten with Brad Pitt",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 7,
+                        "length": 23
+                    },
+                    {
+                        "category": "date",
+                        "offset": 34,
+                        "length": 11
+                    },
+                    {
+                        "category": "time",
+                        "offset": 49,
+                        "length": 14
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 69,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to set up a meeting with Madonna tomorrow at 3:30",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 10,
+                        "length": 16
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 32,
+                        "length": 7
+                    },
+                    {
+                        "category": "date",
+                        "offset": 40,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 52,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'm meeting Anna on April 3rd",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 11
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 12,
+                        "length": 4
+                    },
+                    {
+                        "category": "date",
+                        "offset": 20,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is King Richard?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to have a meeting with King Richard on Monday",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 31
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 32,
+                        "length": 12
+                    },
+                    {
+                        "category": "date",
+                        "offset": 48,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'm seeing King Richard two days from today",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 10
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 11,
+                        "length": 12
+                    },
+                    {
+                        "category": "date",
+                        "offset": 24,
+                        "length": 19
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Set something up for me tomorrow",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 16
+                    },
+                    {
+                        "category": "date",
+                        "offset": 24,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I have a meeting on Saturday",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 16
+                    },
+                    {
+                        "category": "date",
+                        "offset": 20,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "ok",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "not really",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no way",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "that doesn't seem right",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "alright",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Set up a meeting with Steve for the whole day",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 16
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 22,
+                        "length": 5
+                    },
+                    {
+                        "category": "time",
+                        "offset": 32,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to schedule a meeting at 16:32",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 10,
+                        "length": 18
+                    },
+                    {
+                        "category": "time",
+                        "offset": 29,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "looks good to me",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "sounds good",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "sure",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "incorrect",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "correct",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "that's wrong",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yep",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "nope",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yeah",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Anna?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 7,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Steve?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 7,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Is that Steve?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 8,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Is that Anna?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 8,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Is that Steve Carrell?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 8,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Anna Banana?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Steve Carrell?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Person",
+                        "offset": 7,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet with Steve Carrell on Tuesday at 15:15",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 14
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 20,
+                        "length": 13
+                    },
+                    {
+                        "category": "date",
+                        "offset": 37,
+                        "length": 7
+                    },
+                    {
+                        "category": "time",
+                        "offset": 48,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create a meeting for me with Anna Banana on Wednesday morning at 9",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 16
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 29,
+                        "length": 11
+                    },
+                    {
+                        "category": "date",
+                        "offset": 44,
+                        "length": 9
+                    },
+                    {
+                        "category": "time",
+                        "offset": 54,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I have a meeting with Anna Banana",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 9,
+                        "length": 7
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 22,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule a meeting with Steve Carrell on May 14th at 8AM",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 0,
+                        "length": 18
+                    },
+                    {
+                        "category": "Person",
+                        "offset": 24,
+                        "length": 13
+                    },
+                    {
+                        "category": "date",
+                        "offset": 41,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 53,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I have a meeting at six o'clock",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 9,
+                        "length": 7
+                    },
+                    {
+                        "category": "time",
+                        "offset": 20,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule an appointment for me please",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 12,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to make an appointment for tomorrow",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "meeting",
+                        "offset": 18,
+                        "length": 11
+                    },
+                    {
+                        "category": "date",
+                        "offset": 34,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            }
+        ]
+    }
+}
