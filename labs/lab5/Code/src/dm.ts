@@ -13,10 +13,10 @@ const azureCredentials = {
 };
 
 const azureLanguageCredentials = {
-  endpoint: "https://ds2026-gusbaranj.cognitiveservices.azure.com/" /** your Azure CLU prediction URL */,
+  endpoint: "https://ds2026-gusbaranj.cognitiveservices.azure.com/language/:analyze-conversations?api-version=2024-11-15-preview" /** your Azure CLU prediction URL */,
   key: NLU_KEY /** reference to your Azure CLU key */,
   deploymentName: "appointment" /** your Azure CLU deployment */,
-  projectName: "appointment" /** your Azure CLU project name */,
+  projectName: "lab5" /** your Azure CLU project name */,
 };
 
 const settings: Settings = {
