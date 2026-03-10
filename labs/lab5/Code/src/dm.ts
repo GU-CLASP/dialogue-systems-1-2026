@@ -88,16 +88,67 @@ const dmMachine = setup({
     },
 
     WaitToStart: {
-      on: { CLICK: "PromptStart" },
+      on: { CLICK: "GetIntent" },
     },
 
-    PromptStart: {
+    GetIntent: {
+      initial: "Prompt",
+      on: {
+        LISTEN_COMPLETE: [
+          { target: "RouteIntent", guard: ({ context }) => !!context.lastResult },
+          { target: ".NoInput" },
+        ],
+      },
+      states: {
+        Prompt: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: "What can I help you with?" },
+          },
+          on: { SPEAK_COMPLETE: "Listen" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: "I can't hear you!" },
+          },
+          on: { SPEAK_COMPLETE: "Listen" },
+        },
+        Listen: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              actions: assign(({ event }) => ({
+                lastResult: event.value,
+                interpretation: event.nluValue,
+              })),
+            },
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null, interpretation: null }),
+            },
+          },
+        },
+      },
+    },
+
+    RouteIntent: {
+      always: [
+        {
+          target: "CollectInfo",
+          guard: ({ context }) => getTopIntent(context) === "CreateAppointment",
+        },
+        { target: "ErrorIntent" },
+      ],
+    },
+
+    ErrorIntent: {
       entry: {
         type: "spst.speak",
-        params: { utterance: "Let's create an appointment!" },
+        params: { utterance: "Sorry, I'm not sure how to help with that yet." },
       },
-      on: { SPEAK_COMPLETE: "CollectInfo" },
+      on: { SPEAK_COMPLETE: "GetIntent" },
     },
+
 // main state for collecting info about the appointment
     CollectInfo: {
       initial: "Who",
@@ -384,6 +435,14 @@ const dmMachine = setup({
         {
           target: "CollectInfo",
           guard: ({ context }) => isDisagree(context),
+          actions: assign({
+            name: "",
+            day: "",
+            time: "",
+            isWholeDay: false,
+            lastResult: null,
+            interpretation: null,
+          }),
         },
         { target: "ErrorConfirmation" },
       ],
@@ -406,7 +465,7 @@ const dmMachine = setup({
     },
 
     Done: {
-      on: { CLICK: "PromptStart" },
+      on: { CLICK: "GetIntent" },
     },
   },
 });
