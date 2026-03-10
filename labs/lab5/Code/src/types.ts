@@ -8,7 +8,7 @@ export interface DMContext {
   time: string;
   day: string;
   name: string;
-  isWholeDay: boolean;
+  isWholeDay: boolean | null;
 }
 
 export interface Entity { // This is the type of the entities array in the NLUObject. 

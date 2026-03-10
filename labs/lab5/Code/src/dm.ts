@@ -14,7 +14,7 @@ const azureCredentials = {
 };
 
 const azureLanguageCredentials = {
-  endpoint: "https://ds2026-gusbaranj.cognitiveservices.azure.com/language/:analyze-conversations?api-version=2022-10-01-preview",
+  endpoint: "https://ds2026-gusbaranj.cognitiveservices.azure.com/language/:analyze-conversations?api-version=2024-11-15-preview",
   key: NLU_KEY,
   deploymentName: "appointment",
   projectName: "lab5",
@@ -76,7 +76,7 @@ const dmMachine = setup({
     name: "",
     day: "",
     time: "",
-    isWholeDay: false,
+    isWholeDay: null as boolean | null,
   }),
   id: "DM",
   initial: "Prepare",
@@ -134,7 +134,7 @@ const dmMachine = setup({
     RouteIntent: {
       always: [
         {
-          target: "CollectInfo",
+          target: "ExtractInitialEntities",
           guard: ({ context }) => getTopIntent(context) === "CreateAppointment",
         },
         { target: "ErrorIntent" },
@@ -149,13 +149,28 @@ const dmMachine = setup({
       on: { SPEAK_COMPLETE: "GetIntent" },
     },
 
+    ExtractInitialEntities: {
+      entry: assign(({ context }) => {
+        const who = getEntity(context, "Who");
+        const day = getEntity(context, "Day");
+        const time = getEntity(context, "Time");
+
+        return {
+          name: who ?? context.name,
+          day: day ?? context.day,
+          time: time ?? context.time,
+        };
+      }),
+      always: "CollectInfo",
+    },
+
 // main state for collecting info about the appointment
     CollectInfo: {
       initial: "Who",
       states: {
 
         Who: {
-          initial: "Prompt",
+          initial: "CheckIfNameExists",
           on: {
             LISTEN_COMPLETE: [
               { target: "CheckPerson", guard: ({ context }) => !!context.lastResult },
@@ -163,6 +178,15 @@ const dmMachine = setup({
             ],
           },
           states: {
+            CheckIfNameExists: {
+              always: [
+                {
+                  target: "#DM.CollectInfo.WhenDay",
+                  guard: ({ context }) => !!context.name,
+                },
+                { target: "Prompt" },
+              ],
+            },
             Prompt: {
               entry: { type: "spst.speak", params: { utterance: "Who are you meeting with?" } },
               on: { SPEAK_COMPLETE: "Listen" },
@@ -212,7 +236,7 @@ const dmMachine = setup({
         },
 
         WhenDay: {
-          initial: "Prompt",
+          initial: "CheckIfDayExists",
           on: {
             LISTEN_COMPLETE: [
               { target: "CheckDay", guard: ({ context }) => !!context.lastResult },
@@ -220,6 +244,15 @@ const dmMachine = setup({
             ],
           },
           states: {
+            CheckIfDayExists: {
+              always: [
+                {
+                  target: "#DM.CollectInfo.AllDay",
+                  guard: ({ context }) => !!context.day,
+                },
+                { target: "Prompt" },
+              ],
+            },
             Prompt: {
               entry: { type: "spst.speak", params: { utterance: "On which day is your meeting?" } },
               on: { SPEAK_COMPLETE: "Listen" },
@@ -269,7 +302,7 @@ const dmMachine = setup({
         },
 
         AllDay: {
-          initial: "Prompt",
+          initial: "CheckIfAllDay",
           on: {
             LISTEN_COMPLETE: [
               { target: "CheckAllDay", guard: ({ context }) => !!context.lastResult },
@@ -277,6 +310,26 @@ const dmMachine = setup({
             ],
           },
           states: {
+            CheckIfAllDay: {
+              always: [
+                {
+                  target: "#DM.Confirm",
+                  guard: ({ context }) =>
+                    context.isWholeDay === true &&
+                    !!context.name &&
+                    !!context.day,
+                },
+                {
+                  target: "#DM.CollectInfo.WhenTime",
+                  guard: ({ context }) =>
+                    context.isWholeDay === false &&
+                    !!context.name &&
+                    !!context.day,
+                },
+                { target: "Prompt" },
+              ],
+            },
+
             Prompt: {
               entry: { type: "spst.speak", params: { utterance: "Will it take the whole day?" } },
               on: { SPEAK_COMPLETE: "Listen" },
@@ -327,7 +380,7 @@ const dmMachine = setup({
         },
 
         WhenTime: {
-          initial: "Prompt",
+          initial: "CheckIfTimeExists",
           on: {
             LISTEN_COMPLETE: [
               { target: "CheckTime", guard: ({ context }) => !!context.lastResult },
@@ -335,6 +388,15 @@ const dmMachine = setup({
             ],
           },
           states: {
+            CheckIfTimeExists: {
+              always: [
+                {
+                  target: "#DM.Confirm",
+                  guard: ({ context }) => !!context.time,
+                },
+                { target: "Prompt" },
+              ],
+            },
             Prompt: {
               entry: { type: "spst.speak", params: { utterance: "What time is your meeting?" } },
               on: { SPEAK_COMPLETE: "Listen" },
