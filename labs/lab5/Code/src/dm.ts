@@ -79,120 +79,43 @@ const dmMachine = setup({
     isWholeDay: null as boolean | null,
   }),
   id: "DM",
-  initial: "Prepare",
+  initial: "Initialization",
   states: {
 
-    Prepare: {
-      entry: ({ context }) => context.spstRef.send({ type: "PREPARE" }),
-      on: { ASRTTS_READY: "WaitToStart" },
-    },
-
-    WaitToStart: {
-      on: { CLICK: "GetIntent" },
-    },
-
-    GetIntent: {
-      initial: "Prompt",
-      on: {
-        LISTEN_COMPLETE: [
-          { target: "RouteIntent", guard: ({ context }) => !!context.lastResult },
-          { target: ".NoInput" },
-        ],
-      },
-      states: {
-        Prompt: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: "What can I help you with?" },
-          },
-          on: { SPEAK_COMPLETE: "Listen" },
-        },
-        NoInput: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: "I can't hear you!" },
-          },
-          on: { SPEAK_COMPLETE: "Listen" },
-        },
-        Listen: {
-          entry: { type: "spst.listen" },
-          on: {
-            RECOGNISED: {
-              actions: assign(({ event }) => ({
-                lastResult: event.value,
-                interpretation: event.nluValue,
-              })),
-            },
-            ASR_NOINPUT: {
-              actions: assign({ lastResult: null, interpretation: null }),
-            },
-          },
-        },
-      },
-    },
-
-    RouteIntent: {
-      always: [
-        {
-          target: "ExtractInitialEntities",
-          guard: ({ context }) => getTopIntent(context) === "CreateAppointment",
-        },
-        { target: "ErrorIntent" },
-      ],
-    },
-
-    ErrorIntent: {
-      entry: {
-        type: "spst.speak",
-        params: { utterance: "Sorry, I'm not sure how to help with that yet." },
-      },
-      on: { SPEAK_COMPLETE: "GetIntent" },
-    },
-
-    ExtractInitialEntities: {
-      entry: assign(({ context }) => {
-        const who = getEntity(context, "Who");
-        const day = getEntity(context, "Day");
-        const time = getEntity(context, "Time");
-
-        return {
-          name: who ?? context.name,
-          day: day ?? context.day,
-          time: time ?? context.time,
-        };
-      }),
-      always: "CollectInfo",
-    },
-
-// main state for collecting info about the appointment
-    CollectInfo: {
-      initial: "Who",
+    Initialization: {
+      initial: "Prepare",
       states: {
 
-        Who: {
-          initial: "CheckIfNameExists",
+        Prepare: {
+          entry: ({ context }) => context.spstRef.send({ type: "PREPARE" }),
+          on: { ASRTTS_READY: "WaitToStart" },
+        },
+
+        WaitToStart: {
+          on: { CLICK: "GetIntent" },
+        },
+
+        GetIntent: {
+          initial: "Prompt",
           on: {
             LISTEN_COMPLETE: [
-              { target: "CheckPerson", guard: ({ context }) => !!context.lastResult },
+              { target: "RouteIntent", guard: ({ context }) => !!context.lastResult },
               { target: ".NoInput" },
             ],
           },
           states: {
-            CheckIfNameExists: {
-              always: [
-                {
-                  target: "#DM.CollectInfo.WhenDay",
-                  guard: ({ context }) => !!context.name,
-                },
-                { target: "Prompt" },
-              ],
-            },
             Prompt: {
-              entry: { type: "spst.speak", params: { utterance: "Who are you meeting with?" } },
+              entry: {
+                type: "spst.speak",
+                params: { utterance: "What can I help you with?" },
+              },
               on: { SPEAK_COMPLETE: "Listen" },
             },
             NoInput: {
-              entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
+              entry: {
+                type: "spst.speak",
+                params: { utterance: "I can't hear you!" },
+              },
               on: { SPEAK_COMPLETE: "Listen" },
             },
             Listen: {
@@ -212,49 +135,346 @@ const dmMachine = setup({
           },
         },
 
-        CheckPerson: {
+        RouteIntent: {
           always: [
             {
-              target: "WhenDay",
-              guard: ({ context }) => !!getEntity(context, "Who"),
-              actions: assign(({ context }) => ({
-                name: getEntity(context, "Who")!,
-              })),
+              target: "#DM.Appointment",
+              guard: ({ context }) => getTopIntent(context) === "CreateAppointment",
             },
-            { target: "ErrorPerson" },
+            { target: "ErrorIntent" },
           ],
         },
 
-        ErrorPerson: {
+        ErrorIntent: {
           entry: {
             type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: `Sorry, I don't know ${context.lastResult![0].utterance}. Please try again.`,
-            }),
+            params: { utterance: "Sorry, I'm not sure how to help with that yet." },
           },
-          on: { SPEAK_COMPLETE: "Who" },
+          on: { SPEAK_COMPLETE: "GetIntent" },
         },
+      },
+    },
 
-        WhenDay: {
-          initial: "CheckIfDayExists",
+    Appointment: {
+      id: "Appointment",
+      initial: "ExtractInitialEntities",
+      states: {
+
+        ExtractInitialEntities: {
+          entry: assign(({ context }) => {
+            const who = getEntity(context, "Who");
+            const day = getEntity(context, "Day");
+            const time = getEntity(context, "Time");
+
+            return {
+              name: who ?? context.name,
+              day: day ?? context.day,
+              time: time ?? context.time,
+            };
+          }),
+          always: "CollectInfo",
+        },
+    // main state for collecting info about the appointment
+        CollectInfo: {
+          initial: "Who",
+          states: {
+
+            Who: {
+              initial: "CheckIfNameExists",
+              on: {
+                LISTEN_COMPLETE: [
+                  { target: "CheckPerson", guard: ({ context }) => !!context.lastResult },
+                  { target: ".NoInput" },
+                ],
+              },
+              states: {
+                CheckIfNameExists: {
+                  always: [
+                    {
+                      target: "#Appointment.CollectInfo.WhenDay",
+                      guard: ({ context }) => !!context.name,
+                    },
+                    { target: "Prompt" },
+                  ],
+                },
+                Prompt: {
+                  entry: { type: "spst.speak", params: { utterance: "Who are you meeting with?" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                NoInput: {
+                  entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                Listen: {
+                  entry: { type: "spst.listen" },
+                  on: {
+                    RECOGNISED: {
+                      actions: assign(({ event }) => ({
+                        lastResult: event.value,
+                        interpretation: event.nluValue,
+                      })),
+                    },
+                    ASR_NOINPUT: {
+                      actions: assign({ lastResult: null, interpretation: null }),
+                    },
+                  },
+                },
+              },
+            },
+
+            CheckPerson: {
+              always: [
+                {
+                  target: "WhenDay",
+                  guard: ({ context }) => !!getEntity(context, "Who"),
+                  actions: assign(({ context }) => ({
+                    name: getEntity(context, "Who")!,
+                  })),
+                },
+                { target: "ErrorPerson" },
+              ],
+            },
+
+            ErrorPerson: {
+              entry: {
+                type: "spst.speak",
+                params: ({ context }) => ({
+                  utterance: `Sorry, I don't know ${context.lastResult![0].utterance}. Please try again.`,
+                }),
+              },
+              on: { SPEAK_COMPLETE: "Who" },
+            },
+
+            WhenDay: {
+              initial: "CheckIfDayExists",
+              on: {
+                LISTEN_COMPLETE: [
+                  { target: "CheckDay", guard: ({ context }) => !!context.lastResult },
+                  { target: ".NoInput" },
+                ],
+              },
+              states: {
+                CheckIfDayExists: {
+                  always: [
+                    {
+                      target: "#Appointment.CollectInfo.AllDay",
+                      guard: ({ context }) => !!context.day,
+                    },
+                    { target: "Prompt" },
+                  ],
+                },
+                Prompt: {
+                  entry: { type: "spst.speak", params: { utterance: "On which day is your meeting?" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                NoInput: {
+                  entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                Listen: {
+                  entry: { type: "spst.listen" },
+                  on: {
+                    RECOGNISED: {
+                      actions: assign(({ event }) => ({
+                        lastResult: event.value,
+                        interpretation: event.nluValue,
+                      })),
+                    },
+                    ASR_NOINPUT: {
+                      actions: assign({ lastResult: null, interpretation: null }),
+                    },
+                  },
+                },
+              },
+            },
+
+            CheckDay: {
+              always: [
+                {
+                  target: "AllDay",
+                  guard: ({ context }) => !!getEntity(context, "Day"),
+                  actions: assign(({ context }) => ({
+                    day: getEntity(context, "Day")!,
+                  })),
+                },
+                { target: "ErrorDay" },
+              ],
+            },
+
+            ErrorDay: {
+              entry: {
+                type: "spst.speak",
+                params: ({ context }) => ({
+                  utterance: `Sorry, I don't recognize ${context.lastResult![0].utterance} as a day. Please try again.`,
+                }),
+              },
+              on: { SPEAK_COMPLETE: "WhenDay" },
+            },
+
+            AllDay: {
+              initial: "CheckIfAllDay",
+              on: {
+                LISTEN_COMPLETE: [
+                  { target: "CheckAllDay", guard: ({ context }) => !!context.lastResult },
+                  { target: ".NoInput" },
+                ],
+              },
+              states: {
+                CheckIfAllDay: {
+                  always: [
+                    {
+                      target: "#Appointment.Confirm",
+                      guard: ({ context }) =>
+                        context.isWholeDay === true &&
+                        !!context.name &&
+                        !!context.day,
+                    },
+                    {
+                      target: "#Appointment.CollectInfo.WhenTime",
+                      guard: ({ context }) =>
+                        context.isWholeDay === false &&
+                        !!context.name &&
+                        !!context.day,
+                    },
+                    { target: "Prompt" },
+                  ],
+                },
+
+                Prompt: {
+                  entry: { type: "spst.speak", params: { utterance: "Will it take the whole day?" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                NoInput: {
+                  entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                Listen: {
+                  entry: { type: "spst.listen" },
+                  on: {
+                    RECOGNISED: {
+                      actions: assign(({ event }) => ({
+                        lastResult: event.value,
+                        interpretation: event.nluValue,
+                      })),
+                    },
+                    ASR_NOINPUT: {
+                      actions: assign({ lastResult: null, interpretation: null }),
+                    },
+                  },
+                },
+              },
+            },
+
+            CheckAllDay: {
+              always: [
+                {
+                  target: "#Appointment.Confirm",
+                  guard: ({ context }) => isAgree(context),
+                  actions: assign({ isWholeDay: true }),
+                },
+                {
+                  target: "WhenTime",
+                  guard: ({ context }) => isDisagree(context),
+                  actions: assign({ isWholeDay: false }),
+                },
+                { target: "ErrorAllDay" },
+              ],
+            },
+
+            ErrorAllDay: {
+              entry: {
+                type: "spst.speak",
+                params: { utterance: "Sorry, I didn't understand. Please say yes or no." },
+              },
+              on: { SPEAK_COMPLETE: "AllDay" },
+            },
+
+            WhenTime: {
+              initial: "CheckIfTimeExists",
+              on: {
+                LISTEN_COMPLETE: [
+                  { target: "CheckTime", guard: ({ context }) => !!context.lastResult },
+                  { target: ".NoInput" },
+                ],
+              },
+              states: {
+                CheckIfTimeExists: {
+                  always: [
+                    {
+                      target: "#Appointment.Confirm",
+                      guard: ({ context }) => !!context.time,
+                    },
+                    { target: "Prompt" },
+                  ],
+                },
+                Prompt: {
+                  entry: { type: "spst.speak", params: { utterance: "What time is your meeting?" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                NoInput: {
+                  entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
+                  on: { SPEAK_COMPLETE: "Listen" },
+                },
+                Listen: {
+                  entry: { type: "spst.listen" },
+                  on: {
+                    RECOGNISED: {
+                      actions: assign(({ event }) => ({
+                        lastResult: event.value,
+                        interpretation: event.nluValue,
+                      })),
+                    },
+                    ASR_NOINPUT: {
+                      actions: assign({ lastResult: null, interpretation: null }),
+                    },
+                  },
+                },
+              },
+            },
+
+            CheckTime: {
+              always: [
+                {
+                  target: "#Appointment.Confirm",
+                  guard: ({ context }) => !!getEntity(context, "Time"),
+                  actions: assign(({ context }) => ({
+                    time: getEntity(context, "Time")!,
+                  })),
+                },
+                { target: "ErrorTime" },
+              ],
+            },
+
+            ErrorTime: {
+              entry: {
+                type: "spst.speak",
+                params: ({ context }) => ({
+                  utterance: `Sorry, I don't recognize ${context.lastResult![0].utterance} as a time. Please try again.`,
+                }),
+              },
+              on: { SPEAK_COMPLETE: "WhenTime" },
+            },
+          },
+        },
+    // confirmation states
+        Confirm: {
+          initial: "Prompt",
           on: {
             LISTEN_COMPLETE: [
-              { target: "CheckDay", guard: ({ context }) => !!context.lastResult },
+              { target: "CheckConfirmation", guard: ({ context }) => !!context.lastResult },
               { target: ".NoInput" },
             ],
           },
           states: {
-            CheckIfDayExists: {
-              always: [
-                {
-                  target: "#DM.CollectInfo.AllDay",
-                  guard: ({ context }) => !!context.day,
-                },
-                { target: "Prompt" },
-              ],
-            },
             Prompt: {
-              entry: { type: "spst.speak", params: { utterance: "On which day is your meeting?" } },
+              entry: {
+                type: "spst.speak",
+                params: ({ context }) => ({
+                  utterance: context.isWholeDay
+                    ? `Do you want me to create an appointment with ${context.name} on ${context.day} for the whole day?`
+                    : `Do you want me to create an appointment with ${context.name} on ${context.day} at ${context.time}?`,
+                }),
+              },
               on: { SPEAK_COMPLETE: "Listen" },
             },
             NoInput: {
@@ -278,258 +498,50 @@ const dmMachine = setup({
           },
         },
 
-        CheckDay: {
+        CheckConfirmation: {
           always: [
             {
-              target: "AllDay",
-              guard: ({ context }) => !!getEntity(context, "Day"),
-              actions: assign(({ context }) => ({
-                day: getEntity(context, "Day")!,
-              })),
-            },
-            { target: "ErrorDay" },
-          ],
-        },
-
-        ErrorDay: {
-          entry: {
-            type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: `Sorry, I don't recognize ${context.lastResult![0].utterance} as a day. Please try again.`,
-            }),
-          },
-          on: { SPEAK_COMPLETE: "WhenDay" },
-        },
-
-        AllDay: {
-          initial: "CheckIfAllDay",
-          on: {
-            LISTEN_COMPLETE: [
-              { target: "CheckAllDay", guard: ({ context }) => !!context.lastResult },
-              { target: ".NoInput" },
-            ],
-          },
-          states: {
-            CheckIfAllDay: {
-              always: [
-                {
-                  target: "#DM.Confirm",
-                  guard: ({ context }) =>
-                    context.isWholeDay === true &&
-                    !!context.name &&
-                    !!context.day,
-                },
-                {
-                  target: "#DM.CollectInfo.WhenTime",
-                  guard: ({ context }) =>
-                    context.isWholeDay === false &&
-                    !!context.name &&
-                    !!context.day,
-                },
-                { target: "Prompt" },
-              ],
-            },
-
-            Prompt: {
-              entry: { type: "spst.speak", params: { utterance: "Will it take the whole day?" } },
-              on: { SPEAK_COMPLETE: "Listen" },
-            },
-            NoInput: {
-              entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
-              on: { SPEAK_COMPLETE: "Listen" },
-            },
-            Listen: {
-              entry: { type: "spst.listen" },
-              on: {
-                RECOGNISED: {
-                  actions: assign(({ event }) => ({
-                    lastResult: event.value,
-                    interpretation: event.nluValue,
-                  })),
-                },
-                ASR_NOINPUT: {
-                  actions: assign({ lastResult: null, interpretation: null }),
-                },
-              },
-            },
-          },
-        },
-
-        CheckAllDay: {
-          always: [
-            {
-              target: "#DM.Confirm",
+              target: "AppointmentCreated",
               guard: ({ context }) => isAgree(context),
-              actions: assign({ isWholeDay: true }),
             },
             {
-              target: "WhenTime",
+              target: "CollectInfo",
               guard: ({ context }) => isDisagree(context),
-              actions: assign({ isWholeDay: false }),
+              actions: assign({
+                name: "",
+                day: "",
+                time: "",
+                isWholeDay: false,
+                lastResult: null,
+                interpretation: null,
+              }),
             },
-            { target: "ErrorAllDay" },
+            { target: "ErrorConfirmation" },
           ],
         },
 
-        ErrorAllDay: {
+        ErrorConfirmation: {
           entry: {
             type: "spst.speak",
             params: { utterance: "Sorry, I didn't understand. Please say yes or no." },
           },
-          on: { SPEAK_COMPLETE: "AllDay" },
+          on: { SPEAK_COMPLETE: "Confirm" },
         },
 
-        WhenTime: {
-          initial: "CheckIfTimeExists",
-          on: {
-            LISTEN_COMPLETE: [
-              { target: "CheckTime", guard: ({ context }) => !!context.lastResult },
-              { target: ".NoInput" },
-            ],
-          },
-          states: {
-            CheckIfTimeExists: {
-              always: [
-                {
-                  target: "#DM.Confirm",
-                  guard: ({ context }) => !!context.time,
-                },
-                { target: "Prompt" },
-              ],
-            },
-            Prompt: {
-              entry: { type: "spst.speak", params: { utterance: "What time is your meeting?" } },
-              on: { SPEAK_COMPLETE: "Listen" },
-            },
-            NoInput: {
-              entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
-              on: { SPEAK_COMPLETE: "Listen" },
-            },
-            Listen: {
-              entry: { type: "spst.listen" },
-              on: {
-                RECOGNISED: {
-                  actions: assign(({ event }) => ({
-                    lastResult: event.value,
-                    interpretation: event.nluValue,
-                  })),
-                },
-                ASR_NOINPUT: {
-                  actions: assign({ lastResult: null, interpretation: null }),
-                },
-              },
-            },
-          },
-        },
-
-        CheckTime: {
-          always: [
-            {
-              target: "#DM.Confirm",
-              guard: ({ context }) => !!getEntity(context, "Time"),
-              actions: assign(({ context }) => ({
-                time: getEntity(context, "Time")!,
-              })),
-            },
-            { target: "ErrorTime" },
-          ],
-        },
-
-        ErrorTime: {
+        AppointmentCreated: {
           entry: {
             type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: `Sorry, I don't recognize ${context.lastResult![0].utterance} as a time. Please try again.`,
-            }),
+            params: { utterance: "Your appointment has been created!" },
           },
-          on: { SPEAK_COMPLETE: "WhenTime" },
+          on: { SPEAK_COMPLETE: "#DM.Done" },
         },
       },
-    },
-// confirmation state
-    Confirm: {
-      initial: "Prompt",
-      on: {
-        LISTEN_COMPLETE: [
-          { target: "CheckConfirmation", guard: ({ context }) => !!context.lastResult },
-          { target: ".NoInput" },
-        ],
-      },
-      states: {
-        Prompt: {
-          entry: {
-            type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: context.isWholeDay
-                ? `Do you want me to create an appointment with ${context.name} on ${context.day} for the whole day?`
-                : `Do you want me to create an appointment with ${context.name} on ${context.day} at ${context.time}?`,
-            }),
-          },
-          on: { SPEAK_COMPLETE: "Listen" },
-        },
-        NoInput: {
-          entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
-          on: { SPEAK_COMPLETE: "Listen" },
-        },
-        Listen: {
-          entry: { type: "spst.listen" },
-          on: {
-            RECOGNISED: {
-              actions: assign(({ event }) => ({
-                lastResult: event.value,
-                interpretation: event.nluValue,
-              })),
-            },
-            ASR_NOINPUT: {
-              actions: assign({ lastResult: null, interpretation: null }),
-            },
-          },
-        },
-      },
-    },
-
-    CheckConfirmation: {
-      always: [
-        {
-          target: "AppointmentCreated",
-          guard: ({ context }) => isAgree(context),
-        },
-        {
-          target: "CollectInfo",
-          guard: ({ context }) => isDisagree(context),
-          actions: assign({
-            name: "",
-            day: "",
-            time: "",
-            isWholeDay: false,
-            lastResult: null,
-            interpretation: null,
-          }),
-        },
-        { target: "ErrorConfirmation" },
-      ],
-    },
-
-    ErrorConfirmation: {
-      entry: {
-        type: "spst.speak",
-        params: { utterance: "Sorry, I didn't understand. Please say yes or no." },
-      },
-      on: { SPEAK_COMPLETE: "Confirm" },
-    },
-
-    AppointmentCreated: {
-      entry: {
-        type: "spst.speak",
-        params: { utterance: "Your appointment has been created!" },
-      },
-      on: { SPEAK_COMPLETE: "Done" },
     },
 
     Done: {
-      on: { CLICK: "GetIntent" },
+      on: { CLICK: "#DM.Initialization.GetIntent" },
     },
-  },
+  }
 });
 
 const dmActor = createActor(dmMachine, {
