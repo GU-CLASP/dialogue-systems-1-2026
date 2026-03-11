@@ -1,163 +1,259 @@
-import { assign, createActor, setup } from "xstate";
+import { createActor, setup, assign } from "xstate";
 import type { Settings } from "speechstate";
 import { speechstate } from "speechstate";
-import { createBrowserInspector } from "@statelyai/inspect";
 import { KEY } from "./azure";
-import type { DMContext, DMEvents } from "./types";
 
-const inspector = createBrowserInspector();
-
-const azureCredentials = {
-  endpoint:
-    "https://YOUR_REGION.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
-  key: KEY,
-};
-
+// ---------------- SETTINGS ----------------
 const settings: Settings = {
-  azureCredentials: azureCredentials,
-  azureRegion: "YOUR_REGION",
-  asrDefaultCompleteTimeout: 0,
-  asrDefaultNoInputTimeout: 5000,
+  azureCredentials: {
+    endpoint:
+      "https://swedencentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+    key: KEY,
+  },
+  azureRegion: "swedencentral",
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
+  asrDefaultNoInputTimeout: 10000,
 };
 
-interface GrammarEntry {
-  person?: string;
-  day?: string;
-  time?: string;
-}
-
-const grammar: { [index: string]: GrammarEntry } = {
+// ---------------- GRAMMAR ----------------
+const grammar: Record<string, any> = {
   vlad: { person: "Vladislav Maraev" },
+  vladislav: { person: "Vladislav Maraev" },
   bora: { person: "Bora Kara" },
   tal: { person: "Talha Bedir" },
+  talha: { person: "Talha Bedir" },
   tom: { person: "Tom Södahl Bladsjö" },
+
   monday: { day: "Monday" },
+  "mon day": { day: "Monday" },
+  mon: { day: "Monday" },
   tuesday: { day: "Tuesday" },
-  "10": { time: "10:00" },
-  "11": { time: "11:00" },
+  "choose day": { day: "Tuesday" },
+  "twoesday": { day: "Tuesday" },
+  tues: { day: "Tuesday" },
+  wednesday: { day: "Wednesday" },
+  "wentz day": { day: "Wednesday" },
+  wed: { day: "Wednesday" },
+  thursday: { day: "Thursday" },
+  "thurs day": { day: "Thursday" },
+  thurs: { day: "Thursday" },
+  friday: { day: "Friday" },
+  "fry day": { day: "Friday" },
+  fri: { day: "Friday" },
+  "10": { time: "10:00"},
+  ten: { time: "10:00" },
+  "ten o'clock": { time: "10:00" },
+  "11": {time: "11:00"},
+  eleven: { time: "11:00" },
+  "eleven o'clock": { time: "11:00" },
+  "12": {time: "12:00"},
+  twelve: { time: "12:00" },
+  noon: { time: "12:00" },
+
+  yes: { confirm: true },
+  yeah: { confirm: true },
+  yep: { confirm: true },
+  correct: { confirm: true },
+  no: { confirm: false },
+  nope: { confirm: false },
+  wrong: { confirm: false },
 };
 
-function isInGrammar(utterance: string) {
-  return utterance.toLowerCase() in grammar;
-}
+const getUtterance = (event: any): string =>
+  event.value?.[0]?.utterance?.toLowerCase().trim() ?? "";
 
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
-}
+const speak = (context: any, utterance: string) => {
+  setTimeout(() => {
+    context.spstRef.send({
+      type: "SPEAK",
+      value: { utterance },
+    });
+  }, 500);
+};
 
+// ---------------- MACHINE ----------------
 const dmMachine = setup({
-  types: {
-    context: {} as DMContext,
-    events: {} as DMEvents,
+  types: {} as {
+    context: {
+      spstRef: any;
+      person?: string;
+      day?: string;
+      time?: string;
+    };
   },
-  actions: {
-    "spst.speak": ({ context }, params: { utterance: string }) =>
-      context.spstRef.send({
-        type: "SPEAK",
-        value: {
-          utterance: params.utterance,
-        },
-      }),
-    "spst.listen": ({ context }) =>
-      context.spstRef.send({
-        type: "LISTEN",
-      }),
+  actors: {
+    speechstate,
   },
 }).createMachine({
-  context: ({ spawn }) => ({
-    spstRef: spawn(speechstate, { input: settings }),
-    lastResult: null,
-  }),
   id: "DM",
   initial: "Prepare",
+
+  context: ({ spawn }) => ({
+    spstRef: spawn(speechstate, { input: settings }),
+  }),
+
   states: {
     Prepare: {
-      entry: ({ context }) => context.spstRef.send({ type: "PREPARE" }),
-      on: { ASRTTS_READY: "WaitToStart" },
+      entry: [
+        () => console.log("[PREPARE] Sending PREPARE to speech actor..."),
+        ({ context }) => context.spstRef.send({ type: "PREPARE" }),
+      ],
+      on: {
+        ASRTTS_READY: {
+          target: "Idle",
+          actions: () => console.log("[PREPARE] ✅ Speech system ready!"),
+        },
+      },
     },
-    WaitToStart: {
+
+    Idle: {
+      entry: () => console.log("[IDLE] Ready — click the button to start."),
       on: { CLICK: "Greeting" },
     },
+
     Greeting: {
-      initial: "Prompt",
+      entry: ({ context }) => speak(context, "Hello! Welcome to speech booking system."),
+      on: { SPEAK_COMPLETE: "AskPerson" },
+    },
+
+    AskPerson: {
+      entry: ({ context }) => speak(context, "Who would you like to meet?"),
+      on: { SPEAK_COMPLETE: "ListenPerson" },
+    },
+
+    ListenPerson: {
+      entry: ({ context }) => {
+        context.spstRef.send({ type: "LISTEN" });
+      },
       on: {
-        LISTEN_COMPLETE: [
+        SPEAK_COMPLETE: undefined,
+        RECOGNISED: [
           {
-            target: "CheckGrammar",
-            guard: ({ context }) => !!context.lastResult,
+            guard: ({ event }) => !!grammar[getUtterance(event)]?.person,
+            actions: assign(({ event }) => ({
+              person: grammar[getUtterance(event)]?.person,
+            })),
+            target: "AskDay",
           },
-          { target: ".NoInput" },
+          { target: "AskPerson" },
         ],
-      },
-      states: {
-        Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello world!` } },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        NoInput: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: `I can't hear you!` },
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        Ask: {
-          entry: { type: "spst.listen" },
-          on: {
-            RECOGNISED: {
-              actions: assign(({ event }) => {
-                return { lastResult: event.value };
-              }),
-            },
-            ASR_NOINPUT: {
-              actions: assign({ lastResult: null }),
-            },
-          },
-        },
+        NOINPUT: "AskPerson",
       },
     },
-    CheckGrammar: {
-      entry: {
-        type: "spst.speak",
-        params: ({ context }) => ({
-          utterance: `You just said: ${context.lastResult![0].utterance}. And it ${
-            isInGrammar(context.lastResult![0].utterance) ? "is" : "is not"
-          } in the grammar.`,
-        }),
-      },
-      on: { SPEAK_COMPLETE: "Done" },
+
+    AskDay: {
+      entry: ({ context }) => speak(context, "Which day works for you?"),
+      on: { SPEAK_COMPLETE: "ListenDay" },
     },
-    Done: {
+
+    ListenDay: {
+      entry: ({ context }) => {
+        context.spstRef.send({ type: "LISTEN" });
+      },
       on: {
-        CLICK: "Greeting",
+        SPEAK_COMPLETE: undefined,
+        RECOGNISED: [
+          {
+            guard: ({ event }) => !!grammar[getUtterance(event)]?.day,
+            actions: assign(({ event }) => ({
+              day: grammar[getUtterance(event)]?.day,
+            })),
+            target: "AskTime",
+          },
+          { target: "AskDay" },
+        ],
+        NOINPUT: "AskDay",
       },
+    },
+
+    AskTime: {
+      entry: ({ context }) => speak(context, "At what time?"),
+      on: { SPEAK_COMPLETE: "ListenTime" },
+    },
+
+    ListenTime: {
+      entry: ({ context }) => {
+        context.spstRef.send({ type: "LISTEN" });
+      },
+      on: {
+        SPEAK_COMPLETE: undefined,
+        RECOGNISED: [
+          {
+            guard: ({ event }) => !!grammar[getUtterance(event)]?.time,
+            actions: assign(({ event }) => ({
+              time: grammar[getUtterance(event)]?.time,
+            })),
+            target: "Confirm",
+          },
+          { target: "AskTime" },
+        ],
+        NOINPUT: "AskTime",
+      },
+    },
+
+    Confirm: {
+      entry: ({ context }) =>
+        speak(
+          context,
+          `You are meeting ${context.person} on ${context.day} at ${context.time}. Is this correct?`
+        ),
+      on: { SPEAK_COMPLETE: "ListenConfirm" },
+    },
+
+    ListenConfirm: {
+      entry: ({ context }) => {
+        context.spstRef.send({ type: "LISTEN" });
+      },
+      on: {
+        SPEAK_COMPLETE: undefined,
+        RECOGNISED: [
+          {
+            guard: ({ event }) =>
+              grammar[getUtterance(event)]?.confirm === true,
+            target: "Done",
+          },
+          {
+            guard: ({ event }) =>
+              grammar[getUtterance(event)]?.confirm === false,
+            target: "AskPerson",
+          },
+          { target: "Confirm" },
+        ],
+        NOINPUT: "Confirm",
+      },
+    },
+
+    Done: {
+      entry: ({ context }) => speak(context, "Booking completed!"),
+      on: { SPEAK_COMPLETE: "Idle" },
     },
   },
 });
+// ---------------- INSPECTOR ----------------
+import { createBrowserInspector } from "@statelyai/inspect";
 
-const dmActor = createActor(dmMachine, {
-  inspect: inspector.inspect,
-}).start();
-
-dmActor.subscribe((state) => {
-  console.group("State update");
-  console.log("State value:", state.value);
-  console.log("State context:", state.context);
-  console.groupEnd();
+const inspector = createBrowserInspector({
+  autoStart: true, // automatically starts inspector, no popup needed
 });
 
-export function setupButton(element: HTMLButtonElement) {
-  element.addEventListener("click", () => {
+
+// ---------------- ACTOR ----------------
+export const dmActor = createActor(dmMachine, {
+  inspect: inspector.inspect,
+
+});
+
+dmActor.start();
+
+// ---------------- BUTTON ----------------
+export function setupButton(button: HTMLButtonElement) {
+  button.addEventListener("click", () => {
+    console.log("[EVENT] CLICK received");
     dmActor.send({ type: "CLICK" });
   });
-  dmActor.subscribe((snapshot) => {
-    const meta: { view?: string } = Object.values(
-      snapshot.context.spstRef.getSnapshot().getMeta(),
-    )[0] || {
-      view: undefined,
-    };
-    element.innerHTML = `${meta.view}`;
+
+  dmActor.subscribe((state) => {
+    console.log("[STATE UPDATE]", state.value, state.context);
   });
 }
