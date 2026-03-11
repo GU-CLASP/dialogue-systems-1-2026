@@ -1,3 +1,12 @@
+<!--
+Reference to original performance:
+Poem: "Twinkle Twinkle Little Star"
+Performed by: nursery rhyme / children’s song
+Source: common nursery rhyme performance (e.g., YouTube)
+-->
+
+
+
 <!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"2fd0c0e4-8885-49d0-80b8-5ca9929e8716","Name":"Microsoft Server Speech Text to Speech Voice (en-AU, CarlyNeural)","ShortName":"en-AU-CarlyNeural","Locale":"en-AU","VoiceType":"StandardVoice"}]}-->
 <!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
 <!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"de-DE":{"AutoApplyCustomLexiconFiles":[{}]},"it-IT":{"AutoApplyCustomLexiconFiles":[{}]},"en-AU":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
