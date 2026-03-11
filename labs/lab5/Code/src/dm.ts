@@ -42,14 +42,6 @@ function getEntity(context: DMContext, category: string): string | undefined {
   )?.text;
 }
 
-function isAgree(context: DMContext): boolean {
-  return getTopIntent(context) === "Agree";
-}
-
-function isDisagree(context: DMContext): boolean {
-  return getTopIntent(context) === "Disagree";
-}
-
 // machine
 const dmMachine = setup({
   types: {
@@ -76,6 +68,7 @@ const dmMachine = setup({
     name: "",
     day: "",
     time: "",
+    isCelebrity: null as boolean | null,
     isWholeDay: null as boolean | null,
   }),
   id: "DM",
@@ -107,7 +100,7 @@ const dmMachine = setup({
             Prompt: {
               entry: {
                 type: "spst.speak",
-                params: { utterance: "What can I help you with?" },
+                params: { utterance: "Hello there, what can I help you with?" },
               },
               on: { SPEAK_COMPLETE: "Listen" },
             },
@@ -140,6 +133,10 @@ const dmMachine = setup({
             {
               target: "#DM.Appointment",
               guard: ({ context }) => getTopIntent(context) === "CreateAppointment",
+            },
+            {
+              target: "#DM.WhoIsX",
+              guard: ({ context }) => getTopIntent(context) === "WhoIsX",
             },
             { target: "ErrorIntent" },
           ],
@@ -369,12 +366,12 @@ const dmMachine = setup({
               always: [
                 {
                   target: "#Appointment.Confirm",
-                  guard: ({ context }) => isAgree(context),
+                  guard: ({ context }) => getTopIntent(context) === "Agree",
                   actions: assign({ isWholeDay: true }),
                 },
                 {
                   target: "WhenTime",
-                  guard: ({ context }) => isDisagree(context),
+                  guard: ({ context }) => getTopIntent(context) === "Disagree",
                   actions: assign({ isWholeDay: false }),
                 },
                 { target: "ErrorAllDay" },
@@ -471,8 +468,8 @@ const dmMachine = setup({
                 type: "spst.speak",
                 params: ({ context }) => ({
                   utterance: context.isWholeDay
-                    ? `Do you want me to create an appointment with ${context.name} on ${context.day} for the whole day?`
-                    : `Do you want me to create an appointment with ${context.name} on ${context.day} at ${context.time}?`,
+                    ? `Do you want me to create an appointment with ${context.name} for ${context.day} for the whole day?`
+                    : `Do you want me to create an appointment with ${context.name} for ${context.day} ${context.time}?`,
                 }),
               },
               on: { SPEAK_COMPLETE: "Listen" },
@@ -502,11 +499,11 @@ const dmMachine = setup({
           always: [
             {
               target: "AppointmentCreated",
-              guard: ({ context }) => isAgree(context),
+              guard: ({ context }) => getTopIntent(context) === "Agree",
             },
             {
               target: "CollectInfo",
-              guard: ({ context }) => isDisagree(context),
+              guard: ({ context }) => getTopIntent(context) === "Disagree",
               actions: assign({
                 name: "",
                 day: "",
@@ -538,7 +535,112 @@ const dmMachine = setup({
       },
     },
 
+    WhoIsX: {
+      id: "WhoIsX",
+      initial: "ExtractWho",
+      states: {
+
+        ExtractWho: {
+          entry: assign(({ context }) => {
+            const celebrity = getEntity(context, "Celebrity");
+            const who = getEntity(context, "Who");
+
+            return {
+              name: celebrity ?? who ?? context.name,
+              isCelebrity: !!celebrity,
+            };
+          }),
+          always: "Who",
+        },
+
+        Who: {
+          initial: "CheckIfNameExists",
+          on: {
+            LISTEN_COMPLETE: [
+              { target: "CheckPerson", guard: ({ context }) => !!context.lastResult },
+              { target: ".NoInput" },
+            ],
+          },
+          states: {
+            CheckIfNameExists: {
+              always: [
+                {
+                  target: "#DM.WhoIsX.PersonIdentified",
+                  guard: ({ context }) => !!context.name,
+                },
+                { target: "Prompt" },
+              ],
+            },
+            Prompt: {
+              entry: { type: "spst.speak", params: { utterance: "Tell me the name of the person you are interested in." } },
+              on: { SPEAK_COMPLETE: "Listen" },
+            },
+            NoInput: {
+              entry: { type: "spst.speak", params: { utterance: "I can't hear you!" } },
+              on: { SPEAK_COMPLETE: "Listen" },
+            },
+            Listen: {
+              entry: { type: "spst.listen" },
+              on: {
+                RECOGNISED: {
+                  actions: assign(({ event }) => ({
+                    lastResult: event.value,
+                    interpretation: event.nluValue,
+                  })),
+                },
+                ASR_NOINPUT: {
+                  actions: assign({ lastResult: null, interpretation: null }),
+                },
+              },
+            },
+          },
+        },
+
+        CheckPerson: {
+          always: [
+            {
+              target: "PersonIdentified",
+              guard: ({ context }) => !!getEntity(context, "Who"),
+              actions: assign(({ context }) => ({
+                name: getEntity(context, "Who")!,
+              })),
+            },
+            { target: "ErrorPerson" },
+          ],
+        },
+
+        ErrorPerson: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: `Sorry, I don't know ${context.lastResult![0].utterance}. Please try again.`,
+            }),
+          },
+          on: { SPEAK_COMPLETE: "Who" },
+        },
+
+        PersonIdentified: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: `I know ${context.name}, they are ${context.isCelebrity ? "a celebrity" : "not a celebrity"}!`,
+            }),
+          },
+          on: { SPEAK_COMPLETE:"#DM.Done" },
+        },
+      },
+    },
+
     Done: {
+      entry: assign({
+            lastResult: null,
+            interpretation: null,
+            name: "",
+            day: "",
+            time: "",
+            isCelebrity: null as boolean | null,
+            isWholeDay: null as boolean | null,
+          }),
       on: { CLICK: "#DM.Initialization.GetIntent" },
     },
   }

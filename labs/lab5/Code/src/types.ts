@@ -8,6 +8,7 @@ export interface DMContext {
   time: string;
   day: string;
   name: string;
+  isCelebrity: boolean | null;
   isWholeDay: boolean | null;
 }
 
