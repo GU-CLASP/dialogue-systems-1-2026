@@ -1,0 +1,1650 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "appointment",
+        "multilingual": false,
+        "description": "appointment project for lab5",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "create a meeting"
+            },
+            {
+                "category": "who is X"
+            },
+            {
+                "category": "greeting"
+            },
+            {
+                "category": "Invitee"
+            },
+            {
+                "category": "Day"
+            },
+            {
+                "category": "Time"
+            },
+            {
+                "category": "YesNo"
+            }
+        ],
+        "entities": [
+            {
+                "category": "Michael Jackson",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Ella Fitzgerald",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Louis Armstrong",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Nat King Cole",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Billie Holiday",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Vlad",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Bora",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Tal",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Tom",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Tomorrow",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "DayAfterTomorrow",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Today",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Monday",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Tuesday",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Wednesday",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Thursday",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Friday",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Eight",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Nine",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Ten",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Eleven",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Twelve",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "One",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Two",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Three",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Four",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "Yes",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "No",
+                "compositionSetting": "combineComponents"
+            }
+        ],
+        "utterances": [
+            {
+                "text": "Not.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "No",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes yes.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 0,
+                        "length": 3
+                    },
+                    {
+                        "category": "Yes",
+                        "offset": 4,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Negative.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "No",
+                        "offset": 0,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Positive.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 0,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Sure.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 0,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yep.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Nah.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "No",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Not at all.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "No",
+                        "offset": 0,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Oh yeah.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 3,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "No way.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "No",
+                        "offset": 0,
+                        "length": 2
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Of course.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 0,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Nope.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "No",
+                        "offset": 0,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "No.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "No",
+                        "offset": 0,
+                        "length": 2
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yeah.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 0,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes.",
+                "language": "en-us",
+                "intent": "YesNo",
+                "entities": [
+                    {
+                        "category": "Yes",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Four o'clock.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Four",
+                        "offset": 0,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On sixteen.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Four",
+                        "offset": 3,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "At four.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Four",
+                        "offset": 3,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Fifteen.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Three",
+                        "offset": 0,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "At three o'clock.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Three",
+                        "offset": 3,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Three.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Three",
+                        "offset": 0,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Fourteen.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Two",
+                        "offset": 3,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "At Two.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Two",
+                        "offset": 3,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Two.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Two",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Thirteen.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "One",
+                        "offset": 0,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "One o'clock.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "One",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "One.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "One",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Mid-day.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Twelve",
+                        "offset": 0,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Twelve.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Twelve",
+                        "offset": 0,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Eleven sharp.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Eleven",
+                        "offset": 0,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Eleven.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Eleven",
+                        "offset": 0,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Ten.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Ten",
+                        "offset": 3,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Ten.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Ten",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "At Nine.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Nine",
+                        "offset": 3,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Nine.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Nine",
+                        "offset": 0,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Eight o'clock.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Eight",
+                        "offset": 0,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Eight.",
+                "language": "en-us",
+                "intent": "Time",
+                "entities": [
+                    {
+                        "category": "Eight",
+                        "offset": 0,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For Friday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Friday",
+                        "offset": 4,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Friday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Friday",
+                        "offset": 3,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Friday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Friday",
+                        "offset": 0,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Thursday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Thursday",
+                        "offset": 3,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For Thursday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Thursday",
+                        "offset": 4,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Thursday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Thursday",
+                        "offset": 0,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Wednesday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Wednesday",
+                        "offset": 3,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For Wedensday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Wednesday",
+                        "offset": 4,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Wedensday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Wednesday",
+                        "offset": 0,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Tuesday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Tuesday",
+                        "offset": 3,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For Tuesday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Tuesday",
+                        "offset": 4,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tuesday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Tuesday",
+                        "offset": 0,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For today.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Today",
+                        "offset": 4,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Today.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Today",
+                        "offset": 0,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "On Monday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Monday",
+                        "offset": 3,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For Monday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Monday",
+                        "offset": 4,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Monday.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Monday",
+                        "offset": 0,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For the day after tomorrow.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "DayAfterTomorrow",
+                        "offset": 4,
+                        "length": 22
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "The day after tomorrow.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "DayAfterTomorrow",
+                        "offset": 0,
+                        "length": 22
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "In two days.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "DayAfterTomorrow",
+                        "offset": 0,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "For tomorrow.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Tomorrow",
+                        "offset": 4,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tomorrow.",
+                "language": "en-us",
+                "intent": "Day",
+                "entities": [
+                    {
+                        "category": "Tomorrow",
+                        "offset": 0,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Bladsjö.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 5,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Bladsjö.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 0,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Södahl.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 5,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Södahl.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 0,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Tom.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 5,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tom.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tom Södahl Bladsjö.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 0,
+                        "length": 18
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Tom Södahl Bladsjö.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tom",
+                        "offset": 5,
+                        "length": 18
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Tal.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tal",
+                        "offset": 5,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tal.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tal",
+                        "offset": 0,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Bedir.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Bedir.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Talha.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Talha.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Talha Bedir.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tal",
+                        "offset": 0,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Talha Bedir.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Tal",
+                        "offset": 5,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Kara.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Bora",
+                        "offset": 5,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Kara.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Bora",
+                        "offset": 0,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Bora.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Bora",
+                        "offset": 5,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Bora.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Bora",
+                        "offset": 0,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Bora Kara.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Bora Kara.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Vlad.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Vlad.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Maraev.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Vlad",
+                        "offset": 5,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Vladislav.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Vlad",
+                        "offset": 5,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Vladislav Maraev",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Vlad",
+                        "offset": 0,
+                        "length": 16
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Maraev",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Vlad",
+                        "offset": 0,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Vladislav",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Vlad",
+                        "offset": 0,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "With Vladislav Maraev.",
+                "language": "en-us",
+                "intent": "Invitee",
+                "entities": [
+                    {
+                        "category": "Vlad",
+                        "offset": 5,
+                        "length": 16
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "What can you tell me about Michael Jackson?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Michael Jackson",
+                        "offset": 27,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who was the singer named Michael Jackson.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Michael Jackson",
+                        "offset": 25,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me information about Louis Armstrong.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Louis Armstrong",
+                        "offset": 26,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know anything about Louis Armstrong?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Louis Armstrong",
+                        "offset": 27,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like some information about Ella Fitzgerald.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Ella Fitzgerald",
+                        "offset": 32,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me details about Nat King Cole.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Nat King Cole",
+                        "offset": 22,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me about Nat King Cole.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Nat King Cole",
+                        "offset": 14,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who exactly is Billie Holiday?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Billie Holiday",
+                        "offset": 15,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know who Billie Holiday was?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Billie Holiday",
+                        "offset": 16,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to know who Billie Holiday was.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Billie Holiday",
+                        "offset": 19,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me who Billie Holiday was?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Billie Holiday",
+                        "offset": 20,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Nat King Cole?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Nat King Cole",
+                        "offset": 7,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know Ella Fitzgerald?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Ella Fitzgerald",
+                        "offset": 12,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Search for Ella Fitzgerald.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Ella Fitzgerald",
+                        "offset": 11,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need to know Louis Armstrong.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Louis Armstrong",
+                        "offset": 15,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Explain who was Louis Armstrong.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Louis Armstrong",
+                        "offset": 16,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Introduce Michael Jackson.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Michael Jackson",
+                        "offset": 10,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Help me know Michael Jackson.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "Michael Jackson",
+                        "offset": 13,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yo!",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What's up?",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hullo.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hey.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Good evening.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Good afternoon.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Good morning.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Greetings.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hello.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hi.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to book for an appointment",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I would like to reserve for a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Make an appointment",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Call for a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book for a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Let's book a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create an appointment",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Make a meeting invitation",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create a meeting for me",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Let's create an appointment",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            }
+        ]
+    }
+}
