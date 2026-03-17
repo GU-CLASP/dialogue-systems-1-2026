@@ -1,0 +1,537 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "appointment",
+        "multilingual": false,
+        "description": "NLU model for lab 5 dialogue system to detect meeting intents and extract entities.",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "book_meeting"
+            },
+            {
+                "category": "who_is X"
+            },
+            {
+                "category": "Book A Seat"
+            },
+            {
+                "category": "confirm"
+            },
+            {
+                "category": "deny"
+            }
+        ],
+        "entities": [
+            {
+                "category": "person",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "day",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "time",
+                "compositionSetting": "combineComponents"
+            }
+        ],
+        "utterances": [
+            {
+                "text": "that's wrong",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "start over",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "incorrect",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "wrong",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "sure",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "correct",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "sounds great",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "that's right",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes it is right",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me details of Bill Gates?",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 19,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me information on Ranbir Kapoor",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 23,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to know who Messi is.",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 19,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me information on Albert Einstein.",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 23,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me about Elon Musk?",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "i want to plan a discussion about the project",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Arrange a team meeting on friday",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 26,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "i need to book a meeting with sarah.",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 30,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "can we set up a meeting for next week?",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "schedule meeting today",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 17,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create appointment",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "make an appointment",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i want to arrange a meeting",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "set meeting tomorrow",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 12,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "plan a meeting at 5pm",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 18,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule meeting today",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 17,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Steve Jobs",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Messi",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Taylor Swift",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Albert Einstein",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Elon Musk",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Zlatan Ibrahimovic",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 18
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Amitabh Bachan",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Amir Khan",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule a meeting with Bob tomorrow at 2pm.",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 24,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 28,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 40,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can we meet Jenny next Friday at 4?",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 12,
+                        "length": 5
+                    },
+                    {
+                        "category": "day",
+                        "offset": 23,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 33,
+                        "length": 1
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet Alice on Monday at 10am.",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 15,
+                        "length": 5
+                    },
+                    {
+                        "category": "day",
+                        "offset": 24,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 34,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Find me a good Italian place nearby.",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to make a reservation for tonight.",
+                "language": "en-us",
+                "intent": "book_meeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 35,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Salman khan",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 0,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "X is Sharukh Khan",
+                "language": "en-us",
+                "intent": "who_is X",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 5,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            }
+        ]
+    }
+}

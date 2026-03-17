@@ -1,10 +1,10 @@
 import "./style.css";
-import { setupButton } from "./dm1.ts";
+import { setupButton } from "./dm2";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <div class="card">
-      <button id="counter" type="button"></button>
+      <button id="counter" type="button">Idle</button>
     </div>
   </div>
 `;
