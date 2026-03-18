@@ -2,7 +2,7 @@ import { assign, createActor, setup } from "xstate";
 import type { Settings} from "speechstate";
 import {speechstate} from "speechstate";
 import { createBrowserInspector } from "@statelyai/inspect";
-import { KEY } from "./azure.ts";
+import { KEY, NLU_KEY } from "./azure.ts";
 import type { DMContext, DMEvents } from "./types";
 
 const inspector = createBrowserInspector();
@@ -13,12 +13,21 @@ const azureCredentials = {
   key: KEY,
 };
 
+
+ const azureLanguageCredentials = {
+  endpoint:"https://clu-gusnobadtest.cognitiveservices.azure.com/language/:analyze-conversations?api-version=2024-11-15-preview",
+  key: NLU_KEY,
+  deploymentName: "appointment",
+  projectName: "lab_5",
+};
+
 const settings: Settings = {
+  azureLanguageCredentials: azureLanguageCredentials /** global activation of NLU */,
   azureCredentials: azureCredentials,
   azureRegion: "swedencentral",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
-  locale: "en-US",
+  locale: "en-gb",
   ttsDefaultVoice: "en-US-DavisNeural",
 };
 
@@ -58,6 +67,7 @@ function isInGrammar(utterance: string, field: "person" | "day") {
   return null;
 }
 
+//the three getx functions below are no longer in use
 //the two function below just dictate what field isInGrammer should use, a switch statment could also work. but these two function are just resued from earlier code
 function getPerson(utterance: string) {
   return isInGrammar(utterance, "person");
@@ -105,11 +115,11 @@ return hour + ":" + min + " " + ampm; //combineds all the variables into a singl
 }
 
 
-
+//the model had some issues with yes and no so i keept it hardcoded for now
 function yesNo(utterance: string): boolean | null { //yes and no grammer function
   utterance = (utterance ?? "").toLowerCase();
-  if (utterance.includes("yes") || utterance.includes("yeah") || utterance.includes("yea") || utterance.includes("yep")) return true;
-  if (utterance.includes("no") || utterance.includes("nope") || utterance.includes("nah")) return false;
+  if (utterance.includes("yes") || utterance.includes("yeah") || utterance.includes("yea") || utterance.includes("yep") || utterance.includes("yas") || utterance.includes("ja")) return true;
+  if (utterance.includes("no") || utterance.includes("nope") || utterance.includes("nah") || utterance.includes("oh") || utterance.includes("don't") || utterance.includes("do not")) return false;
   return null;
 }
 
@@ -123,6 +133,56 @@ function setSlot(slot: string, parse: (u: string) => any) { //saves what the use
       : ({ lastResult: null, [slot]: null } as any);
   };
 }
+
+function getLookOrMeet(event: any) { //decide if look up or meeting
+  const intent = event.nluValue?.topIntent;
+
+  if (intent === "create_meeting") return true;
+  if (intent === "who_is") return false;
+  //  if (intent === "getPerson") return false;
+
+  return null;
+}
+
+function setSlotFromEvent(slot: string, parse: (event: any) => any) { //saves what the user said into person, day etc so we can use it again later
+  return ({ event }: any) => {
+    const value = parse(event) ?? null;
+
+    return value !== null
+      ? ({ lastResult: event.value, [slot]: value } as any)
+      : ({ lastResult: null, [slot]: null } as any);
+  };
+}
+
+
+function getEntityText(event: any, category: string) {//gets all entities form the model
+  const entities = event.nluValue?.entities ?? [];
+  const hit = entities.find((e: any) => e.category === category); //get the first enity that matches the request
+  return hit?.text ?? null;
+}
+
+function setSlotFromEntity(slot: string, category: string) { //get text from RECOGNISED 
+  return ({ event }: any) => {
+    const value = getEntityText(event, category); //get entity from RECOGNISED text
+
+    return value !== null
+      ? ({ lastResult: event.value, [slot]: value } as any)
+      : ({ lastResult: null, [slot]: null } as any);
+  };
+}
+
+
+const famousPeople: Record<string, string> = { //some look up people
+  "Taylor Swift": "Taylor Swift is a singer.",
+  "Albert Einstein": "Albert Einstein was a physicist.",
+  "Barack Obama": "Barack Obama was the president of the United States.",
+  "Tom Cruise": "Tom Cruise is an American actor.",
+  "Adam": "Adam is a university student",
+  "Tom Södahl Bladsjö": "Tom Södahl Bladsjö is a university teacher",
+  "Vladislav Maraev": "Vladislav Maraev is a university teacher",
+  "Bora Kara": "Bora Kara is a university teacher",
+  "Talha Bedir": "Talha Bedir is a university teacher",
+};
 
 const dmMachine = setup({
   types: {
@@ -142,6 +202,7 @@ const dmMachine = setup({
     "spst.listen": ({ context }) =>
       context.spstRef.send({
         type: "LISTEN",
+        value: { nlu: true }
       }),
   },
 }).createMachine({
@@ -155,6 +216,7 @@ const dmMachine = setup({
     wholeday: null,
     complete: null,
     interpretation: null,
+    lookormeet: null,
   }),
   id: "DM",
   initial: "Prepare",
@@ -168,10 +230,93 @@ const dmMachine = setup({
       on: { CLICK: "Greeting" },
     },
     Greeting:{
-      entry: { type: "spst.speak", params: { utterance: `Hi, Let's create an appointment.` } },
-      on: { SPEAK_COMPLETE: "Meeting" },
+      initial: "Prompt",
+      //entry: { type: "spst.speak", params: { utterance: `Hi, would you like to create an appointment or look someone up?` } },
+      on: {
+        LISTEN_COMPLETE: [
+          {target: "Meeting", guard: ({ context }) => context.lookormeet === true }, 
+          {target: "Lookup", guard: ({ context }) => context.lookormeet === false },
+          {target: ".NoInput" },
+        ]
+      },
+      states: {
+        Prompt: {
+          entry: { type: "spst.speak", params: { utterance: `Hi, would you like to create an appointment or look someone up?` } },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `Hi, would you like to create an appointment or look someone up?` },
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        Ask: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              actions: [
+                ({ event }: any) => console.log("NLU:", event.nluValue),
+                assign(setSlotFromEvent("lookormeet", getLookOrMeet)),
+              ],
+            },
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null }),
+            },
+          },
+          
+        },
+      },
     },
-    
+
+    Lookup: {
+      initial: "Prompt",
+      on: {
+        LISTEN_COMPLETE: [
+          {
+            target: "PersonLookup",
+            guard: ({ context }) => context.person !== null,
+          },
+          { target: ".NoInput" },
+        ]
+      },
+      states: {
+        Prompt: {
+          entry: { type: "spst.speak", params: { utterance: `Who do you want to look up?` } },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+             params: { utterance: `Who do you want to look up?` },
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        Ask: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: { actions: [
+                ({ event }: any) => console.log("NLU:", event.nluValue),
+                assign(setSlotFromEntity("person", "person")),
+              ], },
+            ASR_NOINPUT: {
+              actions: assign({ lastResult: null }),
+            },
+          },
+          
+        },
+      },
+    },
+
+    PersonLookup: {
+      entry: {
+        type: "spst.speak",
+        params: ({ context }) => ({
+          utterance: famousPeople[context.person ?? ""] ?? `I do not know much about ${context.person}.`,
+        }),
+      },
+      on: { SPEAK_COMPLETE: "Done" },
+    },
     Meeting: {
       initial: "Prompt",
       on: {
@@ -198,7 +343,10 @@ const dmMachine = setup({
         Ask: {
           entry: { type: "spst.listen" },
           on: {
-            RECOGNISED: { actions: assign(setSlot("person", getPerson)) },
+            RECOGNISED: { actions: [
+                ({ event }: any) => console.log("NLU:", event.nluValue),
+                assign(setSlotFromEntity("person", "person")),
+              ], },
             ASR_NOINPUT: {
               actions: assign({ lastResult: null }),
             },
@@ -233,7 +381,7 @@ const dmMachine = setup({
         Ask: {
           entry: { type: "spst.listen" },
           on: {
-            RECOGNISED: { actions: assign(setSlot("day", getDay)) },
+            RECOGNISED: { actions: assign(setSlotFromEntity("day", "day")) },
             ASR_NOINPUT: {
               actions: assign({ lastResult: null }),
             },
@@ -301,7 +449,7 @@ const dmMachine = setup({
         Ask: {
           entry: { type: "spst.listen" },
           on: {
-            RECOGNISED: { actions: assign(setSlot("time", getTime)) },
+            RECOGNISED: { actions: assign(setSlotFromEntity("time", "time")) },
             ASR_NOINPUT: {
               actions: assign({ lastResult: null }),
             },

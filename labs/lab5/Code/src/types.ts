@@ -10,6 +10,7 @@ export interface DMContext {
   wholeday: boolean | null;
   complete: boolean | null;
   interpretation: NLUObject | null;
+  lookormeet: boolean | null;
   // nextUtterance: string;
 }
 
