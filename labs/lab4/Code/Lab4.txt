@@ -1,0 +1,48 @@
+Original performance: S’i’ fosse foco by Cecco Angiolieri.
+Cecco Angiolieri was a medieval Italian poet born in Siena, Italy, in the 13th century. He is known for his satirical, ironic and sometimes provocative poetry, which often criticizes society, authority, and human behavior.
+The poem S’i’ fosse foco imagines the speaker having enormous powers—being fire, wind, water, or even God—and using them to destroy or punish the world. Through these exaggerated images, the poem expresses anger and rebellion in a humorous and ironic way.
+
+In my project I wanted to add background music to make the recitation more dramatic.
+I had selected a music track and uploaded it to the GitHub repository so it could be used in SSML. However, the voice I chose for the synthesis (Alessio DragonHD) does not support background audio, so the music could not be included in the final version.
+The string I intended to insert before the <voice> tag was:<mstts:backgroundaudio src="https://raw.githubusercontent.com/JoyCiliani/dialogue-systems-1-2026/refs/heads/main/labs/lab3fixed/Code/lab4.mp3" volume="2.0">
+
+
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Name":"it-IT-Alessio:DragonHDLatestNeural","ShortName":"it-IT-Alessio:DragonHDLatestNeural","Locale":"it-IT","Id":"0fb5c4bc-a8e0-4bd7-adc6-7399f5224223","VoiceType":"StandardVoice"}]}-->
+<!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"it-IT":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" xml:lang="it-IT"><voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"> 
+<prosody rate="-19.00%" pitch="+1.00%">        S’i’ fosse <emphasis level="moderate">foco</emphasis>,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">arderei ’l mondo.
+<break time="400ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse vento,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">lo tempesterei.
+<break time="350ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse acqua,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">i’ l’annegherei.
+<break time="350ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse Dio,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">mandereil’en profondo.
+<break time="600ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse papa,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">serei allor giocondo.
+<break time="300ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">ché tutti cristïani imbrigherei.
+<break time="500ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse ’mperator,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">sa’ che farei?
+<break time="250ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">a tutti</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><emphasis level="moderate"><prosody rate="-19.00%" pitch="+1.00%">mozzerei lo capo</prosody>.
+<break time="700ms" /></emphasis></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse morte,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">andarei da mio padre.
+<break time="300ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse vita,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">fuggirei da lui.
+<break time="500ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">similemente faria da mi’ madre.
+<break time="700ms" /></prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">S’i’ fosse Cecco, com’i’ sono e fui,</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">torrei le donne giovani e leggiadre;</prosody></mstts:express-as></voice>
+<voice name="it-IT-Alessio:DragonHDLatestNeural"><mstts:express-as style="narration" styledegree="1.2"><prosody rate="-19.00%" pitch="+1.00%">le vecchie e laide lasserei altrui.
+        
+      </prosody></mstts:express-as></voice></speak>
