@@ -1,7 +1,7 @@
-import { assign, createActor, setup } from "xstate";
+import { createBrowserInspector } from "@statelyai/inspect";
 import type { Settings } from "speechstate";
 import { speechstate } from "speechstate";
-import { createBrowserInspector } from "@statelyai/inspect";
+import { assign, createActor, setup } from "xstate";
 import { KEY, NLU_KEY } from "./azure";
 import type { DMContext, DMEvents } from "./types";
 
@@ -55,7 +55,6 @@ const dmMachine = setup({
     spstRef: spawn(speechstate, { input: settings }),
     last_answer: null,
     booked_person: null,
-    booked_day: null,
     booked_time: null,
     interpretation: null,
   }),
@@ -101,12 +100,15 @@ const dmMachine = setup({
           on: { SPEAK_COMPLETE: "Ask" },
         },
         Ask: {
-          entry: { type: "spst.listen" },
+          entry: [
+            assign({ booked_person: null, booked_time: null }),
+            { type: "spst.listen" },
+          ],
           on: {
             RECOGNISED: {
               actions: [
                 ({ event }) => console.log("RECOGNISED event:", event),
-                assign(({ event }) => {                  
+                assign(({ event }) => {
                   return { last_answer: event.nluValue };
                 }),
               ],
@@ -119,7 +121,7 @@ const dmMachine = setup({
         InvalidInput: {
           entry: {
             type: "spst.speak",
-            params: {utterance: `Your answer wasn't what I expected. Try again.`},
+            params: { utterance: `Your answer wasn't what I expected. Try again.` },
           },
           on: { SPEAK_COMPLETE: "Ask" },
         },
@@ -134,16 +136,52 @@ const dmMachine = setup({
     },
     WhoIsX: {
       entry: {
-        type: "spst.speak", params: ({ context }) => ({ utterance: `${context.last_answer!.entities[0].text} is a famous celebrity.`, }),
+        type: "spst.speak", params: ({ context }) => ({ utterance: `${context.last_answer!.entities[0].text} is a celebrity.`, }),
       },
       on: {
         CLICK: "WaitForHi",
       },
     },
     Start_booking: {
+      entry: assign(({ context }) => {
+        const last = context.last_answer as any;
+        const invitee = last?.entities?.find(
+          (entity: any) => entity?.category?.toLowerCase?.() === "invitee",
+        );
+        const time = last?.entities?.find(
+          (entity: any) => entity?.category?.toLowerCase?.() === "time",
+        );
+        
+        if (!invitee && !time) {
+          return {};
+        }
+
+        return {
+          ...(invitee
+            ? {
+                booked_person: invitee.text,
+              }
+            : {}),
+          ...(time
+            ? {
+                booked_time: time.text,
+              }
+            : {}),
+        };
+      }),
       initial: "Prompt",
       on: {
-        SPEAK_COMPLETE: "Query_who",
+        SPEAK_COMPLETE: [
+          {
+            target: "Query_who",
+            guard: ({ context }) => !context.booked_person,
+          },
+          {
+            target: "Query_time",
+            guard: ({ context }) => !!context.booked_person && !context.booked_time,
+          },
+          { target: "Confirm_time" },
+        ]
       },
       states: {
         Prompt: {
@@ -156,16 +194,16 @@ const dmMachine = setup({
       on: {
         LISTEN_COMPLETE: [
           {
-            target: "Query_day",
-            guard: ({ context }) => !!context.booked_person && context.booked_person.topIntent === "Invitee" && context.booked_person.entities.length > 0,
+            target: "Confirm_time",
+            guard: ({ context }) => !!context.booked_person && !!context.booked_time,
           },
-          {
-            target: ".Unknown",
-            guard: ({ context }) => !!context.booked_person && context.booked_person.topIntent === "Invitee",
+          { 
+            target: "Query_time",
+            guard: ({ context }) => !!context.booked_person && !context.booked_time,
           },
           {
             target: ".InvalidInput",
-            guard: ({ context }) => !!context.booked_person,
+            guard: ({ context }) => !!context.last_answer,
           },
           { target: ".NoInput" },
         ],
@@ -188,142 +226,25 @@ const dmMachine = setup({
             RECOGNISED: {
               actions: [
                 ({ event }) => console.log("RECOGNISED event:", event),
-                assign(({ event }) => {return { booked_person: event.nluValue };
-              })],
-            },
-            ASR_NOINPUT: {
-              actions: assign({ booked_person: null }),
-            },
-          },
-        },
-        InvalidInput: {
-          entry: {
-            type: "spst.speak",
-            params: {utterance: `That wasn't what I asked. Who are you meeting with?`},
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        Unknown: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: `You just mentioned about an invitee that I don't know! Try again.` },
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-      },
-    },
-    Query_day: {
-      initial: "Prompt",
-      on: {
-        LISTEN_COMPLETE: [
-          {
-            target: "Query_whole",
-            guard: ({ context }) => !!context.booked_day && context.booked_day.topIntent === "Day" && context.booked_day.entities.length > 0,
-          },
-          {
-            target: ".Unknown",
-            guard: ({ context }) => !!context.booked_day && context.booked_day.topIntent === "Day",
-          },
-          {
-            target: ".InvalidInput",
-            guard: ({ context }) => !!context.booked_day,
-          },
-          { target: ".NoInput" },
-        ],
-      },
-      states: {
-        Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `On which day is your meeting?` } },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        NoInput: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: `I can't hear you! On which day is your meeting?` },
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        Ask: {
-          entry: { type: "spst.listen" },
-          on: {
-            RECOGNISED: {
-              actions: [
-                ({ event }) => console.log("RECOGNISED event:", event),
                 assign(({ event }) => {
-                  return { booked_day: event.nluValue };
-                })
-              ],
+                  return { 
+                    last_answer: event.nluValue,
+                    booked_person: event.nluValue?.entities?.find((entity: any) => entity?.category?.toLowerCase?.() === "invitee",)?.text || null,
+                  };
+                })],
             },
             ASR_NOINPUT: {
-              actions: assign({ booked_day: null }),
+              actions: assign({ 
+                last_answer: null,
+                booked_person: null, 
+              }),
             },
           },
         },
         InvalidInput: {
           entry: {
             type: "spst.speak",
-            params: {utterance: `That wasn't what I asked. On which day is your meeting?`,},
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        Unknown: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: `You just mentioned about a day that I don't know! Try again.` },
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        }
-      },
-    },
-    Query_whole: {
-      initial: "Prompt",
-      on: {
-        LISTEN_COMPLETE: [
-          {
-            target: "Confirm_day",
-            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "YesNo" && context.last_answer.entities.length > 0 && context.last_answer.entities[0].category === "Yes",
-          },
-          {
-            target: "Query_time",
-            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "YesNo" && context.last_answer.entities.length > 0 && context.last_answer.entities[0].category === "No",
-          },
-          {
-            target: ".InvalidInput",
-            guard: ({ context }) => !!context.last_answer,
-          },
-          { target: ".NoInput" },
-        ],
-      },
-      states: {
-        Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Will it take the whole day?` } },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        NoInput: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: `I can't hear you! Will it take the whole day?` },
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        Ask: {
-          entry: { type: "spst.listen" },
-          on: {
-            RECOGNISED: {
-              actions: [
-                ({ event }) => console.log("RECOGNISED event:", event),
-                assign(({ event }) => {return { last_answer: event.nluValue};})
-              ],
-            },
-            ASR_NOINPUT: {
-              actions: assign({ last_answer: null }),
-            },
-          },
-        },
-        InvalidInput: {
-          entry: {
-            type: "spst.speak",
-            params: {utterance: `I expect a yes or no. Will it take the whole day?`,},
+            params: { utterance: `That wasn't what I asked. Who are you meeting with?` },
           },
           on: { SPEAK_COMPLETE: "Ask" },
         },
@@ -335,15 +256,11 @@ const dmMachine = setup({
         LISTEN_COMPLETE: [
           {
             target: "Confirm_time",
-            guard: ({ context }) => !!context.booked_time && context.booked_time.topIntent === "Time" && context.booked_time.entities.length > 0,
-          },
-          {
-            target: ".Unknown",
-            guard: ({ context }) => !!context.booked_time && context.booked_time.topIntent === "Time",
+            guard: ({ context }) => !!context.booked_time,
           },
           {
             target: ".InvalidInput",
-            guard: ({ context }) => !!context.booked_time,
+            guard: ({ context }) => !!context.last_answer,
           },
           { target: ".NoInput" },
         ],
@@ -367,29 +284,28 @@ const dmMachine = setup({
               actions: [
                 ({ event }) => console.log("RECOGNISED event:", event),
                 assign(({ event }) => {
-                  return { booked_time: event.nluValue };
+                  return { 
+                    last_answer: event.nluValue,
+                    booked_time: event.nluValue?.entities?.find((entity: any) => entity?.category?.toLowerCase?.() === "time",)?.text || null,
+                  };
                 }),
               ],
             },
             ASR_NOINPUT: {
-              actions: assign({ booked_time: null }),
+              actions: assign({ 
+                last_answer: null, 
+                booked_time: null 
+              }),
             },
           },
         },
         InvalidInput: {
           entry: {
             type: "spst.speak",
-            params: {utterance: `That wasn't what I asked. What time is your meeting?`},
+            params: { utterance: `That wasn't what I asked. What time is your meeting?` },
           },
           on: { SPEAK_COMPLETE: "Ask" },
         },
-        Unknown: {
-          entry: {
-            type: "spst.speak",
-            params: { utterance: `You just mentioned about a time that I don't know! Try again.` },
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        }
       },
     },
     Confirm_time: {
@@ -398,11 +314,11 @@ const dmMachine = setup({
         LISTEN_COMPLETE: [
           {
             target: "Done",
-            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "YesNo" && context.last_answer.entities.length > 0 && context.last_answer.entities[0].category === "Yes",
+            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "confirm",
           },
           {
-            target: "Query_who",
-            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "YesNo" && context.last_answer.entities.length > 0 && context.last_answer.entities[0].category === "No",
+            target: "NotDone",
+            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "deny",
           },
           {
             target: ".InvalidInput",
@@ -416,7 +332,7 @@ const dmMachine = setup({
           entry: {
             type: "spst.speak",
             params: ({ context }) => ({
-              utterance: `Do you want me to create an appointment with ${context.booked_person.entities![0].category} on ${context.booked_day.entities![0].category} at ${context.booked_time.entities![0].category}?`,
+              utterance: `Do you want me to create an appointment with ${context.booked_person} for ${context.booked_time}?`,
             }),
           },
           on: { SPEAK_COMPLETE: "Ask" },
@@ -425,7 +341,7 @@ const dmMachine = setup({
           entry: {
             type: "spst.speak",
             params: ({ context }) => ({
-              utterance: `I can't hear you! Do you want me to create an appointment with ${context.booked_person.entities![0].category} on ${context.booked_day.entities![0].category} at ${context.booked_time.entities![0].category}?`,
+              utterance: `I can't hear you! Do you want me to create an appointment with ${context.booked_person} for ${context.booked_time}?`,
             }),
           },
           on: { SPEAK_COMPLETE: "Ask" },
@@ -436,7 +352,7 @@ const dmMachine = setup({
             RECOGNISED: {
               actions: [
                 ({ event }) => console.log("RECOGNISED event:", event),
-                assign(({ event }) => {return { last_answer: event.nluValue };}),
+                assign(({ event }) => { return { last_answer: event.nluValue }; }),
               ]
             },
             ASR_NOINPUT: {
@@ -448,74 +364,19 @@ const dmMachine = setup({
           entry: {
             type: "spst.speak",
             params: ({ context }) => ({
-              utterance: `I expect a yes or no. Do you want me to create an appointment with ${context.booked_person.entities![0].category} on ${context.booked_day.entities![0].category} at ${context.booked_time.entities![0].category}?`,
+              utterance: `Please confirm or deny. Do you want me to create an appointment with ${context.booked_person} for ${context.booked_time}?`,
             }),
           },
           on: { SPEAK_COMPLETE: "Ask" },
         },
       },
     },
-    Confirm_day: {
-      initial: "Prompt",
-      on: {
-        LISTEN_COMPLETE: [
-          {
-            target: "Done",
-            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "YesNo" && context.last_answer.entities.length > 0 && context.last_answer.entities[0].category === "Yes",
-          },
-          {
-            target: "Query_who",
-            guard: ({ context }) => !!context.last_answer && context.last_answer.topIntent === "YesNo" && context.last_answer.entities.length > 0 && context.last_answer.entities[0].category === "No",
-          },
-          {
-            target: ".InvalidInput",
-            guard: ({ context }) => !!context.last_answer,
-          },
-          { target: ".NoInput" },
-        ],
+    NotDone: {
+      entry: {
+        type: "spst.speak", params: { utterance: `No appointment has been created!.`, },
       },
-      states: {
-        Prompt: {
-          entry: {
-            type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: `Do you want me to create an appointment with ${context.booked_person.entities![0].category} on ${context.booked_day.entities![0].category} for the whole day?`,
-            }),
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        NoInput: {
-          entry: {
-            type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: `I can't hear you! Do you want me to create an appointment with ${context.booked_person.entities![0].category} on ${context.booked_day.entities![0].category} for the whole day?`,
-            }),
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
-        Ask: {
-          entry: { type: "spst.listen" },
-          on: {
-            RECOGNISED: {
-              actions: [
-                ({ event }) => console.log("RECOGNISED event:", event),
-                assign(({ event }) => {return { last_answer: event.value };}),
-              ]
-            },
-            ASR_NOINPUT: {
-              actions: assign({ last_answer: null }),
-            },
-          },
-        },
-        InvalidInput: {
-          entry: {
-            type: "spst.speak",
-            params: ({ context }) => ({
-              utterance: `I expect a yes or no. Do you want me to create an appointment with ${context.booked_person.entities![0].category} on ${context.booked_day.entities![0].category} for the whole day?`,
-            }),
-          },
-          on: { SPEAK_COMPLETE: "Ask" },
-        },
+      on: {
+        CLICK: "WaitForHi",
       },
     },
     Done: {
