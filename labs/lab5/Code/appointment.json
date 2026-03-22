@@ -1,0 +1,752 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0.6,
+            "normalizeCasing": true,
+            "augmentDiacritics": false
+        },
+        "projectName": "appointment",
+        "multilingual": false,
+        "description": "appointment project for lab5",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "create a meeting"
+            },
+            {
+                "category": "who is X"
+            },
+            {
+                "category": "greeting"
+            },
+            {
+                "category": "confirm"
+            },
+            {
+                "category": "deny"
+            }
+        ],
+        "entities": [
+            {
+                "category": "invitee",
+                "compositionSetting": "combineComponents",
+                "list": {
+                    "sublists": [
+                        {
+                            "listKey": "Tom",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Tom",
+                                        "Tom Södahl Bladsjö",
+                                        "Södahl",
+                                        "Bladsjö"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Tal",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Tal",
+                                        "Talha Bedir",
+                                        "Talha",
+                                        "Bedir"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Bora",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Bora Kara",
+                                        "Bora",
+                                        "Kara"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Vlad",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Vladislav Maraev",
+                                        "Vladislav",
+                                        "Maraev",
+                                        "Vlad"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "category": "celebrity",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "time",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "DateTime"
+                    }
+                ]
+            }
+        ],
+        "utterances": [
+            {
+                "text": "Play some music in Spotify.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Help me order a large pepperoni pizza.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "This is great!",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Say the names of some celebrities.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who were the top 10 singers of all times?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Will it rain tonight?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What are the top news today?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Navigate home.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What time is it?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "How is the weather outside?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Not.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes yes.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Negative.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Positive.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Sure.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yep.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Nah.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Not at all.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Oh yeah.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No way.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Of course.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Nope.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yeah.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What can you tell me about Michael Jackson?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 27,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who was the singer named Michael Jackson.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 24,
+                        "length": 16
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me information about Louis Armstrong.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 26,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know anything about Louis Armstrong?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 27,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like some information about Ella Fitzgerald.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 32,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me details about Nat King Cole.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 22,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me about Nat King Cole.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 14,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who exactly is Billie Holiday?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 15,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know who Billie Holiday was?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 16,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to know who Billie Holiday was.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 19,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me who Billie Holiday was?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 20,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Nat King Cole?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 7,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know Ella Fitzgerald?",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 12,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Search for Ella Fitzgerald.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 11,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need to know Louis Armstrong.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 15,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Explain who was Louis Armstrong.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 16,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Introduce Michael Jackson.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 10,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Help me know Michael Jackson.",
+                "language": "en-us",
+                "intent": "who is X",
+                "entities": [
+                    {
+                        "category": "celebrity",
+                        "offset": 13,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yo!",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What's up?",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hullo.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hey.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Good evening.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Good afternoon.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Good morning.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Greetings.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hello.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Hi.",
+                "language": "en-us",
+                "intent": "greeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to book for an appointment for tomorrow at 8 with Bora.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 38,
+                        "length": 13
+                    },
+                    {
+                        "category": "invitee",
+                        "offset": 57,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I would like to reserve for a meeting with Tom for Friday.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "invitee",
+                        "offset": 43,
+                        "length": 3
+                    },
+                    {
+                        "category": "time",
+                        "offset": 51,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Make an appointment",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Call for a meeting on Thursday with Tal.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 22,
+                        "length": 8
+                    },
+                    {
+                        "category": "invitee",
+                        "offset": 36,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book Vlad for a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "invitee",
+                        "offset": 5,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Let's book Kara on Monday 11 o'clock for a meeting.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "invitee",
+                        "offset": 11,
+                        "length": 4
+                    },
+                    {
+                        "category": "time",
+                        "offset": 19,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create an appointment",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Make a meeting invitation on Tuesday 2 PM with Bedir.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 29,
+                        "length": 12
+                    },
+                    {
+                        "category": "invitee",
+                        "offset": 47,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create a meeting for me and Maraev on Wednesday 15:00.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "invitee",
+                        "offset": 28,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 38,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Let's create an appointment on Thursday 13:00 with Bladsjö.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 31,
+                        "length": 14
+                    },
+                    {
+                        "category": "invitee",
+                        "offset": 51,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            }
+        ]
+    }
+}

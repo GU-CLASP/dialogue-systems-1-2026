@@ -1,0 +1,16 @@
+Original Performance:
+
+When you are old - W.B. Yeats read by Cillian Murphy
+https://www.youtube.com/watch?v=vYJzRfLR50E
+
+My SSML Code (with Part B-VG):
+
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"93cdc1ca-0ba2-4615-91ec-495bd6b40b3d","Name":"Microsoft Server Speech Text to Speech Voice (en-US, JasonNeural)","ShortName":"en-US-JasonNeural","Locale":"en-US","VoiceType":"StandardVoice"}]}-->
+<!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+<!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"en-US":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US"><mstts:backgroundaudio src="https://github.com/lilisamani/dialogue-systems-1-2026/raw/refs/heads/main/labs/lab4/media/WhenYouAreOld-Moby.mp3" volume="0.4" fadein="2000" fadeout="2000" />
+<voice name="en-US-JasonNeural">
+<mstts:silence type="Leading-exact" value="3s" />
+<mstts:express-as style="whispering" styledegree="0.8">
+<prosody rate="-25.00%" pitch="-5.00%"><s>When you are oooold.; and grey.; and fffull of sleep. And nodding by the fire. Take down this book. And slowly read. And dream, of the soft look. Your eyes had once; </s></prosody></mstts:express-as><s><prosody rate="-25.00%" pitch="-5.00%"><mstts:express-as style="whispering" styledegree="5"> and of their shadows</mstts:express-as><mstts:express-as style="whispering" styledegree="1">deep. </mstts:express-as></prosody></s><mstts:express-as style="whispering" styledegree="0.8"><prosody rate="-25.00%" pitch="-5.00%"><s> How many loved your moments of glad grace. And loved your beauty. With love false or true. </s></prosody></mstts:express-as><s><prosody rate="-25.00%" pitch="-5.00%"><mstts:express-as style="whispering" styledegree="5">But one man, </mstts:express-as><mstts:express-as style="whispering" styledegree="1"></mstts:express-as></prosody></s><s><mstts:express-as style="whispering" styledegree="1"><prosody rate="-25.00%" pitch="-5.00%">loved the pilgrim soul in you. And loved the sorrows of your changing face. And bending down beside the glowing bars. Murmur, a little sadly, how Love fled. And paced upon the mountains overhead. And hid his face </prosody></mstts:express-as><mstts:express-as style="whispering" styledegree="2"><prosody rate="-5.00%" pitch="-5.00%"> amid a crowd of stars.</prosody></mstts:express-as></s>
+</voice></speak>

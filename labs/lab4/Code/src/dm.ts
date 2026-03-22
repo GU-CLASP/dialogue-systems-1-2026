@@ -9,42 +9,23 @@ const inspector = createBrowserInspector();
 
 const azureCredentials = {
   endpoint:
-    "https://YOUR_REGION.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+    "https://germanywestcentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
 
 const settings: Settings = {
   azureCredentials: azureCredentials,
-  azureRegion: "YOUR_REGION",
+  azureRegion: "germanywestcentral",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
-  locale: "en-US",
-  ttsDefaultVoice: "en-US-DavisNeural",
+  locale: "en-US", // "fa-IR",
+  ttsDefaultVoice: "en-US-PhoebeMultilingualNeural", // "fa-IR-FaridNeural",
 };
 
 interface GrammarEntry {
   person?: string;
   day?: string;
   time?: string;
-}
-
-const grammar: { [index: string]: GrammarEntry } = {
-  vlad: { person: "Vladislav Maraev" },
-  bora: { person: "Bora Kara" },
-  tal: { person: "Talha Bedir" },
-  tom: { person: "Tom Södahl Bladsjö" },
-  monday: { day: "Monday" },
-  tuesday: { day: "Tuesday" },
-  "10": { time: "10:00" },
-  "11": { time: "11:00" },
-};
-
-function isInGrammar(utterance: string) {
-  return utterance.toLowerCase() in grammar;
-}
-
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
 }
 
 const dmMachine = setup({
@@ -93,7 +74,7 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello world!` } },
+          entry: { type: "spst.speak", params: { utterance: `Say something!` } },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {
@@ -122,9 +103,7 @@ const dmMachine = setup({
       entry: {
         type: "spst.speak",
         params: ({ context }) => ({
-          utterance: `You just said: ${context.lastResult![0].utterance}. And it ${
-            isInGrammar(context.lastResult![0].utterance) ? "is" : "is not"
-          } in the grammar.`,
+          utterance: `You just said: ${context.lastResult![0].utterance} and I recognized it with confidence ${Math.round((context.lastResult![0].confidence as number) * 100)}%.`,
         }),
       },
       on: { SPEAK_COMPLETE: "Done" },
