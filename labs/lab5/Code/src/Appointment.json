@@ -1,0 +1,672 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "Appointment",
+        "multilingual": false,
+        "description": "Book an appointment",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "CreateMeeting"
+            },
+            {
+                "category": "WhoIs"
+            }
+        ],
+        "entities": [
+            {
+                "category": "person",
+                "compositionSetting": "combineComponents",
+                "list": {
+                    "sublists": [
+                        {
+                            "listKey": "Bora Kara",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Bora Kara",
+                                        "bora",
+                                        "kara"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Vladislav Maraev",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Vladislav Maraev",
+                                        "vlad",
+                                        "vladislav"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "John Jacob",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "John Jacob",
+                                        "john"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "category": "day",
+                "compositionSetting": "combineComponents",
+                "list": {
+                    "sublists": [
+                        {
+                            "listKey": "Sunday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "sunday",
+                                        "Sunday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Saturday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Saturday",
+                                        "saturday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Friday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Friday",
+                                        "friday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Thursday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Thursday",
+                                        "thursday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Wednesday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Wednesday",
+                                        "wednesday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Tuesday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Tuesday",
+                                        "tuesday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Monday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Monday",
+                                        "monday"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "category": "time",
+                "compositionSetting": "combineComponents",
+                "list": {
+                    "sublists": [
+                        {
+                            "listKey": "16",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "16",
+                                        "16:00 PM",
+                                        "4.00 PM",
+                                        "4'o Clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "15",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "15",
+                                        "15:00 PM",
+                                        "3.00",
+                                        "3'o clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "17",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "17",
+                                        "5.00",
+                                        "5:00 PM",
+                                        "5'O clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "9",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "9",
+                                        "9.00 AM",
+                                        "9:00",
+                                        "9'o clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "14",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "14",
+                                        "2:00 PM",
+                                        "2'o clock",
+                                        "2",
+                                        "2:00"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "13",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "13",
+                                        "1",
+                                        "1:00 PM",
+                                        "1.00",
+                                        "1:00",
+                                        "1'o clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "12",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "12",
+                                        "12:00",
+                                        "12:00 PM",
+                                        "12'o clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "10",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "10",
+                                        "10.00 AM",
+                                        "10:00",
+                                        "10'o clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "11",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "11.00 AM",
+                                        "11",
+                                        "11.00",
+                                        "11'o clock",
+                                        "11:00"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ],
+        "utterances": [
+            {
+                "text": "I want to meet Tom on Monday at 10 AM",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 15,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 22,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 32,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule an appointment with Tom on Friday",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 29,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 36,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book a meeting with John on Tuesday",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 20,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 28,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet with Vlad on Monday",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 20,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 28,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please tell about Beyonce",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 18,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Ed Westwick?",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you please tell who is Tom Hiddleston?",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 27,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Chris Hemsworth?",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is William Shakespeare?",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 19
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me  who is J K Rowling?",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 24,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me about Steve Jobs",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 14,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "What do you know about Shakira?",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 23,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Taylor Swift?",
+                "language": "en-us",
+                "intent": "WhoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you book an appointment at 15?",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 31,
+                        "length": 2
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule a meeting for me with jane at 12'clock tomorrow",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 31,
+                        "length": 4
+                    },
+                    {
+                        "category": "time",
+                        "offset": 39,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": " want to meet with someone on thursday at 5.00 pm",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 30,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 42,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please book a meeting at 2.00 pm on monday with Jennifer",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 25,
+                        "length": 7
+                    },
+                    {
+                        "category": "day",
+                        "offset": 36,
+                        "length": 6
+                    },
+                    {
+                        "category": "person",
+                        "offset": 48,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create an appointment please. For next monday with Tom. 10:30 AM would work fine for me",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 39,
+                        "length": 6
+                    },
+                    {
+                        "category": "person",
+                        "offset": 51,
+                        "length": 3
+                    },
+                    {
+                        "category": "time",
+                        "offset": 56,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book something for Monday with Ann at 5 o clock",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 19,
+                        "length": 6
+                    },
+                    {
+                        "category": "person",
+                        "offset": 31,
+                        "length": 3
+                    },
+                    {
+                        "category": "time",
+                        "offset": 38,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book an appointment for me on Monday",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to schedule a meeting",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need to create an appointment",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Set up a meeting for me",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you schedule an appointment?",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need you to book an appointment for me",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to book a meeting",
+                "language": "en-us",
+                "intent": "CreateMeeting",
+                "entities": [],
+                "dataset": "Train"
+            }
+        ]
+    }
+}
