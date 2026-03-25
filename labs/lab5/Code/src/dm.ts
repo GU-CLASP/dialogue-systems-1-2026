@@ -187,24 +187,26 @@ on: {
   FillSlot: {
   initial: "Ask",
   states: {
-
+   Ready: {
+      on: { ASRTTS_READY: "Ask", SPEAK_COMPLETE: "Ask", },
+               },
     Ask: {
       entry: {
         type: "spst.speak",
         params: ({ context }: { context: DMContext }) => {
-                const slot = context.currentSlot!;
-                if (slot === "person") {
-                  return { utterance: SLOT_PROMPTS.person };
-                } else if (slot === "day") {
-                    return { utterance: SLOT_PROMPTS.day };
-                } else if (slot === "time") {
-                    return { utterance: SLOT_PROMPTS.time };
-                } else if (slot === "confirmation") {
-                    return {utterance: `Do you want to have a picnic with ${context.person} on ${context.day} at ${context.time}?`};
-          }
-          return {
-            utterance: SLOT_PROMPTS[slot as keyof typeof SLOT_PROMPTS]};
-        },
+               const slot = context.currentSlot!;
+          if (slot === "person") {
+                   return { utterance: SLOT_PROMPTS.person };
+                 } else if (slot === "day") {
+                     return { utterance: SLOT_PROMPTS.day };
+                 } else if (slot === "time") {
+                     return { utterance: SLOT_PROMPTS.time };
+                 } else if (slot === "confirmation") {
+                     return {utterance: `Do you want to have a picnic with ${context.person} on ${context.day} at ${context.time}?`};
+           }
+           return {
+             utterance: SLOT_PROMPTS[slot as keyof typeof SLOT_PROMPTS]};
+         },
       },
       on: {
         SPEAK_COMPLETE: "Listen"
@@ -325,6 +327,10 @@ spst.subscribe((speechSnapshot) => {
       value: result,
       nluValue: speechSnapshot.context.nluResult,
     });
+  }
+  if (speechSnapshot.matches("speaking") === false && 
+      speechSnapshot.history?.matches("speaking")) {
+    dmActor.send({ type: "SPEAK_COMPLETE" });
   }
 });
 dmActor.subscribe((snapshot) => {
