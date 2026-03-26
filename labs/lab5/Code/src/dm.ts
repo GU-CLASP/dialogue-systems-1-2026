@@ -51,29 +51,19 @@ const dmMachine = setup({
     "spst.speak": ({ context, event }, params: any) => {
       const p = typeof params === "function" ? params({ context, event }) : params;
       console.log("Attempting to speak:", p.utterance);
-      if (context.isSpeaking) {
-      context.spstRef.send({ type: "STOP" });
-      }
       context.spstRef.send({
       type: "SPEAK",
       value: { utterance: p.utterance },
     });
     },
     "spst.listen": ({ context }) =>{
-      context.isSpeaking = false;
          context.spstRef.send({
            type: "LISTEN",
            value: { nlu: true } /** Local activation of NLU */,
-         })},
-    "speak.feedback": ({ context }) => {
-        const utterance = context.lastResult?.[0]?.utterance || "";
-        const feedback = `You said: ${utterance}`;
-        context.spstRef.send({
-          type: "SPEAK",
-          value: { utterance: feedback },
-    });
-  },
-  }
+        })
+      },
+    }
+
 }).createMachine({
   /** @xstate-layout N4IgpgJg5mDOIC5QBECyA6ACgJzABwENcBiAQQGUAlAFWvIH1KBRU5ATQG0AGAXUVDwB7WAEsALiMEA7fiAAeiAExcu6AJwBWAMwBGLVw2bFanQHYANCACeiEzvUAWAGxbtpxQ+0AODQF9flmjoAOoE4tSC5GJEYsQAwgAyAJJxANLcfEggQqIS0rIKCBqK9jqaWopaWk6mTk6KljYIdo4ubh7efgEgQQDiuGASUlDE5JgsqfRxAPKomAlM1EwZsjnikjJZhYpOqgbOalwmag6mXHWNSuelDpo6lV4eThqm-oEYAGIiADbf5N+CMToUiwADWo3GpEmMzmCyWKyyazym1AhScJ3Q6O0OjKakqGgcDkuCB0Xme6C8OicVK8j1MVR0XXe6C+v3+gPQCREsDEYCkxGYM16ADkkuQmMgEQJhOt8ltEDouD50ITil4uLpjLSnMTSS90ErNGpDk5PNS3j1Pj8-gCgVyeXyyFR6MLpklhZgAKrUKXZGXIgoKpUaFWeRTqzVqbW60xeUzqR5kko+U61C1BVk2jnCwRJKR4ACusTGEyms3mi2WvFW-o2gZJwdDao19yjZJjikUBrqpNpnhOenTVrZtvQcQAFmAAMag-oEAC286IxF9SLr8pJDnVBp8hz0PjjHl1tPsGh71K3ujKTMtLOt7KB5DwYAIoJEww+YEgACMCDOIaWMIVvC1aIrWcqokGDTWAq4ZaKGLheGo7hUjsQ53iOHJPi+b4fl+EC-v+JZQvQyDTMKVaZNKuTrpBzTQU0jKVK0Wh9jsUYaF46GZg+6DYa+75QJ+P5-uCcg8gQvLoAQABmvLYAAFK4KgAJTEBm96jvxuFCfhhGgqu4EovICr0iq2LXjohL4l4x5dgSKiMmoprGkcrzdEEwpgHIYgPiuoHUbKxmFI8uqmg4mLOaxpgxc5zzoV5Pl+RwOhUX6NEQSZCDKPBnhXnc1muLZMEIA4FQGg4jm7HoGplTenneb5torooaVrpl2x6OZ+UaFZDg2cSxTwcaugODiY0aFwpIJY1yVaG1Rn1p2uUWQV-VFcSXjlWULi1ZVXB1TNSXNRwDgLRlwWIO4uonF2Lm9cYSp6Io9UYMg0hgPEyRpIZF31vU8FUpVSFcDsW1VJtxgsRqZ5Ush-jdFIggQHAshoDWf0bgAtDqJWaBVKiE0TKivVguCELgGNBfW-WbbSLFAxUlJKuhoThJE0TYGIVMBhurH2B4nZHAYcb0rjTQmF2hIuFomicbGY3of0X5DFAPO0VlNTEso1LoPcuwnF4ZXPC83GaYC6sdYghJeJilX1Iq7i0qxYVaBFZ71FNJQdGoZuYUCIKgpbl2lc5dvnCUXBO1txWMY8TgUsaBJnHitzxR5w5Zna3K8sZ7Uh0hCfhvc-VWS8NTiwqRtdpS1InlGDt+1n6A5nmhbc2BmN0fccYGpqirOKaU0WCVZi9egHudoy9TIQdTe8RO06ztgC5Ltgwf1q28YlFuU17qNlckj48bnHXTEvJNXEZxhzfaYJwkEaJG8boypghmYpK3IqlSnFox76qfUk58346COk1C2ndqYblpiVSk8F1T0iQsaRQpgqRaHQu9KQYBn50TKqoRUahqjITfimTa5xWg7HqOiZyhCEa+CAA */
   id: "DM",
@@ -92,27 +82,17 @@ const dmMachine = setup({
     currentSlot: null,
   }),
   initial: "Prepare",
-on: {
-  "*": {
-    actions: [
-      ({ event }) => console.log("EVENT RECEIVED:", event),
 
-      assign({
-        isSpeaking: ({ event, context }) =>
-          event.type === "SPEAK_COMPLETE" || event.type === "ASR_NOINPUT"
-            ? false
-            : context.isSpeaking
-      })
-    ]
-  }
-},
   states: {
     Prepare: {
       entry: ({ context }) => context.spstRef.send({ type: "PREPARE" }),
       on: { ASRTTS_READY: "WaitToStart" },
     },
     WaitToStart: {
-      on: { CLICK: "Greeting" },
+      on: { 
+        CLICK: "Greeting",
+        ASRTTS_READY: {},
+       },      
     },
 
     Greeting: {
@@ -121,9 +101,8 @@ on: {
         params: { utterance: "Welcome to Moominvalley! What can I help you with?" },
       },
       on: {
-        SPEAK_COMPLETE: {
-          target: "DecisionListen"
-        },
+        SPEAK_COMPLETE: "DecisionListen",
+        ASRTTS_READY: {}, 
       },
     },
     DecisionListen: {
@@ -136,7 +115,8 @@ on: {
           })),
           target: "DecisionCheck"
       },
-        ASR_NOINPUT: "DecisionNoInput"
+        ASR_NOINPUT: "DecisionNoInput",
+        ASRTTS_READY: {}, 
     }
     },
     DecisionNoInput: {
@@ -144,7 +124,10 @@ on: {
         type: "spst.speak",
         params: { utterance: "Sorry, I didn't hear you. Do you want to go on a picnic or ask who someone is?" }
       },
-      on: { SPEAK_COMPLETE: "DecisionListen" }
+      on: { 
+        SPEAK_COMPLETE: "DecisionListen",
+        ASRTTS_READY: {}, 
+       }
     },
     DecisionCheck: {
       always: [
@@ -167,7 +150,16 @@ on: {
       ]
     },
 
-    WhoIs: {
+WhoIs: {
+  initial: "AwaitReady",
+  states: {
+    AwaitReady: {
+      on: {
+        ASRTTS_READY: "WhoIsSpeak",
+        SPEAK_COMPLETE: "WhoIsSpeak",
+      },
+    },
+    WhoIsSpeak: {
       entry: {
         type: "spst.speak",
         params: ({ context }: { context: DMContext }) => {
@@ -176,42 +168,50 @@ on: {
           );
           const person = entity?.text ?? "that person";
           return {
-            utterance: `${person} is a famous person, that lives in Moominvalley. I can help you to meet them.`
+            utterance: `${person} is a famous person, that sometimes visits Moominvalley just like you want to. You should visit together some time!`
           };
         },
       },
-        on: {
+      on: {
         SPEAK_COMPLETE: "#DM.DecisionListen",
       }
     },
+  }
+},
+
   FillSlot: {
-  initial: "Ask",
+  initial: "AwaitReady",
   states: {
-   Ready: {
-      on: { ASRTTS_READY: "Ask", SPEAK_COMPLETE: "Ask", },
-               },
+    AwaitReady: {
+      on: {
+        ASRTTS_READY: "Ask",
+        SPEAK_COMPLETE: "Ask",
+        },
+      },
     Ask: {
       entry: {
         type: "spst.speak",
-        params: ({ context }: { context: DMContext }) => {
-               const slot = context.currentSlot!;
-          if (slot === "person") {
-                   return { utterance: SLOT_PROMPTS.person };
-                 } else if (slot === "day") {
-                     return { utterance: SLOT_PROMPTS.day };
-                 } else if (slot === "time") {
-                     return { utterance: SLOT_PROMPTS.time };
-                 } else if (slot === "confirmation") {
-                     return {utterance: `Do you want to have a picnic with ${context.person} on ${context.day} at ${context.time}?`};
-           }
+            params: ({ context }: { context: DMContext }) => {
+              const slot = context.currentSlot;
+              if (slot === "confirmation") {
+                return {
+                  utterance: `Do you want to have a picnic with ${context.person} on ${context.day} at ${context.time}?`,
+                };
+              }
            return {
-             utterance: SLOT_PROMPTS[slot as keyof typeof SLOT_PROMPTS]};
+             utterance: 
+             SLOT_PROMPTS[slot as keyof typeof SLOT_PROMPTS] ??
+             "Could you repeat that?"
+            };
          },
       },
-      on: {
-        SPEAK_COMPLETE: "Listen"
-      }
+      on: { 
+        SPEAK_COMPLETE: "Listen",
+        ASRTTS_READY: {},
+       },
+       
     },
+
     Listen: {
       entry: { type: "spst.listen" },
       on: {
@@ -222,7 +222,7 @@ on: {
           })),
           target: "Process"
         },
-        ASR_NOINPUT: "NoInput"
+        ASR_NOINPUT: "NoInput",
       }
     },
     NoInput: {
@@ -232,85 +232,109 @@ on: {
           utterance: `I can't hear you. Please tell me the ${context.currentSlot}.`
         })
       },
-      on: { SPEAK_COMPLETE: "Ask" }
+      on: { 
+        SPEAK_COMPLETE: "Ask",
+      },
+       
     },
 
     Process: {
+
       always: [
-        {
-          guard: ({ context }) =>
-            context.interpretation?.topIntent === "Who is X",
-          target: "#DM.WhoIs"
-        },
         {
           actions: assign(({ context }) => {
             const entities = context.interpretation?.entities ?? [];
             const slot = context.currentSlot;
+            const rawUtterance = context.lastResult?.[0]?.utterance ?? null;
 
-            const person = entities.find(e => e.category === "meeting person");
+            const person = entities.find(e => e.category === "person");
             const day = entities.find(e => e.category === "meeting day");
             const time = entities.find(e => e.category === "meeting time");
-            const confirmation = entities.find(e => e.category === "meeting confirmation");
+            const confirmationYes = entities.find(e => e.category === "confirmation yes");
+            const confirmationNo = entities.find(e => e.category === "confirmation no");
 
-            if (slot === "person") return { person: person?.text ?? null };
-            if (slot === "day") return { day: day?.text ?? null };
-            if (slot === "time") return { time: time?.text ?? null };
-            if (slot === "confirmation") return { confirmation: confirmation?.text ?? null };
-
+            if (slot === "person")
+              return { person: person?.text ?? rawUtterance };
+            if (slot === "day")
+              return { day: day?.text ?? rawUtterance };
+            if (slot === "time")
+              return { time: time?.text ?? rawUtterance };
+            if (slot === "confirmation") {
+            if (confirmationYes) return { confirmation: "yes" };
+            if (confirmationNo) return { confirmation: "no" };
+              return { confirmation: rawUtterance };
+            }
             return {};
           }),
-          target: "Feedback"
+          target: "#DM.NextSlot"
         }
       ]
     },
-    Feedback: {
-      entry: { type: "speak.feedback" },
-      on: {
-        SPEAK_COMPLETE: "#DM.NextSlot"
-      }
-    }
-  }
-},
+        Feedback: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }: { context: DMContext }) => ({
+              utterance: `You said: ${context.lastResult?.[0]?.utterance ?? ""}`,
+            }),
+          },
+          on: { 
+            SPEAK_COMPLETE: "#DM.NextSlot",
+            ASRTTS_READY: {}, 
+           },
+          
+        },
+      },
+    },
+
     NextSlot: {
       always: [
         {
           guard: ({ context }) => context.currentSlot === "person" && !!context.person,
           actions: assign({ currentSlot: "day" }),
-          target: "FillSlot.Ask",
+          target: "FillSlot.AwaitReady",
           reenter: true,
         },
         {
           guard: ({ context }) => context.currentSlot === "day" && !!context.day,
           actions: assign({ currentSlot: "time" }),
-          target: "FillSlot.Ask",
+          target: "FillSlot.AwaitReady",
           reenter: true,
         },
         {
           guard: ({ context }) => context.currentSlot === "time" && !!context.time,
           actions: assign({ currentSlot: "confirmation" }),
-          target: "FillSlot.Ask",
+          target: "FillSlot.AwaitReady",
           reenter: true,
         },
         {
           guard: ({ context }) => context.currentSlot === "confirmation" && context.confirmation === "yes",
-          target: "Done" 
+          target: "ReadyDone" 
         },
         {
           guard: ({ context }) => context.currentSlot === "confirmation" && context.confirmation === "no",
           actions: assign({ currentSlot: "person", person: null, day: null, time: null, confirmation: null }),
-          target: "FillSlot.Ask",
+          target: "FillSlot.AwaitReady",
           reenter: true
         },
-        // Fallback: repeats current slot if data is missing or confirmation was "no"
-        { target: "FillSlot.Ask" }
+        
+        { target: "FillSlot.AwaitReady" }
       ],
+    },
+    ReadyDone: {
+      on: {
+        ASRTTS_READY: "Done",
+        SPEAK_COMPLETE: "Done",
+      },
     },
     Done: {
       entry: {
         type: "spst.speak",
         params: { utterance: "The moomins don't really do meetings, just stop by. See you soon in Moominvalley!" }
       },
-      on: { CLICK: "Greeting" },
+      on: { 
+        CLICK: "Greeting",
+        SPEAK_COMPLETE: "WaitToStart",
+       },
     },
   },
 });
@@ -318,9 +342,24 @@ on: {
 const dmActor = createActor(dmMachine, {inspect: inspector.inspect,}).start();
 const spst = dmActor.getSnapshot().context.spstRef;
 
+let wasSpeaking = false;
+let lastReadyState = false;
+
 spst.subscribe((speechSnapshot) => {
+  const nowSpeaking = speechSnapshot.matches("speaking");
+  const nowReady = speechSnapshot.matches("ready");
+
+  if (wasSpeaking && !nowSpeaking) {
+    dmActor.send({ type: "SPEAK_COMPLETE" });
+  }
+  wasSpeaking = nowSpeaking;
+
+  if (nowReady && !lastReadyState) {
+    dmActor.send({ type: "ASRTTS_READY" });
+  }
+  lastReadyState = nowReady;
+
   const result = speechSnapshot.context.recResult;
-  
   if (result) {
     dmActor.send({
       type: "RECOGNISED",
@@ -328,14 +367,10 @@ spst.subscribe((speechSnapshot) => {
       nluValue: speechSnapshot.context.nluResult,
     });
   }
-  if (speechSnapshot.matches("speaking") === false && 
-      speechSnapshot.history?.matches("speaking")) {
-    dmActor.send({ type: "SPEAK_COMPLETE" });
-  }
 });
 dmActor.subscribe((snapshot) => {
   const spst = snapshot.context.spstRef.getSnapshot();
-  // Check if the actor is in an 'error' or 'failed' state
+ 
   if (spst.value === 'error') { 
     console.error("SPEECH ENGINE ERROR STATE REACHED:", spst.context);
   }
