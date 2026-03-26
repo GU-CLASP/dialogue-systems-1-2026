@@ -9,13 +9,13 @@ const inspector = createBrowserInspector();
 
 const azureCredentials = {
   endpoint:
-    "https://YOUR_REGION.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+    "https://swedencentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
 
 const settings: Settings = {
   azureCredentials: azureCredentials,
-  azureRegion: "YOUR_REGION",
+  azureRegion: "swedencentral",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
@@ -85,7 +85,7 @@ const dmMachine = setup({
       on: {
         LISTEN_COMPLETE: [
           {
-            target: "CheckGrammar",
+            target: "LogUtterance",
             guard: ({ context }) => !!context.lastResult,
           },
           { target: ".NoInput" },
@@ -93,7 +93,7 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello world!` } },
+          entry: { type: "spst.speak", params: { utterance: `Tell me something interesting!` } },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {
@@ -117,6 +117,16 @@ const dmMachine = setup({
           },
         },
       },
+    },
+    LogUtterance: {
+      entry: [
+        ({ context }) => {
+          const utterance = context.lastResult![0].utterance;
+          const confidence = context.lastResult![0].confidence;
+          console.log(`Utterance: ${utterance}, Confidence: ${confidence}`);
+        },
+      ],
+      on: { SPEAK_COMPLETE: "Done" },
     },
     CheckGrammar: {
       entry: {
