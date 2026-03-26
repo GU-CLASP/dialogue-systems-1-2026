@@ -1,4 +1,4 @@
-import {assign, createActor, log, setup} from "xstate";
+import {assign, createActor, setup} from "xstate";
 import type { Settings } from "speechstate";
 import { speechstate } from "speechstate";
 import { createBrowserInspector } from "@statelyai/inspect";
@@ -94,6 +94,13 @@ function getTimeEntity(entities: any[]) {
   // return entities.find((e:any) => e.extraInformation?.some((info: any) => info.value === "datetime.time"))?.text ?? null;
   const pureTime = entities.find((e:any) => e.extraInformation?.some((info: any) => info.value === "datetime.time"));
   if (pureTime) {
+    const timex_time = pureTime.resolutions?.[0]?.timex;
+
+    // turn the timex time into a human readable format
+    if (timex_time) {
+      return parseTimeFromTimex(timex_time);
+    }
+    
     return pureTime;
   }
 
