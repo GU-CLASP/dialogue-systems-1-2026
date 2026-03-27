@@ -1,0 +1,923 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "lab5",
+        "multilingual": false,
+        "description": "language project for dialogue systems, lab 5",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "Agree"
+            },
+            {
+                "category": "Disagree"
+            },
+            {
+                "category": "CreateAppointment"
+            },
+            {
+                "category": "WhoIsX"
+            }
+        ],
+        "entities": [
+            {
+                "category": "Who",
+                "compositionSetting": "combineComponents",
+                "list": {
+                    "sublists": [
+                        {
+                            "listKey": "Andreas Bartsiokas",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Andreas Bartsiokas",
+                                        "Andreas",
+                                        "Andrew",
+                                        "bartsiokas"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Tom Södahl Bladsjö",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Tom",
+                                        "Tom Södahl Bladsjö"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Talha Bedir",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Talha Bedir",
+                                        "Talha",
+                                        "Bedir"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Bora Kara",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Bora Kara",
+                                        "Bora",
+                                        "kara"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Vladislav Maraev",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Vladislav Maraev",
+                                        "vlad",
+                                        "vladislav",
+                                        "maraev"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "prebuilts": [
+                    {
+                        "category": "Person.Name"
+                    }
+                ]
+            },
+            {
+                "category": "Day",
+                "compositionSetting": "combineComponents",
+                "list": {
+                    "sublists": [
+                        {
+                            "listKey": "Friday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Friday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Thursday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Thursday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Wednesday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Wednesday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Tuesday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Tuesday"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "Monday",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "Monday"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "category": "Time",
+                "compositionSetting": "combineComponents",
+                "list": {
+                    "sublists": [
+                        {
+                            "listKey": "16:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "16:00",
+                                        "16",
+                                        "4",
+                                        "16 o'clock",
+                                        "4 o'clock",
+                                        "16 PM",
+                                        "4 PM"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "15:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "15:00",
+                                        "15",
+                                        "15 o'clock",
+                                        "3 o'clock",
+                                        "3",
+                                        "15 PM",
+                                        "3 PM"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "14:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "14:00",
+                                        "14",
+                                        "14 o'clock",
+                                        "2 o'clock",
+                                        "2 PM",
+                                        "2",
+                                        "14 PM"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "13:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "13:00",
+                                        "13",
+                                        "1 o'clock",
+                                        "1 PM",
+                                        "13 o'clock",
+                                        "1",
+                                        "13 PM"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "12:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "12:00",
+                                        "12",
+                                        "12 PM",
+                                        "12 noon",
+                                        "12 o'clock",
+                                        "noon"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "11:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "11:00",
+                                        "11",
+                                        "11 AM",
+                                        "11 o'clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "10:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "10:00",
+                                        "10",
+                                        "10 AM",
+                                        "10 o'clock"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "listKey": "09:00",
+                            "synonyms": [
+                                {
+                                    "language": "en-us",
+                                    "values": [
+                                        "09:00",
+                                        "9",
+                                        "9 AM",
+                                        "9 o'clock"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "category": "Celebrity",
+                "compositionSetting": "combineComponents"
+            }
+        ],
+        "utterances": [
+            {
+                "text": "Quick question: who is Mark Zuckerberg?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 23,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Sorry if this is obvious, but who is Nelson Mandela?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 37,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I keep hearing about Michael Jackson. Who is he?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 21,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can someone explain who Steve Jobs is?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 24,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'm curious — who is Marie Curie?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 21,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you happen to know who Lionel Messi is?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 26,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Remind me, who is Barack Obama?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 18,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I've seen people mention Leonardo da Vinci — who is he?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 25,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Wait, who is Beyoncé again?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 13,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Could you explain who Bill Gates is?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 22,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'm not familiar with Oprah Winfrey. Who is she?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 22,
+                        "length": 13
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who exactly is Cristiano Ronaldo?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 15,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I've heard the name Elon Musk before — who is he exactly?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 20,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me who Taylor Swift is?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 20,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know who Albert Einstein is?",
+                "language": "en-us",
+                "intent": "WhoIsX",
+                "entities": [
+                    {
+                        "category": "Celebrity",
+                        "offset": 16,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Put an appointment on my calendar for Thursday at 10 AM.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Day",
+                        "offset": 38,
+                        "length": 8
+                    },
+                    {
+                        "category": "Time",
+                        "offset": 50,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need to arrange an appointment as soon as possible.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Time",
+                        "offset": 36,
+                        "length": 16
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Help me set up an appointment this week.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you schedule a meeting with John for tomorrow?",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Who",
+                        "offset": 32,
+                        "length": 4
+                    },
+                    {
+                        "category": "Day",
+                        "offset": 41,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to book a consultation.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please create an appointment for me, in the evening.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Time",
+                        "offset": 44,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to reserve a time slot for a meeting at noon.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Time",
+                        "offset": 47,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Set up an appointment for this Friday afternoon.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Day",
+                        "offset": 31,
+                        "length": 6
+                    },
+                    {
+                        "category": "Time",
+                        "offset": 38,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you arrange a meeting for next Monday?",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Day",
+                        "offset": 30,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need to make an appointment with the doctor.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book me an appointment at 3 PM.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Time",
+                        "offset": 26,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule an appointment for tomorrow morning.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Day",
+                        "offset": 28,
+                        "length": 8
+                    },
+                    {
+                        "category": "Time",
+                        "offset": 37,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to set up a meeting, as late as possible.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Time",
+                        "offset": 30,
+                        "length": 19
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you book an appointment for me for the day after tomorrow?",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Day",
+                        "offset": 39,
+                        "length": 22
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to schedule an appointment, as early as possible.",
+                "language": "en-us",
+                "intent": "CreateAppointment",
+                "entities": [
+                    {
+                        "category": "Time",
+                        "offset": 35,
+                        "length": 20
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I don’t think that’s a good idea.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I can’t agree with that.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "That’s not quite right.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I’m not sure that’s correct.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I don’t support that idea.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I’m not on board with that.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "That doesn’t sound good to me.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I see it differently.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No, I don’t think so.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I don’t agree with your point.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "That’s not what I had in mind.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I’m not convinced.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I disagree with that.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No, that doesn’t work for me.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I don’t think that’s right.",
+                "language": "en-us",
+                "intent": "Disagree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "That’s exactly what I meant.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I’m happy with that.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes, I like that suggestion.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I think you’re right.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "That’s a good point.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I’m on board.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes, I can do that.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I support that idea.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "That’s fine by me.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Absolutely, I’m in.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Sure, let’s do it.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I’m okay with this plan.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "That sounds good.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I agree with that.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes, that works for me.",
+                "language": "en-us",
+                "intent": "Agree",
+                "entities": [],
+                "dataset": "Train"
+            }
+        ]
+    }
+}

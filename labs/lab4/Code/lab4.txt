@@ -1,0 +1,27 @@
+I did try to attempt Part B - VG. Played arround with the sound a bit, I tried to get the voice right, but then just make it 
+as much interesting as I could.
+
+https://www.youtube.com/watch?v=qj139dE7tFI&t=108s (lady galadriel talking about the rings of power, lotr prologue)
+
+
+
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"4b1dc409-f234-45cf-bda5-852fa95d0e5f","Name":"Microsoft Server Speech Text to Speech Voice (en-GB, SoniaNeural)","ShortName":"en-GB-SoniaNeural","Locale":"en-GB","VoiceType":"StandardVoice"}]}-->
+<!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-GB"><voice name="en-GB-SoniaNeural"><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%"> </prosody><prosody rate="slow" volume="-20.00%" pitch="low">     Three Rings for the Elven-kings under the sky,</prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%" pitch="low">      </prosody><prosody rate="slow" pitch="low"><break time="500ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%" pitch="low">      </prosody><prosody rate="slow" volume="-20.00%" pitch="low" contour="(10%, -36%) (37%, +73%) (51%, -75%) (61%, +70%)">Seven</prosody><prosody rate="slow" volume="-20.00%" pitch="low"> for the Dwarf-lords in their halls of stone,</prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%" pitch="low">      </prosody><prosody rate="slow" pitch="low"><break time="500ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%" pitch="low">      Nine for Mortal Men <emphasis level="strong"></emphasis><prosody rate="slow" volume="-20.00%" pitch="low" contour="(92%, -100%)">doomed to die</prosody><prosody rate="slow" volume="-20.00%" pitch="low">,</prosody></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%" pitch="low">      </prosody><prosody rate="slow" pitch="low"><break time="1000ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="x-loud" pitch="low">      One for the <emphasis level="strong">Dark Lord</emphasis> on his dark throne</prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%" pitch="low">      </prosody><prosody rate="slow" pitch="low"><break time="500ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="soft" pitch="low">      </prosody><prosody rate="slow" volume="soft" pitch="low" contour="(23%, +27%) (68%, -34%) (93%, -63%)">In the Land of Mordor where the Shadows lie.</prosody></mstts:express-as><s />
+<s /><mstts:express-as style="cheerful"><prosody rate="slow" volume="-20.00%" pitch="low">      </prosody><prosody rate="slow" pitch="low"><break time="1500ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="x-loud" pitch="low"> </prosody><prosody rate="slow" volume="x-loud" pitch="-10.00%">       One Ring to <emphasis level="strong">rule them all,</emphasis></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="-20.00%" pitch="low">        </prosody><prosody rate="x-slow" volume="loud" pitch="x-low"><break time="600ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="medium" pitch="low">        One Ring to <emphasis level="strong">find them,</emphasis></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="-20.00%" pitch="low">        </prosody><prosody rate="x-slow" volume="loud" pitch="x-low"><break time="600ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="soft" pitch="low">        One Ring to bring them all and in the darkness</prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="x-loud" pitch="x-low">        <emphasis level="strong">bind them</emphasis></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="-20.00%" pitch="low">        </prosody><prosody rate="x-slow" volume="loud" pitch="x-low"><break time="1000ms" /></prosody></mstts:express-as><s />
+<s /><mstts:express-as style="sad"><prosody rate="slow" volume="x-loud" pitch="x-low">        In the Land of Mordor </prosody><prosody rate="x-slow" volume="x-loud" pitch="x-low">where the Shadows lie.</prosody></mstts:express-as><s /></voice></speak>
