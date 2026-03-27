@@ -7,45 +7,75 @@ import type { DMContext, DMEvents } from "./types";
 
 const inspector = createBrowserInspector();
 
+
 const azureCredentials = {
   endpoint:
-    "https://YOUR_REGION.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+    "https://norwayeast.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
 
+
+
 const settings: Settings = {
   azureCredentials: azureCredentials,
-  azureRegion: "YOUR_REGION",
+  azureRegion: "norwayeast",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
 };
 
-interface GrammarEntry {
-  person?: string;
-  day?: string;
-  time?: string;
+
+
+let index: int = 0;
+let fantasy_names : string[] = ["Gandalf", "Azeroth", "Voldemort", "Fëanor"];
+let utterance_names: string[] =[];
+
+
+function initialize(){
+	index=0;
+	utterance_names=[];
+	const btn =document.getElementById("names");
+	btn.innerHTML=fantasy_names[index];
 }
 
-const grammar: { [index: string]: GrammarEntry } = {
-  vlad: { person: "Vladislav Maraev" },
-  bora: { person: "Bora Kara" },
-  tal: { person: "Talha Bedir" },
-  tom: { person: "Tom Södahl Bladsjö" },
-  monday: { day: "Monday" },
-  tuesday: { day: "Tuesday" },
-  "10": { time: "10:00" },
-  "11": { time: "11:00" },
-};
-
-function isInGrammar(utterance: string) {
-  return utterance.toLowerCase() in grammar;
+//using this to match Fantasynames with utterance
+function listen_fantasy(utterance:string, confidence: number){
+	utterance_names.push(utterance);
+	let results: string ="<h3>Results</h3>";
+	for(let i:int=0; i<utterance_names.length; i++)
+	{
+		results = results+"<p>"+fantasy_names[i]+" : "+utterance_names[i]+" confidence: "+confidence +"</p>";
+		
+	}
+	document.getElementById("results").innerHTML=results;
+	index++;
+	if(index<fantasy_names.length)
+	{
+		
+		document.getElementById("names").innerHTML=fantasy_names[index];
+	}
+	else
+	{
+		document.getElementById("names").innerHTML="Done";
+	}
+	return utterance;
 }
 
-function getPerson(utterance: string) {
-  return (grammar[utterance.toLowerCase()] || {}).person;
+//Checking if all the names are done
+function is_last()
+{
+	if(index==fantasy_names.length)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
+
+
 
 const dmMachine = setup({
   types: {
@@ -64,10 +94,14 @@ const dmMachine = setup({
       context.spstRef.send({
         type: "LISTEN",
       }),
+	"initialize": initialize(),
   },
 }).createMachine({
   context: ({ spawn }) => ({
     spstRef: spawn(speechstate, { input: settings }),
+	person: null ,
+	day: null ,
+	time: null,
     lastResult: null,
   }),
   id: "DM",
@@ -80,12 +114,14 @@ const dmMachine = setup({
     WaitToStart: {
       on: { CLICK: "Greeting" },
     },
+	
+	//Saying hello
     Greeting: {
       initial: "Prompt",
       on: {
         LISTEN_COMPLETE: [
           {
-            target: "CheckGrammar",
+            target: "Check",
             guard: ({ context }) => !!context.lastResult,
           },
           { target: ".NoInput" },
@@ -93,15 +129,15 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello world!` } },
+          entry: { type: "spst.speak", params: { utterance: `Speak the name to the left` } },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {
           entry: {
             type: "spst.speak",
-            params: { utterance: `I can't hear you!` },
+            params: { utterance: `I can't hear you!` },			
           },
-          on: { SPEAK_COMPLETE: "Ask" },
+          on: { SPEAK_COMPLETE: "Prompt" },
         },
         Ask: {
           entry: { type: "spst.listen" },
@@ -112,22 +148,33 @@ const dmMachine = setup({
               }),
             },
             ASR_NOINPUT: {
-              actions: assign({ lastResult: null }),
+			  actions: assign({ lastResult: null }),
+			  //target:"Prompt",
             },
           },
+		  
         },
+		
       },
     },
-    CheckGrammar: {
+    Check: {
       entry: {
         type: "spst.speak",
         params: ({ context }) => ({
-          utterance: `You just said: ${context.lastResult![0].utterance}. And it ${
-            isInGrammar(context.lastResult![0].utterance) ? "is" : "is not"
-          } in the grammar.`,
+          utterance: `I heard: ${listen_fantasy(context.lastResult![0].utterance, context.lastResult![0].confidence)}`,
         }),
       },
-      on: { SPEAK_COMPLETE: "Done" },
+      on: { SPEAK_COMPLETE: [
+      {
+        target: "Done",
+        guard: ({ context }) =>
+        is_last(),
+      },
+      {
+        target: "Greeting", // eller reprompt-state
+      },
+    ],
+	},
     },
     Done: {
       on: {
