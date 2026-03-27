@@ -9,13 +9,12 @@ const inspector = createBrowserInspector();
 
 const azureCredentials = {
   endpoint:
-    "https://YOUR_REGION.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+    "https://swedencentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
-
 const settings: Settings = {
   azureCredentials: azureCredentials,
-  azureRegion: "YOUR_REGION",
+  azureRegion: "swedencentral",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
@@ -108,6 +107,8 @@ const dmMachine = setup({
           on: {
             RECOGNISED: {
               actions: assign(({ event }) => {
+                console.log("Utterance:", event.value[0]?.utterance);
+                console.log("Confidence:", event.value[0]?.confidence);
                 return { lastResult: event.value };
               }),
             },

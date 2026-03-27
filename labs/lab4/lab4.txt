@@ -1,0 +1,57 @@
+Original performance: https://youtu.be/va_KOSOZ_Kw?si=ftD9dgGL-r06BYmA
+
+SSML Code:
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"4b1dc409-f234-45cf-bda5-852fa95d0e5f","Name":"Microsoft Server Speech Text to Speech Voice (en-GB, SoniaNeural)","ShortName":"en-GB-SoniaNeural","Locale":"en-GB","VoiceType":"StandardVoice"}]}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-GB"><voice name="en-GB-SoniaNeural">
+    
+<prosody rate="-22%" pitch="+2st" volume="-8%">        I <emphasis level="moderate">carry</emphasis> your heart with me,
+        <break time="900ms" />
+        I carry it in my <emphasis level="moderate">heart</emphasis>.
+        <break time="1s" />
+
+        I am <emphasis level="moderate">never</emphasis> without it,
+        <break time="900ms" />
+        Anywhere I <emphasis level="moderate">go</emphasis>,
+        <break time="9ms" />
+        <emphasis level="moderate">you</emphasis><emphasis level="strong">go</emphasis>, my dear;
+        <break time="1s" />
+
+        And whatever is done by <emphasis level="strong">only me</emphasis>,
+        <break time="600ms" />
+        is your doing, my darling;
+        <break time="1s" />
+
+        I <emphasis level="moderate">fear</emphasis> no fate,
+        <break time="600ms" />
+        for you are my fate, my sweet.
+        <break time="1s" />
+
+        I want <emphasis level="strong">no world</emphasis>
+        <break time="200ms" />
+        for beautiful, you are my <emphasis level="moderate">world</emphasis>, my true;
+        <break time="1s" />
+
+        And it's you are whatever a moon has always meant
+        <break time="800ms" />
+        And whatever a sun will always sing is you
+        <break time="1s" />
+
+        Here is the deepest secret nobody knows
+        <break time="600ms" />
+        Here is the root of the root and bud of the bud
+        <break time="600ms" />
+        And the sky of the sky of a tree called life;
+        <break time="400ms" />
+        Which grows higher than soul can hope,
+        <break time="300ms" />
+        or mind can hide.
+
+        <break time="500ms" />
+        And this is the wonder that's keeping the stars apart.
+
+        <break time="1s" />
+        I carry your heart with me,
+        <break time="900ms" />
+        I carry it in my heart.
+    </prosody>
+  </voice></speak>

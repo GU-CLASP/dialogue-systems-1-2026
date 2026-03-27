@@ -4,6 +4,46 @@ import type { ActorRef } from "xstate";
 export interface DMContext {
   spstRef: ActorRef<any, any>;
   lastResult: Hypothesis[] | null;
+
+  // appointment slots
+  person?: string;
+  day?: string;
+  time?: string;
+  wholeDay?: boolean;
+  confirm?: boolean;
+  retryCount?: number;
+
+  interpretation: NLUObject | null;
 }
 
-export type DMEvents = SpeechStateExternalEvent | { type: "CLICK" } | { type: "DONE" };
+export type DMEvents = 
+  | SpeechStateExternalEvent
+  | { type: "CLICK" }
+  | { type: "DONE" }
+  | { type: "ASRTTS_READY" }
+  | { type: "RECOGNISED"; value: any; nluValue?: NLUObject }
+  | { type: "LISTEN_COMPLETE" }
+  | { type: "SPEAK_COMPLETE" };
+
+
+export interface Entity {
+  category: string;
+  text: string;
+  confidenceScore: number;
+  offset: number;
+  length: number;
+}
+
+export interface Intent {
+  category: string;
+  confidenceScore: number;
+}
+
+export interface NLUObject {
+  entities: Entity[];
+  intents: Intent[];
+  projectKind: string;
+  topIntent: string;
+}
+
+
