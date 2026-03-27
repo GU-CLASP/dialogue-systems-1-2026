@@ -1,0 +1,230 @@
+[
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Create a meeting for tomorrow at 10 AM.",
+    "entities": [{ "category": "DateTime", "offset": 21, "length": 18 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Schedule a sync with the marketing team.",
+    "entities": [
+      { "category": "Subject", "offset": 11, "length": 4 },
+      { "category": "Person", "offset": 25, "length": 14 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Set up a call for next Tuesday.",
+    "entities": [{ "category": "DateTime", "offset": 18, "length": 12 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Book a room for a brainstorming session at 2 PM.",
+    "entities": [
+      { "category": "Subject", "offset": 18, "length": 21 },
+      { "category": "DateTime", "offset": 43, "length": 4 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Start a new calendar event for Friday.",
+    "entities": [{ "category": "DateTime", "offset": 31, "length": 6 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Organize a quick catch-up for this afternoon.",
+    "entities": [
+      { "category": "Subject", "offset": 11, "length": 14 },
+      { "category": "DateTime", "offset": 30, "length": 14 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Arrange a meeting with Sarah regarding the budget.",
+    "entities": [
+      { "category": "Person", "offset": 23, "length": 5 },
+      { "category": "Subject", "offset": 43, "length": 6 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Establish a recurring meeting on Mondays.",
+    "entities": [{ "category": "DateTime", "offset": 33, "length": 7 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Get a meeting on the books for later today.",
+    "entities": [{ "category": "DateTime", "offset": 31, "length": 11 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Put a sync on my calendar for 11:30.",
+    "entities": [
+      { "category": "Subject", "offset": 6, "length": 4 },
+      { "category": "DateTime", "offset": 30, "length": 5 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "I need to meet with John and Alice on Wednesday.",
+    "entities": [
+      { "category": "Person", "offset": 20, "length": 14 },
+      { "category": "DateTime", "offset": 38, "length": 9 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Can we get together to talk about the project launch next week?",
+    "entities": [
+      { "category": "Subject", "offset": 38, "length": 14 },
+      { "category": "DateTime", "offset": 53, "length": 9 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "I'd like to schedule some time with the dev team.",
+    "entities": [{ "category": "Person", "offset": 40, "length": 8 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Let’s hop on a call at 3 o'clock.",
+    "entities": [{ "category": "DateTime", "offset": 23, "length": 9 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Find a slot for me and the hiring manager.",
+    "entities": [{ "category": "Person", "offset": 27, "length": 14 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "I want to sit down with the designers tomorrow morning.",
+    "entities": [
+      { "category": "Person", "offset": 28, "length": 9 },
+      { "category": "DateTime", "offset": 38, "length": 16 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "We need a huddle to discuss the new roadmap.",
+    "entities": [{ "category": "Subject", "offset": 32, "length": 11 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "See if you can squeeze in a meeting for Friday.",
+    "entities": [{ "category": "DateTime", "offset": 40, "length": 6 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Can you set aside some time for a strategy review?",
+    "entities": [{ "category": "Subject", "offset": 34, "length": 15 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "I’m looking to book a briefing for the executive board.",
+    "entities": [
+      { "category": "Subject", "offset": 22, "length": 8 },
+      { "category": "Person", "offset": 39, "length": 15 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Is there a way to schedule a meeting for tomorrow afternoon?",
+    "entities": [{ "category": "DateTime", "offset": 41, "length": 18 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Could you find time for a sync-up later this week?",
+    "entities": [
+      { "category": "Subject", "offset": 26, "length": 7 },
+      { "category": "DateTime", "offset": 34, "length": 15 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Can you put me and Mike in a room on Thursday?",
+    "entities": [
+      { "category": "Person", "offset": 19, "length": 4 },
+      { "category": "DateTime", "offset": 37, "length": 8 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Would you mind setting up a follow-up call for next month?",
+    "entities": [
+      { "category": "Subject", "offset": 28, "length": 14 },
+      { "category": "DateTime", "offset": 47, "length": 10 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "I need a meeting scheduled, preferably before 5 PM today.",
+    "entities": [{ "category": "DateTime", "offset": 39, "length": 17 }]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Check if everyone is free for a team lunch on Friday.",
+    "entities": [
+      { "category": "Subject", "offset": 32, "length": 10 },
+      { "category": "DateTime", "offset": 46, "length": 6 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Can we block out time for a performance review next Monday?",
+    "entities": [
+      { "category": "Subject", "offset": 28, "length": 18 },
+      { "category": "DateTime", "offset": 47, "length": 11 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "See if you can arrange a check-in for tomorrow.",
+    "entities": [
+      { "category": "Subject", "offset": 25, "length": 8 },
+      { "category": "DateTime", "offset": 38, "length": 8 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "I’d like to organize a workshop for the first week of March.",
+    "entities": [
+      { "category": "Subject", "offset": 23, "length": 8 },
+      { "category": "DateTime", "offset": 40, "length": 19 }
+    ]
+  },
+  {
+    "intent": "CreateMeeting",
+    "language": "en-us",
+    "text": "Can you create a calendar invite for the quarterly review?",
+    "entities": [{ "category": "Subject", "offset": 41, "length": 16 }]
+  }
+]

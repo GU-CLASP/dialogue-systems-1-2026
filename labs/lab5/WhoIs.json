@@ -1,0 +1,182 @@
+[
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is Bill Gates?",
+    "entities": [{ "category": "Person", "offset": 7, "length": 10 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Tell me about Marie Curie.",
+    "entities": [{ "category": "Person", "offset": 14, "length": 11 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who's Alan Turing?",
+    "entities": [{ "category": "Person", "offset": 6, "length": 11 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Do you know who Oprah Winfrey is?",
+    "entities": [{ "category": "Person", "offset": 16, "length": 13 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Identify Nikola Tesla for me.",
+    "entities": [{ "category": "Person", "offset": 9, "length": 12 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Can you tell me who Albert Einstein was?",
+    "entities": [{ "category": "Person", "offset": 21, "length": 15 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is Serena Williams?",
+    "entities": [{ "category": "Person", "offset": 7, "length": 15 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Information on Nelson Mandela please.",
+    "entities": [{ "category": "Person", "offset": 15, "length": 14 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "I'd like to know more about Malala Yousafzai.",
+    "entities": [{ "category": "Person", "offset": 28, "length": 16 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who exactly is Leonardo da Vinci?",
+    "entities": [{ "category": "Person", "offset": 15, "length": 17 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is Ada Lovelace?",
+    "entities": [{ "category": "Person", "offset": 7, "length": 12 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Tell me who Stephen Hawking is.",
+    "entities": [{ "category": "Person", "offset": 12, "length": 15 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who's Michelle Obama?",
+    "entities": [{ "category": "Person", "offset": 6, "length": 14 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Give me the lowdown on Steve Wozniak.",
+    "entities": [{ "category": "Person", "offset": 24, "length": 13 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is the person named Grace Hopper?",
+    "entities": [{ "category": "Person", "offset": 25, "length": 12 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is Isaac Newton?",
+    "entities": [{ "category": "Person", "offset": 7, "length": 12 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Tell me about Rosa Parks.",
+    "entities": [{ "category": "Person", "offset": 14, "length": 10 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who's Charles Darwin?",
+    "entities": [{ "category": "Person", "offset": 6, "length": 14 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Do you have info on Katherine Johnson?",
+    "entities": [{ "category": "Person", "offset": 20, "length": 17 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who exactly is Amelia Earhart?",
+    "entities": [{ "category": "Person", "offset": 15, "length": 14 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Can you identify Mahatma Gandhi?",
+    "entities": [{ "category": "Person", "offset": 17, "length": 14 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "I'm looking for details on Neil Armstrong.",
+    "entities": [{ "category": "Person", "offset": 27, "length": 14 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is Jane Goodall?",
+    "entities": [{ "category": "Person", "offset": 7, "length": 12 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Tell me who Wolfgang Amadeus Mozart was.",
+    "entities": [{ "category": "Person", "offset": 12, "length": 23 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who's George Washington?",
+    "entities": [{ "category": "Person", "offset": 6, "length": 17 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Information on Maya Angelou.",
+    "entities": [{ "category": "Person", "offset": 15, "length": 12 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is Winston Churchill?",
+    "entities": [{ "category": "Person", "offset": 7, "length": 17 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Identify Frida Kahlo for me.",
+    "entities": [{ "category": "Person", "offset": 9, "length": 11 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Do you know who Martin Luther King Jr. is?",
+    "entities": [{ "category": "Person", "offset": 16, "length": 22 }]
+  },
+  {
+    "intent": "WhoIs",
+    "language": "en-us",
+    "text": "Who is Rosalind Franklin?",
+    "entities": [{ "category": "Person", "offset": 7, "length": 17 }]
+  }
+]

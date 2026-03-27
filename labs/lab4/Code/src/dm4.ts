@@ -20,6 +20,7 @@ const settings: Settings = {
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
+  speechRecognitionEndpointId: "62b8c588-0191-4fd7-a7cc-1b437963d69b",
 };
 
 interface GrammarEntry {
@@ -93,7 +94,7 @@ const dmMachine = setup({
       },
       states: {
         Prompt: {
-          entry: { type: "spst.speak", params: { utterance: `Hello World!` } },
+          entry: { type: "spst.speak", params: { utterance: `VG Part` } },
           on: { SPEAK_COMPLETE: "Ask" },
         },
         NoInput: {

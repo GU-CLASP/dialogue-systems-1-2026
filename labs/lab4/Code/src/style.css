@@ -58,6 +58,13 @@ h1 {
 
 .card {
   padding: 2em;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.card p {
+  text-align: right;
 }
 
 .read-the-docs {

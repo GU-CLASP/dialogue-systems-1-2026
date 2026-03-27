@@ -1,0 +1,182 @@
+[
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Yes, please",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 3 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "No, thank you",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 2 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Yeah, sounds good",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 4 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Nope, not interested",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 4 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Definitely yes",
+    "entities": [{ "category": "Yes-No", "offset": 11, "length": 3 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Absolutely not",
+    "entities": [{ "category": "Yes-No", "offset": 11, "length": 3 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Sure thing",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 10 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "I don't think so",
+    "entities": [{ "category": "Yes-No", "offset": 8, "length": 8 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Yep, let's do it",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 3 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Nah, maybe later",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 3 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Of course",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 9 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Never",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 5 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "I agree",
+    "entities": [{ "category": "Yes-No", "offset": 2, "length": 5 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "I disagree",
+    "entities": [{ "category": "Yes-No", "offset": 2, "length": 8 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "That's correct",
+    "entities": [{ "category": "Yes-No", "offset": 7, "length": 7 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Incorrect",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 9 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Please proceed",
+    "entities": [{ "category": "Yes-No", "offset": 7, "length": 7 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Stop right there",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 4 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Go ahead",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 8 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Don't do that",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 5 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Affirmative",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 11 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Negative",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 8 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "By all means",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 12 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "No way",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 6 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Indeed",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 6 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Not at all",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 10 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Yes, I am sure",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 3 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "I am not sure",
+    "entities": [{ "category": "Yes-No", "offset": 5, "length": 8 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Exactly",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 7 }]
+  },
+  {
+    "intent": "ConfirmAction",
+    "language": "en-us",
+    "text": "Not really",
+    "entities": [{ "category": "Yes-No", "offset": 0, "length": 10 }]
+  }
+]
