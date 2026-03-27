@@ -3,7 +3,7 @@ import type { Settings } from "speechstate";
 import { speechstate } from "speechstate";
 import { createBrowserInspector } from "@statelyai/inspect";
 import { KEY } from "./azure.ts";
-import type { DMContext, DMEvents } from "./types";
+import type { DMContext, DMEvents } from "./types.ts";
 
 const inspector = createBrowserInspector();
 
@@ -20,6 +20,7 @@ const settings: Settings = {
   asrDefaultNoInputTimeout: 10000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
+  speechRecognitionEndpointId: "609c444a-349f-4f9d-a0a8-4c264618d21b",
 };
 
 interface GrammarEntry {

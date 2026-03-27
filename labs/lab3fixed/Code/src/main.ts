@@ -1,12 +1,30 @@
 import "./style.css";
-import { setupButton } from "./dm.ts";
+import { setupButton, dmActor } from "./dm1.ts";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-  </div>
-`;
+const startButton = document.getElementById("startButton") as HTMLButtonElement;
+document.getElementById("task1")?.addEventListener("click", () => {
+  window.open("task1.html", "_blank");
+});
+// Start disabled
+startButton.disabled = true;
+startButton.textContent = "Initializing...";
 
-setupButton(document.querySelector<HTMLButtonElement>("#counter")!);
+// Setup click handler
+setupButton(startButton);
+
+// Update button based on state
+dmActor.subscribe((state) => {
+  console.log("[MAIN] Current state:", state.value);
+  console.log("[MAIN] Context:", state.context);
+
+  if (state.matches("Idle")) {
+    startButton.disabled = false;
+    startButton.textContent = "Start";
+  } else if (state.matches("Prepare")) {
+    startButton.disabled = true;
+    startButton.textContent = "Initializing...";
+  } else {
+    startButton.disabled = true;
+    startButton.textContent = "Listening...";
+  }
+});
