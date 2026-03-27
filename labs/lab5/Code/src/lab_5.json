@@ -1,0 +1,1557 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "lab_5",
+        "multilingual": false,
+        "description": "lab 5",
+        "language": "en-gb"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "book meeting"
+            },
+            {
+                "category": "getPerson"
+            },
+            {
+                "category": "getDay"
+            },
+            {
+                "category": "create_meeting"
+            },
+            {
+                "category": "getTime"
+            },
+            {
+                "category": "yesno"
+            },
+            {
+                "category": "who_is"
+            }
+        ],
+        "entities": [
+            {
+                "category": "person",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "Person.Name"
+                    }
+                ],
+                "requiredComponents": [
+                    "prebuilts"
+                ]
+            },
+            {
+                "category": "day",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "DateTime"
+                    }
+                ],
+                "requiredComponents": [
+                    "prebuilts"
+                ]
+            },
+            {
+                "category": "time",
+                "compositionSetting": "combineComponents",
+                "prebuilts": [
+                    {
+                        "category": "DateTime"
+                    }
+                ],
+                "requiredComponents": [
+                    "prebuilts"
+                ]
+            }
+        ],
+        "utterances": [
+            {
+                "text": "give me some information about Albert Einstein",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "who is Cristiano Ronaldo",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "tell me about Tom Cruise",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "who exactly is Madonna",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I want to know who Barack Obama is",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "can you give me information about Taylor Swift",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "tell me about Elon Musk",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "who is Adele",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I want information about Madonna",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 25,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Leonardo DiCaprio",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "tell me who Cristiano Ronaldo is",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 12,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "give me some information about Adele",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 31,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who exactly is Elon Musk",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 15,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to know about Beyoncé",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 21,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "can you tell me who Tom Cruise is",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 20,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "give me information about Barack Obama",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 26,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "tell me about Albert Einstein",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 14,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "tell me about Taylor Swift",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 14,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Beyoncé",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Tom Cruise",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 10
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Barack Obama",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Albert Einstein",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "who is Taylor Swift",
+                "language": "en-gb",
+                "intent": "who_is",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "nah try again",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "sure that works",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "nope that is wrong",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "yeah that is right",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "no do not create it",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "yes go ahead",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "cancel that",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "negative",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "that does not work",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "do not do that",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "not correct",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "that is wrong",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no thanks",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "nah",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "nope",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "do it",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "that works",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "absolutely",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "sure",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "correct",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "that is correct",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes please",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yep",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes",
+                "language": "en-gb",
+                "intent": "yesno",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange a meeting for 11:30 am",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "make a meeting at 14:00",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "set up an appointment at 6:30 pm",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "book something for 5 pm",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I need a meeting at 8 am",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "schedule a meeting at 15:30",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 22,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book an appointment at 7 am",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 23,
+                        "length": 3
+                    },
+                    {
+                        "category": "time",
+                        "offset": 26,
+                        "length": 1
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting at 12 pm",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 20,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange a meeting at 1 pm",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 21,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet at 9 am",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 18,
+                        "length": 2
+                    },
+                    {
+                        "category": "time",
+                        "offset": 20,
+                        "length": 2
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "set up a meeting at 4 pm",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 20,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "make an appointment at 11 am",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 23,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book a meeting at 2:30 pm",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 18,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "schedule an appointment at 10 am",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 27,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting at 3 pm",
+                "language": "en-gb",
+                "intent": "getTime",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 20,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to create a meeting with Tal at 4 pm on Tuesday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "set up Tom on Thursday afternoon",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "arrange a meeting with Bora tomorrow morning",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "make a whole day appointment with Vlad on Friday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I need a full day meeting with Adam on Monday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "book Tal for a meeting on Wednesday at 1 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "create an appointment with Tom on Tuesday at 9 am",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "set up a meeting with Bora on Thursday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I want to meet Vlad on Monday at 2 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "schedule an appointment with Adam on Friday at 3 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "make a meeting with Tal on Sunday at 7 am",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 20,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 27,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 37,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet Tom on Friday at 6 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 15,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 22,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 32,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange an appointment with Bora on Saturday at 12 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 28,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 36,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 48,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "please schedule a meeting with Vlad on Monday at 8 am",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 31,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 39,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 49,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to book a meeting with Adam on Thursday at 5 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 30,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 38,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 50,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting with Tal on Wednesday afternoon",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 29,
+                        "length": 9
+                    },
+                    {
+                        "category": "time",
+                        "offset": 39,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "set up a meeting with Tom on Tuesday morning",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 29,
+                        "length": 7
+                    },
+                    {
+                        "category": "time",
+                        "offset": 37,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "make an appointment with Bora on Friday for the whole day",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 25,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 33,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 48,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book a full day meeting with Vlad on Thursday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 7,
+                        "length": 8
+                    },
+                    {
+                        "category": "person",
+                        "offset": 29,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 37,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "schedule a meeting with Adam for the whole day on Monday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 24,
+                        "length": 4
+                    },
+                    {
+                        "category": "time",
+                        "offset": 37,
+                        "length": 9
+                    },
+                    {
+                        "category": "day",
+                        "offset": 50,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange a meeting with Tal on Wednesday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 23,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 30,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting with Tom at 1 pm on Tuesday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 3
+                    },
+                    {
+                        "category": "time",
+                        "offset": 29,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 37,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book an appointment with Bora tomorrow at 9 am",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 25,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 30,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 42,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need to schedule a meeting with Vlad on Friday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 34,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 42,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet Adam on Monday",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 15,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 23,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "set up a meeting with Tal on Thursday at 4 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 29,
+                        "length": 8
+                    },
+                    {
+                        "category": "time",
+                        "offset": 41,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "make an appointment with Tom on Wednesday at 11 am",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 25,
+                        "length": 3
+                    },
+                    {
+                        "category": "day",
+                        "offset": 32,
+                        "length": 9
+                    },
+                    {
+                        "category": "time",
+                        "offset": 45,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "schedule a meeting with Bora on Friday at 2 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 24,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 32,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 42,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book a meeting with Vlad on Tuesday at 10 am",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 20,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 28,
+                        "length": 7
+                    },
+                    {
+                        "category": "time",
+                        "offset": 39,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting with Adam on Monday at 3 pm",
+                "language": "en-gb",
+                "intent": "create_meeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 4
+                    },
+                    {
+                        "category": "day",
+                        "offset": 30,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 40,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange a meeting on Sunday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "make a meeting on Wednesday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "set up an appointment for Friday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "book something on Thursday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I need a meeting on Monday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "schedule a meeting on Tuesday morning",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 22,
+                        "length": 7
+                    },
+                    {
+                        "category": "time",
+                        "offset": 30,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book an appointment for Friday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 24,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting next Monday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 22,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange a meeting on Sunday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 21,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet on Saturday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 18,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "set up a meeting on Friday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 20,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "make an appointment on Thursday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 23,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book a meeting on Wednesday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 18,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "schedule an appointment on Tuesday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 27,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting on Monday",
+                "language": "en-gb",
+                "intent": "getDay",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 20,
+                        "length": 6
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange a meeting with Tom",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "set up Tal tomorrow",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I need to meet Bora",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "can you book Vlad for me",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "I want an appointment with Adam",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [],
+                "dataset": "Test"
+            },
+            {
+                "text": "schedule Tom for a meeting",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 9,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create an appointment with Tal",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 27,
+                        "length": 3
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "arrange a meeting with Bora",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 23,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I need to book Vlad",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 15,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet Adam",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 15,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "set up a meeting with Tom Södahl Bladsjö",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 18
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "make an appointment with Talha Bedir",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 25,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "book a meeting with Bora Kara",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 20,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "schedule a meeting with Vladislav Maraev",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 24,
+                        "length": 16
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "create a meeting with Adam",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to meet with Vlad",
+                "language": "en-gb",
+                "intent": "getPerson",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 20,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            }
+        ]
+    }
+}

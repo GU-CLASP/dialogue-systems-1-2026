@@ -1,0 +1,36 @@
+﻿the ASR could understand some difficult words, but it had a much harder time with unusual names. Normal English words seemed easier for it to handle, while names like Skövde, Göteborg, and Canis Lupus were often heard wrong. A lot of the time, it seemed to turn them into words or phrases that sounded more normal in English. Interestingly, dinosaur names were usually recognized correctly, even when the confidence score was still low. That might be because they are long and specific, so there are fewer similar words for the system to confuse them with.
+
+
+The recognition probably failed mostly because these words are uncommon and probably not the kinds of words the system expects very often. It also seems like the recognizer tries to adjust for accent, which can make it change unfamiliar words into something that sounds more English. For example Hovde is closer to what non-swedish people would say instead of skövde as it has the swedish sch sound followed by a ö, which makes it harder for foreigners to pronounce. A simple way to improve this would be to add the important names to the grammar, so the system is more prepared for them. The confidence score could also help by showing when the system is unsure, so it can ask the user to repeat themselves instead of just guessing.
+
+
+Original
+	What was heard
+	Confidence score
+	Skövde
+	Hovde
+	0.07540272
+	Göteborg
+	Yuta Boria
+	0.10349813
+	Uppsala
+	Uppsala
+	0.09232249
+	suwon
+	Sir John
+	0.2985775
+	jeju
+	Did you?
+	0.5103511
+	Tyrannosaurus Rex
+	Tyrannosaurus Rex
+	0.81566477
+	Canis Lupus
+	Carnage Lupus
+	0.27186936
+	Homo erectus
+	Home Erectus
+	0.07748599
+	Pachycephalosaurus
+	Pachycephalosaurus
+	0.046245497

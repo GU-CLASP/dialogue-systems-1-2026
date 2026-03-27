@@ -1,0 +1,36 @@
+https://www.youtube.com/watch?v=ssX0ZF-iHfI
+
+
+I used a child as refrence, the azure tools are a bit wacky. So trying to imiated a child seemed like a good idea. 
+For the first part i changed a lot of stuff, then i only focused on adding some breaks.
+I also did some minor editing on the poem itself as the tts has really hard t and s sounds.
+
+
+
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Id":"2fd0c0e4-8885-49d0-80b8-5ca9929e8716","Name":"Microsoft Server Speech Text to Speech Voice (en-AU, CarlyNeural)","ShortName":"en-AU-CarlyNeural","Locale":"en-AU","VoiceType":"StandardVoice"}]}-->
+<!--ID=FCB40C2B-1F9F-4C26-B1A1-CF8E67BE07D1;Version=1|{"Files":{}}-->
+<!--ID=5B95B1CC-2C7B-494F-B746-CF22A0E779B7;Version=1|{"Locales":{"en-GB":{"AutoApplyCustomLexiconFiles":[{}]},"sv-SE":{"AutoApplyCustomLexiconFiles":[{}]},"de-DE":{"AutoApplyCustomLexiconFiles":[{}]},"en-AU":{"AutoApplyCustomLexiconFiles":[{}]}}}-->
+<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-AU"><voice name="en-AU-CarlyNeural"><prosody rate="-18.00%" pitch="-3.00%" contour="(20%, +93%)">Tyger<break time="50ms" /></prosody><prosody rate="-18.00%" pitch="-3.00%" contour="(20%, +50%)"> Tyger</prosody><prosody rate="-18.00%" pitch="-3.00%">, <break time="300ms" /> </prosody><prosody rate="-18.00%" pitch="-3.00%" contour="(61%, +52%)">burning</prosody><prosody rate="-18.00%" pitch="-3.00%" contour="(91%, +50%)"> bright</prosody><prosody rate="-18.00%" pitch="-3.00%">, <break time="500ms" /></prosody>
+<prosody rate="-10.00%" pitch="-5.00%" contour="(20%, -44%) (73%, +49%) (94%, +25%)">In</prosody><prosody rate="-10.00%" pitch="-5.00%" contour="(16%, -56%) (83%, +46%)"> the</prosody><prosody rate="-10.00%" pitch="-5.00%"> forest of <break time="50ms" /> </prosody><prosody rate="-10.00%" pitch="-5.00%" contour="(18%, -50%) (78%, +53%)">the</prosody><prosody rate="-10.00%" pitch="-5.00%"> night;<break time="500ms" />
+What immortal hand</prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%"> or eye,</prosody><prosody rate="-20.00%" pitch="-5.00%"><break time="400ms" /></prosody>
+<prosody rate="-10.00%" pitch="-5.00%">Could frame</prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%"> thy fearful symmetry?
+In what distant </prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%">deeps </prosody><break time="5ms" /><prosody rate="-10.00%" pitch="-5.00%">or </prosody><break time="5ms" /><prosody rate="-10.00%" pitch="-5.00%">skies. 
+Burnt </prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%">the fire of </prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%">thine </prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">eyes?
+On what </prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%"> wings dare he </prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">aspire?
+What </prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%">the hand, </prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">dare seize </prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">the fire?
+And what shoulder</prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%">, &amp; what art</prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%">,
+Could twist the sinews</prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%"> of thy heart?</prosody><break time="500ms" />
+<prosody rate="-10.00%" pitch="-5.00%">And when thy </prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">heart began to beat.</prosody><break time="100ms" />
+<prosody rate="-10.00%" pitch="-5.00%">What dread hand</prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">, &amp; what dread feet?</prosody><break time="500ms" />
+<prosody rate="-10.00%" pitch="-5.00%">What the hammer</prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">, what the chain</prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">,
+In what furnace</prosody><break time="50ms" /><prosody rate="-10.00%" pitch="-5.00%"> was thy</prosody><break time="10ms" /><prosody rate="-10.00%" pitch="-5.00%"> brain?
+What the anvil</prosody><break time="25ms" /><prosody rate="-10.00%" pitch="-5.00%">, what dread grasp.</prosody><break time="100ms" />
+<prosody rate="-10.00%" pitch="-5.00%">Dare its deadly terrors clasp?</prosody><break time="500ms" />
+<prosody rate="-10.00%" pitch="-5.00%">When the stars threw down their spears 
+And water'd heaven with their tears:
+Did he smile his work to see?
+Did he who made the Lamb make thee?</prosody>
+<prosody rate="-10.00%" pitch="-5.00%" contour="(20%, +93%)">Tyger</prosody><prosody rate="-76.00%" pitch="-21.00%" contour="(20%, +93%)"><break time="50ms" /></prosody><prosody rate="-10.00%" pitch="-5.00%" contour="(20%, +50%)"> Tyger</prosody><prosody rate="-10.00%" pitch="-5.00%">, </prosody><prosody rate="-76.00%" pitch="-21.00%"><break time="300ms" /></prosody><prosody rate="-10.00%" pitch="-5.00%"> </prosody><prosody rate="-10.00%" pitch="-5.00%" contour="(61%, +52%)">burning</prosody><prosody rate="-10.00%" pitch="-5.00%" contour="(91%, +50%)"> bright</prosody><prosody rate="-10.00%" pitch="-5.00%">, </prosody><prosody rate="-76.00%" pitch="-21.00%"><break time="500ms" /></prosody>
+<prosody rate="-10.00%" pitch="-5.00%">In the forests of the night:
+What immortal hand or eye,
+Dare frame thy fearful symmetry?</prosody></voice></speak>
