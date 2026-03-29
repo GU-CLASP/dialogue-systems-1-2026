@@ -1,0 +1,277 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "appointment",
+        "multilingual": false,
+        "description": "",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "create a meeting"
+            },
+            {
+                "category": "Who is XXX"
+            }
+        ],
+        "entities": [
+            {
+                "category": "meeting title",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "meeting time",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "name",
+                "compositionSetting": "combineComponents"
+            }
+        ],
+        "utterances": [
+            {
+                "text": "What do you know about Lionel Messi?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 23,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to know who Emma Watson is.",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 19,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me who Adele is?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 20,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Do you know who Barack Obama is?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 16,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me who Albert Einstein is.",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 12,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Greta Thunberg?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 7,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Cristiano Ronaldo?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 7,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Beyoncé?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 7,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Elon Musk?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 7,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Taylor Swift?",
+                "language": "en-us",
+                "intent": "Who is XXX",
+                "entities": [
+                    {
+                        "category": "name",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Plan a meeting for this afternoon",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "meeting time",
+                        "offset": 19,
+                        "length": 14
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Make a meeting titled ‘project update",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "meeting title",
+                        "offset": 22,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Add a meeting to my calendar.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you schedule a meeting for me?",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to create an appointment.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Arrange a meeting next Monday morning",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "meeting time",
+                        "offset": 18,
+                        "length": 19
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book a meeting at 3 pm",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "meeting time",
+                        "offset": 18,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Set up a meeting with John",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create a meeting for tomorrow.",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [
+                    {
+                        "category": "meeting time",
+                        "offset": 21,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule a meeting",
+                "language": "en-us",
+                "intent": "create a meeting",
+                "entities": [],
+                "dataset": "Train"
+            }
+        ]
+    }
+}
