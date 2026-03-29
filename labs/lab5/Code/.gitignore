@@ -1,3 +1,12 @@
+src/azure.ts
+.DS_Store
+.idea/
+labs/.DS_Store
+labs/lab3fixed/.DS_Store
+labs/lab3fixed/Code/src/azure.ts
+labs/lab3fixed/report-lab3.pages
+labs/lab4/.DS_Store
+
 # Logs
 logs
 *.log
