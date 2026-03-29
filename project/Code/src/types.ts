@@ -3,7 +3,8 @@ import type { ActorRef } from "xstate";
 
 export interface DMContext {
   spstRef: ActorRef<any, any>;
-  lastUtterance: string | null;
+  command: string | null;
+  direction: string | null;
   /** Wumpus World state */
   wumpus: [number, number] | null;
   pit: [number, number] | null;

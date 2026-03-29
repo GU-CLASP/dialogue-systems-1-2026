@@ -1,0 +1,1078 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "wumpus",
+        "multilingual": false,
+        "description": "Wumpus World Project",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "move"
+            },
+            {
+                "category": "shoot"
+            },
+            {
+                "category": "grab"
+            },
+            {
+                "category": "confirm"
+            },
+            {
+                "category": "deny"
+            },
+            {
+                "category": "help"
+            },
+            {
+                "category": "climb"
+            }
+        ],
+        "entities": [
+            {
+                "category": "direction",
+                "compositionSetting": "combineComponents"
+            }
+        ],
+        "utterances": [
+            {
+                "text": "Shoot arrow to east.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 15,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot arrow west.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 12,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot arrow south.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 12,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot arrow to north.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 15,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot west.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot east.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot north.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Again go east.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 9,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move again west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 11,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move again south.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 11,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Again move north.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 11,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go east again.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 3,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go west again.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 3,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go further north.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 11,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go further south.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 11,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Continue south.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 9,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Continue north.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 9,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Continue east.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 9,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Continue west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 9,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shift east.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shift south.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shift north.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 3,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go north.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 3,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move south.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 5,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 5,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Take it.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What are the actions?",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "List all the commands.",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What are my possible actions?",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "List all the actions.",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Repeat what can I do.",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I don't know what can I do?",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What are possible commands?",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What can I do?",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Help me.",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Help!",
+                "language": "en-us",
+                "intent": "help",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No no.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Nope.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No way.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Nah.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Not.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yeah.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yep.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Sure.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes yes.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot south.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot to north room.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 9,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot to your east.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 14,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot to your west.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 14,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move out of the cave.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Climb out.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Climb up and get out.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Climb out of the cave.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Climb up.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Get out of the cave.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Take it with you.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Pick the treasure up.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Pick it up.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Take the gold.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move to south.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 8,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move to north.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 8,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move to west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 8,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move east.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 5,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shift west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Exit.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What kind of game is this?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I want to book an appointment for tomorrow.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Greetings!",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Good morning.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What's up?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Search internet for Ella Fitzgerald.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Give me information about Louis Armstrong.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What can you tell me about Michael Jackson?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Of course.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Oh yeah.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Not at all.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No I don't think so.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Negative.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Positive.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "No.",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Yes.",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What time is it?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "What are the news today?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Will it rain tonight?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who were the top 10 singers of all the time?",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Say the names of some celebrities.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "This is great!",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Help me order a pizza.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Play music.",
+                "language": "en-us",
+                "intent": "None",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Grab the treasure.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Grab the gold.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Grab it.",
+                "language": "en-us",
+                "intent": "grab",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Exit the cave.",
+                "language": "en-us",
+                "intent": "climb",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot the arrow to the west.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 23,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot towards south.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 14,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot towards the north room.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 18,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Shoot your arrow to the east.",
+                "language": "en-us",
+                "intent": "shoot",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 24,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go to the south room.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 10,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Navigate to the east side.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 16,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Navigate to the room to your west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 29,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go to north room.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 6,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go east.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 3,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move to your west.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 13,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Go south.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 3,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Move north.",
+                "language": "en-us",
+                "intent": "move",
+                "entities": [
+                    {
+                        "category": "direction",
+                        "offset": 5,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            }
+        ]
+    }
+}

@@ -2,21 +2,29 @@ import { createBrowserInspector } from "@statelyai/inspect";
 import type { Settings } from "speechstate";
 import { speechstate } from "speechstate";
 import { assign, createActor, setup } from "xstate";
-import { KEY } from "./azure";
+import { KEY, NLU_KEY } from "./azure";
 import type { DMContext, DMEvents } from "./types";
 
 const inspector = createBrowserInspector();
 
 const azureCredentials = {
-  endpoint:
-    "https://germanywestcentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+  endpoint: "https://germanywestcentral.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
   key: KEY,
 };
 
+const azureLanguageCredentials = {
+  endpoint: "https://language-resource-leila.cognitiveservices.azure.com/language/:analyze-conversations?api-version=2024-11-15-preview",
+  key: NLU_KEY,
+  deploymentName: "wumpus",
+  projectName: "wumpus",
+};
+
+
 const settings: Settings = {
+  azureLanguageCredentials: azureLanguageCredentials /** global activation of NLU */,
   azureCredentials: azureCredentials,
   asrDefaultCompleteTimeout: 0,
-  asrDefaultNoInputTimeout: 8000,
+  asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
   azureRegion: "germanywestcentral",
@@ -81,29 +89,9 @@ function perceptText(percepts: string[]): string {
 }
 
 // Map a raw transcript to a game command token. 
-function parseCommand(utterance: string): string {
-  const u = utterance.toLowerCase();
-  const isShoot =
-    u.includes("shoot") || u.includes("fire") || u.includes("arrow");
-  if (u.includes("north")) return isShoot ? "shoot_north" : "go_north";
-  if (u.includes("south")) return isShoot ? "shoot_south" : "go_south";
-  if (u.includes("east")) return isShoot ? "shoot_east" : "go_east";
-  if (u.includes("west")) return isShoot ? "shoot_west" : "go_west";
-  if (u.includes("up")) return "go_north";
-  if (u.includes("down")) return "go_south";
-  if (u.includes("right")) return "go_east";
-  if (u.includes("left")) return "go_west";
-  if (u.includes("grab") || u.includes("pick") || u.includes("take"))
-    return "grab";
-  if (
-    u.includes("climb") ||
-    u.includes("exit") ||
-    u.includes("leave") ||
-    u.includes("escape")
-  )
-    return "climb";
-  if (u.includes("help")) return "help";
-  return "unknown";
+function parseCommand(command: string, direction: string | null): string {
+  if (!direction) return command.toLowerCase()
+  else return `${command.toLowerCase()}_${direction.toLowerCase()}`;
 }
 
 // Build a fresh world and return the initial context slice.
@@ -127,15 +115,16 @@ function initGame(): Partial<DMContext> {
     hasArrow: true,
     wumpusAlive: true,
     gameStatus: "playing",
-    lastUtterance: null,
-    gameMessage:
+    command: null,
+    direction: null,
+    gameMessage: 
       `Welcome to Wumpus World! ` +
       `You entered a cave that is a four by four grid. ` +
       `You start the the bottom-left corner of the cave. ` +
       `There is a Wumpus, a bottomless pit, and a pile of gold in this cave. ` +
       `You carry one arrow. ` +
       `Explore, grab the gold and climb out from the starting room to win. ` +
-      `Say: go north, go south, go east, go west, grab, shoot to a direction, or climb. ` +
+      `Say: move north, move south, move east, move west, grab, shoot to a direction, or climb. ` +
       `${intro} What do you do?`,
   };
 }
@@ -145,6 +134,7 @@ function initGame(): Partial<DMContext> {
  * Returns only the fields that change so XState's assign can merge them.
  */
 function applyCommand(ctx: DMContext): Partial<DMContext> {
+  console.log("Received context:", ctx);
   const {
     wumpus,
     pit,
@@ -154,11 +144,12 @@ function applyCommand(ctx: DMContext): Partial<DMContext> {
     wumpusAlive,
     hasGold,
     hasArrow,
-    lastUtterance,
+    command,
+    direction,
   } = ctx;
   if (!wumpus || !pit || !gold) return {};
 
-  const cmd = parseCommand(lastUtterance ?? "");
+  const cmd = parseCommand(command ?? "", direction ?? "");
   let row = playerRow;
   let col = playerCol;
   let alive = wumpusAlive;
@@ -172,16 +163,16 @@ function applyCommand(ctx: DMContext): Partial<DMContext> {
     perceptText(computeSensorPercepts(r, c, wumpus, pit, gold, wa, gg));
 
   const deltas: Record<string, [number, number]> = {
-    go_north: [-1, 0],
-    go_south: [1, 0],
-    go_east: [0, 1],
-    go_west: [0, -1],
+    move_north: [-1, 0],
+    move_south: [1, 0],
+    move_east: [0, 1],
+    move_west: [0, -1],
   };
 
   if (cmd in deltas) {
     // Moves
     const [dr, dc] = deltas[cmd];
-    const direction = cmd.slice(3);
+    const direction = cmd.slice(5); // "north" | "south" | "east" | "west"
     const nr = row + dr;
     const nc = col + dc;
     if (nr < 0 || nr >= GRID || nc < 0 || nc >= GRID) {
@@ -247,12 +238,12 @@ function applyCommand(ctx: DMContext): Partial<DMContext> {
         status = "quit";
       }
     } else {
-      msg = `You can only climb out from the starting room. ${pt(row, col, alive, gotGold)} What do you do?`;
+      msg = `You can only climb from the starting room. ${pt(row, col, alive, gotGold)} What do you do?`;
     }
   } else if (cmd === "help") {
     // Help
     msg =
-      `Commands: go north, go south, go east, go west, grab, ` +
+      `Commands: move north, move south, move east, move west, grab, ` +
       `shoot north (or south, east, west), climb. ` +
       `${pt(row, col, alive, gotGold)} What do you do?`;
   } else {
@@ -287,13 +278,14 @@ const dmMachine = setup({
     "spst.listen": ({ context }) =>
       context.spstRef.send({
         type: "LISTEN",
-        value: {},
+        value: { nlu: true } /** Local activation of NLU */,
       }),
   },
 }).createMachine({
   context: ({ spawn }) => ({
     spstRef: spawn(speechstate, { input: settings }),
-    lastUtterance: null,
+    command: null,
+    direction: null,
     wumpus: null,
     pit: null,
     gold: null,
@@ -342,15 +334,22 @@ const dmMachine = setup({
       entry: { type: "spst.listen" },
       on: {
         RECOGNISED: {
-          actions: assign(({ event }) => ({
-            lastUtterance: (event as any).value?.[0]?.utterance ?? null,
+          actions: [
+            ({ event }) => console.log("RECOGNISED event:", event),
+            assign(({ event }) => ({
+              command: event.nluValue?.topIntent ?? null,
+              direction: event.nluValue?.entities.find((e: any) => e.category === "direction")?.text ?? null,
           })),
+        ]
         },
         ASR_NOINPUT: {
-          actions: assign({ lastUtterance: null }),
+          actions: assign({ command: null, direction: null }),
         },
         LISTEN_COMPLETE: {
-          actions: assign(({ context }) => applyCommand(context)),
+          actions: [
+            ({ event }) => console.log("LISTEN_COMPLETE event:", event),
+            assign(({ context }) => applyCommand(context)),
+          ],
           target: "SpeakMessage",
         },
       },
