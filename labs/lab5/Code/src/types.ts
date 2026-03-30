@@ -4,6 +4,33 @@ import type { ActorRef } from "xstate";
 export interface DMContext {
   spstRef: ActorRef<any, any>;
   lastResult: Hypothesis[] | null;
+  interpretation: NLUObject | null;
+  person?: string;
+  day?: string;
+  time?: string;
 }
 
-export type DMEvents = SpeechStateExternalEvent | { type: "CLICK" } | { type: "DONE" };
+export interface Entity {
+  category: string;
+  text: string;
+  confidenceScore: number;
+  offset: number;
+  length: number;
+}
+
+export interface Intent {
+  category: string;
+  confidenceScore: number;
+}
+
+export interface NLUObject {
+  entities: Entity[];
+  intents: Intent[];
+  projectKind: string;
+  topIntent: string;
+}
+
+export type DMEvents =
+  | SpeechStateExternalEvent
+  | { type: "CLICK" }
+  | { type: "DONE" };
