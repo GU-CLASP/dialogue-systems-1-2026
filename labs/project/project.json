@@ -1,0 +1,792 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "numbergame",
+        "multilingual": false,
+        "description": "Number Guessing Game",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "confirm"
+            },
+            {
+                "category": "deny"
+            },
+            {
+                "category": "start_game"
+            },
+            {
+                "category": "choose_easy"
+            },
+            {
+                "category": "choose_medium"
+            },
+            {
+                "category": "choose_hard"
+            },
+            {
+                "category": "request_hint"
+            },
+            {
+                "category": "restart"
+            },
+            {
+                "category": "guess_number"
+            },
+            {
+                "category": "start"
+            },
+            {
+                "category": "request_digit_count"
+            },
+            {
+                "category": "exit"
+            }
+        ],
+        "entities": [],
+        "utterances": [
+            {
+                "text": "i would choose last level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i would choose last",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "maybe last level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "maybe last one",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "first one",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "the easy one",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "beginners level",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "beginners",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "easy level",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "first level",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "level -1 ",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "level 3",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "level- three",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "level two",
+                "language": "en-us",
+                "intent": "choose_medium",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "medium level",
+                "language": "en-us",
+                "intent": "choose_medium",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "the last one",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "third one",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "thrid level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "3rd level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "hard level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "difficult level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "last level game",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "last one",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "final level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "provide with hint options",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "give me a hints",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "so intresting",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i wish to play the game",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i like to play again",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "once again",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "restart the game",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "lets play again",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "thank you",
+                "language": "en-us",
+                "intent": "exit",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "im done",
+                "language": "en-us",
+                "intent": "exit",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "not interested to play",
+                "language": "en-us",
+                "intent": "exit",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "finish",
+                "language": "en-us",
+                "intent": "exit",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "exit the game",
+                "language": "en-us",
+                "intent": "exit",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes quit the game",
+                "language": "en-us",
+                "intent": "exit",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah quit the game",
+                "language": "en-us",
+                "intent": "exit",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yup",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes, i would like to play",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah, okay",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes, lets go..",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah! lets begin",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah! ",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "the first level",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "are there any repeated digits in it?",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "tell me the digit count",
+                "language": "en-us",
+                "intent": "request_digit_count",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "how many digits does it have?",
+                "language": "en-us",
+                "intent": "request_digit_count",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "how many digits are there?",
+                "language": "en-us",
+                "intent": "request_digit_count",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "how many digits number is it?",
+                "language": "en-us",
+                "intent": "request_digit_count",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "lets go play",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah! lets start",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah! lets go",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes! lets start",
+                "language": "en-us",
+                "intent": "start",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "my guess is",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i'll say",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "perhaps",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "probably",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i guess",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "may be",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "might be",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "it could be",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i think its ",
+                "language": "en-us",
+                "intent": "guess_number",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "another round",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "play again",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "lets go again",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "restart again",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "restart",
+                "language": "en-us",
+                "intent": "restart",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "does it have reapeated digits",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i need a clue",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "help me",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "give me a hint",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "hint",
+                "language": "en-us",
+                "intent": "request_hint",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "last level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "hardest level",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "challenge me",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "difficult",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "hard",
+                "language": "en-us",
+                "intent": "choose_hard",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "middle level",
+                "language": "en-us",
+                "intent": "choose_medium",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "normal",
+                "language": "en-us",
+                "intent": "choose_medium",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "medium",
+                "language": "en-us",
+                "intent": "choose_medium",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "easy one",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "beginner level",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "simple",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "easy",
+                "language": "en-us",
+                "intent": "choose_easy",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'm ready",
+                "language": "en-us",
+                "intent": "start_game",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "begin",
+                "language": "en-us",
+                "intent": "start_game",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "lets go",
+                "language": "en-us",
+                "intent": "start_game",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "ready",
+                "language": "en-us",
+                "intent": "start_game",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "start",
+                "language": "en-us",
+                "intent": "start_game",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "goodbye",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i want to quit",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "stop",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "quit",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "exit",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "no",
+                "language": "en-us",
+                "intent": "deny",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "okay",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "go ahead",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "i want to play",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "lets play",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "sure",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yeah",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            },
+            {
+                "text": "yes",
+                "language": "en-us",
+                "intent": "confirm",
+                "entities": [],
+                "dataset": "Train"
+            }
+        ]
+    }
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Number Guessing Game</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+        gap: 1.5rem;
+        background-image: url('/assets/guess-my-number.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+      }
+
+      body::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 0;
+      }
+
+      h1, #info-box, #button {
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        color: #ffffff;
+        text-shadow: 0.2px 10px rgba(0, 0, 0, 0.8);
+        letter-spacing: 0.05em;
+      }
+
+      #info-box {
+        background: rgba(0, 0, 0, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 1.2rem 2rem;
+        min-width: 320px;
+        max-width: 480px;
+        backdrop-filter: blur(8px);
+        display: none;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      #state-label {
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      #feedback {
+        font-size: 1.2rem;
+        color:#fff;
+        font-weight: 500;
+        line-height: 1.5;
+        transition: color 0.3s;
+      }
+
+      #feedback.higher { color: #60a5fa; }
+      #feedback.lower { color: #f97316; }
+      #feedback.win { color: #4ade80; }
+      #feedback.lose { color: #f87171; }
+      #feedback.hint { color: #facc15; }
+
+      #attempts {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      #pips {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+      }
+
+      .pip {
+        width: 24px;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.15);
+        transition: background 0.3s;
+      }
+
+      .pip.used { background: #f87171; }
+      .pip.last { background: #facc15; }
+
+    
+
+      #button {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        border: 2px solid #fff;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        cursor: pointer;
+        backdrop-filter: blur(6px);
+        transition: background 0.2s;
+      }
+
+      #score-bar {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      #score-bar span {
+        background:rgba(0,0,0,0.4);
+        padding: 4px 14px;
+        border-radius: 20px;
+        border: 1pxsolid rgba(255, 255, 255, 0.2);
+      }
+
+      #button:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎮 Number Guessing Game</h1>
+
+    <div id = "info-box">
+      <div id="state-label">loading...</div>
+      <div id="feedback"></div>
+      <div id="attempts"></div>
+      <div id="pips"></div>
+      <div id = "score-bar">
+        <span id ="score"> Score: 0</span>
+        <span id = "total-score">Total: 0</span>
+      </div>
+    </div>
+    <button id="button" type="button">Click to start</button>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
