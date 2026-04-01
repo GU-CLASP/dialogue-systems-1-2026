@@ -30,3 +30,5 @@ package-lock.json
 *.sln
 *.sw?
 
+src/azure.ts
+
