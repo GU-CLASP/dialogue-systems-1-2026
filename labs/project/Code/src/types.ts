@@ -24,11 +24,8 @@ export interface NLUObject { // This is the type of the interpretation in the DM
 export interface DMContext {
   ssRef: ActorRef<any, any>;
   lastResult: Hypothesis[] | null;
-  interpretation: NLUObject | null;
-  person: string | null;
-  day: string | null;
-  time: string | null;
-  allDay: boolean | null;
+  hasCrowbar: boolean;
+  hasKey: boolean;
 }
 
 export type DMEvents = SpeechStateExternalEvent | { type: "CLICK" } | { type: "DONE" };
