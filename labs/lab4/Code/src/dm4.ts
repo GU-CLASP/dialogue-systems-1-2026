@@ -18,6 +18,7 @@ const settings: Settings = {
   azureRegion: "swedencentral",
   asrDefaultCompleteTimeout: 0,
   asrDefaultNoInputTimeout: 5000,
+  speechRecognitionEndpointId: "0eb97935-6149-4e57-b2a7-f4bc9d8ec8b7",
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
 };
