@@ -1,0 +1,84 @@
+Reference video: https://www.youtube.com/watch?v=6baK-km5gFA
+
+
+<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{"VoiceNameToIdMapItems":[{"Name":"Microsoft Server Speech Text to Speech Voice (en-US, AndrewMultilingualNeural)","ShortName":"en-US-AndrewMultilingualNeural","Locale":"en-US","Id":"8b8dfa1b-b07b-4fa8-b47f-c90666bc2488","VoiceType":"StandardVoice"},{"Name":"Microsoft Server Speech Text to Speech Voice (en-US, AmandaMultilingualNeural)","ShortName":"en-US-AmandaMultilingualNeural","Locale":"en-US","Id":"0f90df3b-96a7-4548-baa6-456019323d91","VoiceType":"StandardVoice"}]}-->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" xml:lang="en-US"><mstts:backgroundaudio src="https://goutas1se.blob.core.windows.net/audiolab4/Their%20First%20Meeting%20(From%20Romeo%20and%20Juliet).mp3?sp=r&amp;st=2026-03-02T09:44:44Z&amp;se=2026-04-11T16:59:44Z&amp;spr=https&amp;sv=2024-11-04&amp;sr=b&amp;sig=IEiB3jRVrNGjMGdvdnXlC9%2Fjz3GBr6NJwhC1sIIuYfQ%3D" volume="0.3" fadein="3000" fadeout="4000" />
+    <voice name="en-US-AndrewMultilingualNeural">
+        <mstts:express-as style="affectionate" styledegree="2">
+           
+    
+<prosody rate="-5.00%">                   
+          If I profane, with my unworthiest hand this holy shrine,        
+        </prosody>
+<prosody rate="-5.00%">                   
+          the gentle sin is this:
+        </prosody>
+<prosody rate="-5.00%">                   
+          My lips, two blushing pilgrims, ready stand
+       </prosody>
+<prosody rate="-5.00%">                   
+          To smooth that rough touch,
+        </prosody>
+<prosody rate="-5.00%">                  
+          with a tender, kiss.
+        </prosody>
+        
+            
+</mstts:express-as>
+    </voice>
+    <voice name="en-US-AmandaMultilingualNeural">
+        <mstts:express-as style="affectionate" styledegree="2">
+          
+<prosody rate="-20.00%">           Good pilgrim, you do wrong your hand too much
+           Which mannerly devotion shows in this;
+           For saints have hands that pilgrims’ hands do touch,
+           And, palm to palm is holy palmers’, kiss.      
+          </prosody>
+       </mstts:express-as>
+    </voice>
+<voice name="en-US-AndrewMultilingualNeural">
+        <mstts:express-as style="affectionate" styledegree="2">
+          
+<prosody rate="-10.00%">              Have not saints lips, and holy palmers too?
+           </prosody>
+        </mstts:express-as>
+    </voice>
+<voice name="en-US-AmandaMultilingualNeural">
+        <mstts:express-as style="affectionate" styledegree="2">
+           
+<prosody rate="-10.00%">            Ay pilgrim, lips that they must use in prayer.
+           </prosody>
+        </mstts:express-as>
+    </voice>
+<voice name="en-US-AndrewMultilingualNeural">
+        <mstts:express-as style="affectionate" styledegree="2">
+            
+<prosody rate="-10.00%">              Oh then, dear saint, let lips do what hands do.
+              They pray: grant thou, lest faith turn to despair.
+             </prosody>
+        </mstts:express-as>
+    </voice>
+<voice name="en-US-AmandaMultilingualNeural">
+        <mstts:express-as style="fearful" styledegree="2">
+           
+<prosody rate="-10.00%">            Saints, do not move, though grant, for prayers’ sake.
+           </prosody>
+        </mstts:express-as>
+    </voice>
+<voice name="en-US-AndrewMultilingualNeural">
+        <mstts:express-as style="excited" styledegree="2">
+           
+<prosody rate="-15.00%">              Then move not, while my prayer’s effect, I take; 
+            </prosody>
+            
+<prosody rate="-10.00%">              Thus from my lips, by thine, my sin is purged.
+            </prosody>
+        </mstts:express-as>
+    </voice>
+<voice name="en-US-AmandaMultilingualNeural">
+        <mstts:express-as style="excited" styledegree="2">
+           
+<prosody rate="-10.00%">            Then have my lips the sin that they have took.      
+           </prosody>
+        </mstts:express-as>
+    </voice></speak>
