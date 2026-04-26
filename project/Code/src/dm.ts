@@ -28,6 +28,7 @@ const settings: Settings = {
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
   azureRegion: "germanywestcentral",
+  bargeIn: false,
 };
 
 // ##################################### Wumpus World helpers #####################################
