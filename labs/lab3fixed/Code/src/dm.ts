@@ -1,6 +1,7 @@
 import { assign, createActor, setup } from "xstate";
 import type { Settings } from "speechstate";
 import { speechstate } from "speechstate";
+import { createBrowserInspector } from "@statelyai/inspect";
 import { KEY } from "./azure";
 import type { DMContext, DMEvents } from "./types";
 
@@ -13,9 +14,9 @@ const azureCredentials = {
 };
 
 const settings: Settings = {
-  azureCredentials,
+  azureCredentials: azureCredentials,
   azureRegion: "norwayeast",
-  asrDefaultCompleteTimeout: 0,
+  asrDefaultCompleteTimeout: 1000,
   asrDefaultNoInputTimeout: 5000,
   locale: "en-US",
   ttsDefaultVoice: "en-US-DavisNeural",
@@ -28,92 +29,72 @@ interface GrammarEntry {
   answer?: boolean;
 }
 
-function extractUtterance(result: unknown): string {
-  if (typeof result === "string") return result;
-  if (
-    Array.isArray(result) &&
-    result.length > 0 &&
-    typeof result[0] === "object" &&
-    result[0] !== null &&
-    "utterance" in result[0]
-  ) {
-    const first = result[0] as { utterance?: unknown };
-    if (typeof first.utterance === "string") return first.utterance;
-  }
-  return "";
+const grammar: { [index: string]: GrammarEntry } = {
+  vlad: { person: "Vladislav Maraev" },
+  bora: { person: "Bora Kara" },
+  tal: { person: "Talha Bedir" },
+  tom: { person: "Tom Södahl Bladsjö" },
+  monday: { day: "Monday" },
+  tuesday: { day: "Tuesday" },
+  wednesday: { day: "Wednesday" },
+  thursday: { day: "Thursday" },
+  friday: { day: "Friday" },
+  saturday: { day: "Saturday" },
+  sunday: { day: "Sunday" },
+  "10": { time: "10:00" },
+  "11": { time: "11:00" },
+  "12": { time: "12:00" },
+  "1": { time: "13:00" },
+  "2": { time: "14:00" },
+  "3": { time: "15:00" },
+  "4": { time: "16:00" },
+  "5": { time: "17:00" },
+  "6": { time: "18:00" },
+  yes: { answer: true },
+  yep: { answer: true },
+  yeah: { answer: true },
+  sure: { answer: true },
+  definitely: { answer: true },
+  "of course": { answer: true },
+  no: { answer: false },
+  nah: { answer: false },
+  nope: { answer: false },
+  "no way": { answer: false }
+};
+
+function getUtterance(context: DMContext) {
+  return context.lastResult?.[0]?.utterance.toLowerCase() ?? ""; 
 }
 
-function classifyAnswer(
-  utterance: string,
-): "positive" | "neutral" | "negative" {
-  const text = utterance.toLowerCase();
-
-  const positiveWords = [
-    "teach",
-    "openly",
-    "share",
-    "knowledge",
-    "learn",
-    "unity",
-    "unite",
-    "peace",
-    "justice",
-    "speak",
-    "truth",
-    "help",
-    "combat",
-    "support",
-    "defend",
-    "fight",
-    "advise",
-    "rights",
-  ];
-
-  const neutralWords = [
-    "wait",
-    "careful",
-    "cautious",
-    "quietly",
-    "later",
-    "slowly",
-    "protect",
-  ];
-
-  const negativeWords = [
-    "stop",
-    "silent",
-    "silence",
-    "ignore",
-    "divide",
-    "manipulate",
-    "suppress",
-    "hide",
-    "abandon",
-    "gain",
-  ];
-
-  if (positiveWords.some((word) => text.includes(word))) return "positive";
-  if (negativeWords.some((word) => text.includes(word))) return "negative";
-  if (neutralWords.some((word) => text.includes(word))) return "neutral";
-
-  return "neutral";
+function getPerson(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).person;
 }
+
+function getDay(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).day;
+}
+
+function getTime(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).time;
+}
+
+function getAnswer(utterance: string) {
+  return (grammar[utterance.toLowerCase()] || {}).answer;
+}
+
+const resetAppointment = {
+  lastResult: null,
+  person: null,
+  day: null,
+  wholeDay: null,
+  time: null,
+  answer: null,
+};  
 
 const dmMachine = setup({
   types: {
-    context: {} as {
-      spstRef: any;
-      lastResult: unknown;
-      score: number;
-      currentScene: string | null;
-    },
-    events: {} as
-      | { type: "CLICK" }
-      | { type: "ASRTTS_READY" }
-      | { type: "SPEAK_COMPLETE" }
-      | { type: "LISTEN_COMPLETE" }
-      | { type: "ASR_NOINPUT" }
-      | { type: "RECOGNISED"; value: unknown },
+    context: {} as DMContext,
+    events: {} as DMEvents,
   },
   actions: {
     "spst.speak": ({ context }, params: { utterance: string }) =>
@@ -123,71 +104,130 @@ const dmMachine = setup({
           utterance: params.utterance,
         },
       }),
-
     "spst.listen": ({ context }) =>
       context.spstRef.send({
         type: "LISTEN",
+        value: {}
       }),
   },
 }).createMachine({
-  id: "DM",
-
   context: ({ spawn }) => ({
     spstRef: spawn(speechstate, { input: settings }),
     lastResult: null,
-    score: 0,
-    currentScene: null,
+    person: null,
+    day: null,
+    wholeDay: null, 
+    time: null,
+    answer: null,
   }),
-
+  id: "DM",
   initial: "Prepare",
-
   states: {
     Prepare: {
       entry: ({ context }) => context.spstRef.send({ type: "PREPARE" }),
-      on: {
-        ASRTTS_READY: "WaitToStart",
-      },
+      on: { ASRTTS_READY: "WaitToStart" },
     },
-
     WaitToStart: {
+      on: { 
+        CLICK: {
+          target: "AskPersonPrompt",
+          actions: assign(resetAppointment),
+        },
+      },
+    },
+    AskPersonPrompt: {
+      entry: {
+        type: "spst.speak",
+        params: { 
+          utterance: "Let's create an appointment. Who are you meeting with?",
+        },
+      },
+      on: { SPEAK_COMPLETE: "AskPersonListen" },
+    },
+    AskPersonListen: {
+      entry: { type: "spst.listen" },
       on: {
-        CLICK: "#DM.Intro",
+        RECOGNISED: {
+          actions: assign(({ event }) => ({ 
+            lastResult: event.value, 
+          })),
+        },
+        ASR_NOINPUT: {
+          actions: assign({ lastResult: null}),
+        },
+        LISTEN_COMPLETE: [
+          {
+            guard: ({ context }) => !!getPerson(getUtterance(context)),
+            target: "AskDayPrompt",
+            actions: assign(({ context }) => ({
+              person: getPerson(getUtterance(context)) ?? null,
+            })),
+          },
+          { target: "AskPersonRetry" },
+        ],
       },
     },
 
-    Intro: {
+    AskPersonRetry: {
       entry: {
         type: "spst.speak",
         params: {
           utterance:
-            "Welcome to Historical Voices. You will travel through time and interact with three influential women from history. They will present you with dilemmas. Your decisions will change history and affect the future.",
+            "Sorry. I did not get the name. Who are you meeting with?",
         },
       },
+      on: { SPEAK_COMPLETE: "AskPersonListen"},
+    },
+    AskDayPrompt: {
+      entry: {
+        type: "spst.speak",
+        params: { utterance: "On which day is your meeting?" },
+      },
+      on: { SPEAK_COMPLETE: "AskDayListen" },
+    },
+    AskDayListen: {
+      entry: { type: "spst.listen" },
       on: {
-        SPEAK_COMPLETE: "#DM.HypatiaPrompt",
+        RECOGNISED: {
+          actions: assign(({ event }) => ({
+            lastResult: event.value, 
+          })),
+        },
+        ASR_NOINPUT: {
+          actions: assign({ lastResult: null }),
+        },
+        LISTEN_COMPLETE: [
+          {
+            guard: ({ context }) => !!getDay(getUtterance(context)),
+            target: "AskWholeDayPrompt",
+            actions: assign(({ context }) => ({
+              day: getDay(getUtterance(context)) ?? null
+            })),
+          },
+          { target: "AskDayRetry" },
+        ],
       },
     },
-
-    HypatiaPrompt: {
+    AskDayRetry: {
       entry: {
         type: "spst.speak",
         params: {
-          utterance:
-            "I am Hypatia of Alexandria. Knowledge is under threat. Should I continue teaching openly and advising Orestes, work on philosophy and science quietly, or stop to avoid an outburst?",
+          utterance: 
+            "Sorry. I did not get the day. Could you please repeat?"
         },
       },
-      on: {
-        SPEAK_COMPLETE: "#DM.HypatiaListen",
-      },
+      on: { SPEAK_COMPLETE: "AskDayListen" },
     },
-
-    HypatiaListen: {
-      entry: [
-        assign({
-          lastResult: null,
-        }),
-        { type: "spst.listen" },
-      ],
+    
+    AskWholeDayPrompt: {
+      entry: {
+        type: "spst.speak",
+        params: { utterance: "Will it take the whole day?" },
+      },
+      on: { SPEAK_COMPLETE: "AskWholeDayListen" },
+    },
+    AskWholeDayListen: {
+      entry: { type: "spst.listen" },
       on: {
         RECOGNISED: {
           actions: assign(({ event }) => ({
@@ -195,133 +235,42 @@ const dmMachine = setup({
           })),
         },
         ASR_NOINPUT: {
-          actions: assign({
-            lastResult: null,
-          }),
+          actions: assign({ lastResult: null }),
         },
-        LISTEN_COMPLETE: [
+        LISTEN_COMPLETE : [
           {
-            target: "#DM.HypatiaEvaluate",
-            guard: ({ context }) => !!extractUtterance(context.lastResult),
+            guard: ({ context }) => getAnswer(getUtterance(context)) === true,
+            target: "ConfirmWholeDay",
+            actions: assign({ wholeDay: true}),
           },
           {
-            target: "#DM.HypatiaNoInput",
+            guard: ({ context }) => getAnswer(getUtterance(context)) === false,
+            target: "AskTimePrompt",
+            actions: assign({ wholeDay: false}),
           },
+          { target: "AskWholeDayRetry" },
         ],
       },
     },
-
-    HypatiaNoInput: {
+    AskWholeDayRetry: {
       entry: {
         type: "spst.speak",
         params: {
-          utterance:
-            "I could not hear your advice. Please answer again: teach openly and advise, work quietly, or stop.",
+          utterance: "Will it take the whole day?",         
         },
       },
-      on: {
-        SPEAK_COMPLETE: "#DM.HypatiaListen",
-      },
-    },
-
-    HypatiaEvaluate: {
-      entry: assign(({ context }) => {
-        const heard = extractUtterance(context.lastResult);
-        const result = classifyAnswer(heard);
-
-        if (result === "positive") {
-          return {
-            score: context.score + 1,
-            currentScene: "hypatia_positive",
-          };
-        }
-
-        if (result === "negative") {
-          return {
-            score: context.score - 1,
-            currentScene: "hypatia_negative",
-          };
-        }
-
-        return {
-          score: context.score,
-          currentScene: "hypatia_neutral",
-        };
-      }),
-      always: [
-        {
-          target: "#DM.HypatiaPositive",
-          guard: ({ context }) => context.currentScene === "hypatia_positive",
-        },
-        {
-          target: "#DM.HypatiaNegative",
-          guard: ({ context }) => context.currentScene === "hypatia_negative",
-        },
-        {
-          target: "#DM.HypatiaNeutral",
-        },
-      ],
-    },
-
-    HypatiaPositive: {
+      on: { SPEAK_COMPLETE: "AskWholeDayListen" },
+    },    
+    
+    AskTimePrompt: {
       entry: {
         type: "spst.speak",
-        params: {
-          utterance:
-            "Knowledge spreads and benefits the future.",
-        },
+        params: { utterance: "What time is your meeting?" },
       },
-      on: {
-        SPEAK_COMPLETE: "#DM.AspasiaPrompt",
-      },
+      on: { SPEAK_COMPLETE: "AskTimeListen" },
     },
-
-    HypatiaNegative: {
-      entry: {
-        type: "spst.speak",
-        params: {
-          utterance:
-            "Knowledge is lost. The future is negatively affected.",
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.AspasiaPrompt",
-      },
-    },
-
-    HypatiaNeutral: {
-      entry: {
-        type: "spst.speak",
-        params: {
-          utterance:
-            "The knowledge that survives is likely to be less influential.",
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.AspasiaPrompt",
-      },
-    },
-
-    AspasiaPrompt: {
-      entry: {
-        type: "spst.speak",
-        params: {
-          utterance:
-            "I am Aspasia of Miletus. Athens is divided. Should I speak in the name of unity, be cautious, or manipulate others for my personal gain?",
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.AspasiaListen",
-      },
-    },
-
-    AspasiaListen: {
-      entry: [
-        assign({
-          lastResult: null,
-        }),
-        { type: "spst.listen" },
-      ],
+    AskTimeListen: {
+      entry: { type: "spst.listen" },
       on: {
         RECOGNISED: {
           actions: assign(({ event }) => ({
@@ -329,133 +278,42 @@ const dmMachine = setup({
           })),
         },
         ASR_NOINPUT: {
-          actions: assign({
-            lastResult: null,
-          }),
+          actions: assign({ lastResult: null }),
         },
         LISTEN_COMPLETE: [
           {
-            target: "#DM.AspasiaEvaluate",
-            guard: ({ context }) => !!extractUtterance(context.lastResult),
+            guard: ({ context }) => !!getTime(getUtterance(context)),
+            target: "ConfirmTime",
+            actions: assign(({ context }) => ({
+              time: getTime(getUtterance(context)) ?? null,
+            })),
           },
-          {
-            target: "#DM.AspasiaNoInput",
-          },
+          { target: "AskTimeRetry" },
         ],
       },
     },
-
-    AspasiaNoInput: {
+    AskTimeRetry: {
       entry: {
         type: "spst.speak",
         params: {
           utterance:
-            "I did not hear your advice. Please answer again: speak for unity, be cautious, or manipulate for personal gain.",
+          "Sorry I did not get the time. Could you please repeat?",
         },
       },
-      on: {
-        SPEAK_COMPLETE: "#DM.AspasiaListen",
-      },
+      on: { SPEAK_COMPLETE: "AskTimeListen" },
     },
 
-    AspasiaEvaluate: {
-      entry: assign(({ context }) => {
-        const heard = extractUtterance(context.lastResult);
-        const result = classifyAnswer(heard);
-
-        if (result === "positive") {
-          return {
-            score: context.score + 1,
-            currentScene: "aspasia_positive",
-          };
-        }
-
-        if (result === "negative") {
-          return {
-            score: context.score - 1,
-            currentScene: "aspasia_negative",
-          };
-        }
-
-        return {
-          score: context.score,
-          currentScene: "aspasia_neutral",
-        };
-      }),
-      always: [
-        {
-          target: "#DM.AspasiaPositive",
-          guard: ({ context }) => context.currentScene === "aspasia_positive",
-        },
-        {
-          target: "#DM.AspasiaNegative",
-          guard: ({ context }) => context.currentScene === "aspasia_negative",
-        },
-        {
-          target: "#DM.AspasiaNeutral",
-        },
-      ],
-    },
-
-    AspasiaPositive: {
+    ConfirmTime: {
       entry: {
         type: "spst.speak",
-        params: {
-          utterance:
-            "Your advice will encourage public dialogue and bring unity.",
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.SojournerPrompt",
-      },
-    },
-
-    AspasiaNegative: {
-      entry: {
-        type: "spst.speak",
-        params: {
-          utterance:
-            "This will cause the division to grow.",
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.SojournerPrompt",
-      },
-    },
-
-    AspasiaNeutral: {
-      entry: {
-        type: "spst.speak",
-        params: {
-          utterance:
-            "The changes are limited and unity is uncertain.",
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.SojournerPrompt",
-      },
-    },
-
-    SojournerPrompt: {
-      entry: {
-        type: "spst.speak",
-        params: {
-          utterance:
-            "I am Sojourner Truth. When people face injustice, should I combat it and fight for human rights, act carefully to protect myself, or remain silent?",
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.SojournerListen",
-      },
-    },
-
-    SojournerListen: {
-      entry: [
-        assign({
-          lastResult: null,
+        params: ({ context }) => ({
+          utterance: `Do you want me to create an appointment with ${context.person} on ${context.day} at ${context.time}?`,
         }),
-        { type: "spst.listen" },
-      ],
+      },
+      on: { SPEAK_COMPLETE: "ConfirmTimeListen"},
+    },
+    ConfirmTimeListen: {
+      entry: { type: "spst.listen" },
       on: {
         RECOGNISED: {
           actions: assign(({ event }) => ({
@@ -463,151 +321,95 @@ const dmMachine = setup({
           })),
         },
         ASR_NOINPUT: {
-          actions: assign({
-            lastResult: null,
-          }),
+          actions: assign({ lastResult: null }),
         },
         LISTEN_COMPLETE: [
           {
-            target: "#DM.SojournerEvaluate",
-            guard: ({ context }) => !!extractUtterance(context.lastResult),
+            guard: ({ context }) => getAnswer(getUtterance(context)) === true,
+            target: "Booked",
+            actions: assign({ answer: true }),
           },
           {
-            target: "#DM.SojournerNoInput",
+            guard: ({ context }) => getAnswer(getUtterance(context)) === false,
+            target: "AskPersonPrompt",
+            actions: assign(resetAppointment),
           },
+          { target: "ConfirmTimeRetry" },
         ],
       },
     },
-
-    SojournerNoInput: {
+    ConfirmTimeRetry: {
       entry: {
         type: "spst.speak",
-        params: {
-          utterance:
-            "I could not hear you. Please answer again: combat injustice and fight for human rights, act carefully to protect myself, or remain silent.",
-        },
+        params: { utterance: "Please answer yes or no." },
       },
-      on: {
-        SPEAK_COMPLETE: "#DM.SojournerListen",
-      },
+      on: { SPEAK_COMPLETE: "ConfirmTimeListen" },
     },
-
-    SojournerEvaluate: {
-      entry: assign(({ context }) => {
-        const heard = extractUtterance(context.lastResult);
-        const result = classifyAnswer(heard);
-
-        if (result === "positive") {
-          return {
-            score: context.score + 1,
-            currentScene: "sojourner_positive",
-          };
-        }
-
-        if (result === "negative") {
-          return {
-            score: context.score - 1,
-            currentScene: "sojourner_negative",
-          };
-        }
-
-        return {
-          score: context.score,
-          currentScene: "sojourner_neutral",
-        };
-      }),
-      always: [
-        {
-          target: "#DM.SojournerPositive",
-          guard: ({ context }) => context.currentScene === "sojourner_positive",
-        },
-        {
-          target: "#DM.SojournerNegative",
-          guard: ({ context }) => context.currentScene === "sojourner_negative",
-        },
-        {
-          target: "#DM.SojournerNeutral",
-        },
-      ],
-    },
-
-    SojournerPositive: {
+    ConfirmWholeDay: {
       entry: {
         type: "spst.speak",
-        params: {
-          utterance:
-            "This decision will bring big change to the treatment and rights of minorities.",
-        },
+        params: ({ context }) => ({
+          utterance: `Do you want me to create an appointment with ${context.person} on ${context.day} for the whole day?`,
+        }),
       },
+      on: { SPEAK_COMPLETE: "ConfirmWholeDayListen" },
+    },
+    ConfirmWholeDayListen: {
+      entry: { type: "spst.listen" },
       on: {
-        SPEAK_COMPLETE: "#DM.FinalResult",
+        RECOGNISED: {
+          actions: assign(({ event }) => ({
+            lastResult: event.value,
+          })),
+        },
+        ASR_NOINPUT: {
+          actions: assign({ lastResult: null}),
+        },
+        LISTEN_COMPLETE: [
+          {
+            guard: ({ context }) => getAnswer(getUtterance(context)) === true,
+            target: "Booked",
+            actions: assign({ answer: true}),
+          },
+          {
+            guard: ({ context }) => getAnswer(getUtterance(context)) === false,
+            target: "AskPersonPrompt",
+            actions: assign(resetAppointment),
+          },
+          { target: "ConfirmWholeDayRetry" },
+        ],
       },
     },
-
-    SojournerNegative: {
+    ConfirmWholeDayRetry: {
       entry: {
         type: "spst.speak",
-        params: {
-          utterance:
-            "Your decision will allow injustice to continue.",
-        },
+        params: { utterance: "Could you please answer with a yes or a no?" },
       },
-      on: {
-        SPEAK_COMPLETE: "#DM.FinalResult",
-      },
+      on: { SPEAK_COMPLETE: "ConfirmWholeDayListen" },
     },
-
-    SojournerNeutral: {
+      
+    Booked: {
       entry: {
         type: "spst.speak",
-        params: {
-          utterance:
-            "It is not certain that society will progress and limit injustice.",
-        },
+        params: { utterance: "Your appointment has been created!" },
       },
-      on: {
-        SPEAK_COMPLETE: "#DM.FinalResult",
-      },
+      on: { SPEAK_COMPLETE: "Done" },
     },
-
-    FinalResult: {
-      entry: {
-        type: "spst.speak",
-        params: ({ context }) => {
-          if (context.score > 0) {
-            return {
-              utterance:
-                "Your decisions improved the course of history. You win.",
-            };
-          }
-
-          if (context.score < 0) {
-            return {
-              utterance:
-                "Your choices negatively affected the future. You lose.",
-            };
-          }
-
-          return {
-            utterance:
-              "Your choices will bring an uncertain future.",
-          };
-        },
-      },
-      on: {
-        SPEAK_COMPLETE: "#DM.Done",
-      },
-    },
-
     Done: {
       on: {
-        CLICK: "#DM.Intro",
+        CLICK: {
+          target: "AskPersonPrompt",
+          actions: assign(resetAppointment),
+        },
       },
     },
   },
 });
+      
 
-const dmActor = createActor(dmMachine).start();
+const dmActor = createActor(dmMachine, {
+  inspect: inspector.inspect,
+}).start();
 
 dmActor.subscribe((state) => {
   console.group("State update");
@@ -617,32 +419,15 @@ dmActor.subscribe((state) => {
 });
 
 export function setupButton(element: HTMLButtonElement) {
-  element.innerHTML = "Loading audio...";
-
   element.addEventListener("click", () => {
     dmActor.send({ type: "CLICK" });
   });
-
   dmActor.subscribe((snapshot) => {
-    const stateValue =
-      typeof snapshot.value === "string"
-        ? snapshot.value
-        : JSON.stringify(snapshot.value);
-
-    if (stateValue === "Prepare") {
-      element.innerHTML = "Loading audio...";
-    } else if (stateValue === "WaitToStart") {
-      element.innerHTML = "Start Historical Voices";
-    } else if (
-      stateValue === "HypatiaListen" ||
-      stateValue === "AspasiaListen" ||
-      stateValue === "SojournerListen"
-    ) {
-      element.innerHTML = "Listening...";
-    } else if (stateValue === "Done") {
-      element.innerHTML = "Restart Historical Voices";
-    } else {
-      element.innerHTML = "Historical Voices";
-    }
+    const meta: { view?: string } = Object.values(
+      snapshot.context.spstRef.getSnapshot().getMeta(),
+    )[0] || {
+      view: undefined,
+    };
+    element.innerHTML = `${meta.view}`;
   });
 }
