@@ -1,0 +1,290 @@
+{
+    "projectFileVersion": "2025-05-15-preview",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+        "projectKind": "Conversation",
+        "settings": {
+            "confidenceThreshold": 0,
+            "normalizeCasing": false,
+            "augmentDiacritics": false
+        },
+        "projectName": "appointment",
+        "multilingual": false,
+        "description": "",
+        "language": "en-us"
+    },
+    "assets": {
+        "projectKind": "Conversation",
+        "intents": [
+            {
+                "category": "None",
+                "description": "Used when the user's input doesn't match any known intent or is out of scope."
+            },
+            {
+                "category": "createMeeting"
+            },
+            {
+                "category": "whoIs"
+            }
+        ],
+        "entities": [
+            {
+                "category": "person",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "day",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "time",
+                "compositionSetting": "combineComponents"
+            },
+            {
+                "category": "answer",
+                "compositionSetting": "combineComponents"
+            }
+        ],
+        "utterances": [
+            {
+                "text": "Tell me about Noam Chomsky",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 14,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Ferdinand de Saussure",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 21
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Can you tell me about Søren Kierkegaard",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 22,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Edgar Allan Poe",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Please tell me about Fyodor Dostoevsky",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 21,
+                        "length": 17
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Ada Lovelace",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "What do you know about Bruce Dickinson",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 23,
+                        "length": 15
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Tell me about Kevin Parker",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 14,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Who is Serj Tankian",
+                "language": "en-us",
+                "intent": "whoIs",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 7,
+                        "length": 12
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to set up an appointment with Janna ",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 39,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book me a meeting for Monday morning",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 22,
+                        "length": 6
+                    },
+                    {
+                        "category": "time",
+                        "offset": 29,
+                        "length": 7
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Arrange a meeting with Elisa",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 23,
+                        "length": 5
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Schedule a meeting with Anna",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 24,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Set up a meeting at nine in the morning",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "time",
+                        "offset": 20,
+                        "length": 19
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Make me an appointment next week",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 23,
+                        "length": 9
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Book me an appointment for Tuesday",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 23,
+                        "length": 11
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "I'd like to book a meeting with Lena",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "person",
+                        "offset": 32,
+                        "length": 4
+                    }
+                ],
+                "dataset": "Train"
+            },
+            {
+                "text": "Create a meeting tomorrow",
+                "language": "en-us",
+                "intent": "createMeeting",
+                "entities": [
+                    {
+                        "category": "day",
+                        "offset": 17,
+                        "length": 8
+                    }
+                ],
+                "dataset": "Train"
+            }
+        ]
+    }
+}

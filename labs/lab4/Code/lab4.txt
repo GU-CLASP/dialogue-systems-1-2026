@@ -1,0 +1,20 @@
+<!--
+Reference performance: 
+"For Annie - Edgar Allan Poe 1849 (Read by Gavin Friday)"
+YouTube: https://www.youtube.com/watch?v=YbnWXMmByRA
+-->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
+<voice name="en-US-GuyNeural">
+  <mstts:express-as style="sad" styledegree="1.1">
+    <prosody rate="-20%" pitch="-8%" volume="soft">
+      Thank Heaven! <break time="500ms"/>
+      the crisis, <break time="300ms"/>
+      the danger, is past, <break time="400ms"/>
+      And the lingering illness is over at last, <break time="500ms"/>
+      And the fever called Living
+      <break time="300ms"/>
+      Is conquered at last.
+      </prosody>
+    </mstts:express-as>
+  </voice>
+</speak>            

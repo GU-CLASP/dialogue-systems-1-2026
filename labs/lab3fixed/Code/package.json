@@ -11,5 +11,10 @@
   "devDependencies": {
     "typescript": "~5.9.3",
     "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@statelyai/inspect": "^0.7.1",
+    "speechstate": "^2.16.0",
+    "xstate": "^5.30.0"
   }
 }
